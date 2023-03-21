@@ -1,0 +1,5 @@
+@import "./routes/layout/index.module.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
