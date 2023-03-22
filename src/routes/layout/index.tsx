@@ -137,7 +137,7 @@ function PricingComponent() {
 // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 
 function CountdownTimer() {
-    const totalSeconds = randomWithRange(1, 8639999);
+    const initTotalSeconds = randomWithRange(1, 8639999);
 
     function randomWithRange(min: number, max: number) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -145,59 +145,37 @@ function CountdownTimer() {
 
     type Props = [{ days: number, hours: number, minutes: number, seconds: number }, (ti: number) => void];
 
-    function useCountDownTimer({ totalSeconds, timerInterval }: { totalSeconds: number, timerInterval: number }): Props {
-        const [days, setDays] = useState(getDays(totalSeconds));
-        const [hours, setHours] = useState(getHours(totalSeconds - days * 86400));
-        const [minutes, setMinutes] = useState(getMinutes(totalSeconds - days * 86400 - hours * 3600));
-        const [seconds, setSeconds] = useState(totalSeconds - days * 86400 - hours * 3600 - minutes * 60);
-        
+    function useCountDownTimer({ initTotalSeconds, timerInterval }: { initTotalSeconds: number, timerInterval: number }): Props {
+        const [totalSeconds, setTotalSeconds] = useState(initTotalSeconds);
 
-        function getDays(seconds: number) {
-            return Math.floor(seconds / 86400);
-        }
-
-        function getHours(seconds: number) {
-            return Math.floor((seconds % 86400) / 3600);
-        }
-
-        function getMinutes(seconds: number) {
-            return Math.floor(((seconds % 86400) % 3600) / 60);
-        }
+        const getDays = (seconds: number) => Math.floor(seconds / 86400);
+        const getHours = (seconds: number) =>  Math.floor((seconds % 86400) / 3600);
+        const getMinutes = (seconds: number) =>  Math.floor(((seconds % 86400) % 3600) / 60);
+        const getSeconds = (seconds: number) =>  Math.floor(((seconds % 86400) % 3600) % 60);
 
         useEffect(() => {
             const interval = setInterval(() => {
-                if (seconds - 1 >= 0) {
-                    setSeconds(prev => prev - 1);
+                if (totalSeconds - 1 >= 0) {
+                    setTotalSeconds(prev => prev - 1);
                     return;
                 }
-                setSeconds(_ => 59);
-                if (minutes - 1 >= 0) {
-                    setMinutes(prev => prev - 1);
-                    return;
-                }
-                setMinutes(_ => 59);
-                if (hours - 1 >= 0) {
-                    setHours(prev => prev - 1);
-                    return;
-                }
-                setHours(_ => 23);
-                if (days - 1 >= 0) {
-                    setDays(prev => prev - 1);
-                    return;
-                }
-                setDays(_ => 99);
             }, timerInterval);
             return () => clearInterval(interval);
-        }, [seconds]);
+        }, [totalSeconds]);
 
         function setTimerInterval(ti: number): void {
             timerInterval = ti;
         }
 
-        return [{ days, hours, minutes, seconds } , setTimerInterval];
+        let days = getDays(totalSeconds);
+        let hours = getHours(totalSeconds);
+        let minutes = getMinutes(totalSeconds);
+        let seconds = getSeconds(totalSeconds);
+
+        return [{ days, hours, minutes, seconds }, setTimerInterval];
     }
 
-    const [{ days, hours, minutes, seconds }, _setTimerInterval]: Props = useCountDownTimer({ totalSeconds, timerInterval: 1000 });
+    const [{ days, hours, minutes, seconds }, _setTimerInterval]: Props = useCountDownTimer({ initTotalSeconds, timerInterval: 1000 });
 
     return (
         <div className="text-center">
