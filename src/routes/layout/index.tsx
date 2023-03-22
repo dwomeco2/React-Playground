@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useReducer, useRef } from 'react';
 import styles from './index.module.css'
 
 function PreviewCardComponent() {
@@ -134,8 +134,6 @@ function PricingComponent() {
     )
 }
 
-// https://overreacted.io/making-setinterval-declarative-with-react-hooks/
-
 interface TimerProps {
     state: {
         totalSeconds: number;
@@ -161,29 +159,40 @@ function useCountDownTimer({ initTotalSeconds, timerInterval }: TimerProps["coun
         totalSeconds: initTotalSeconds
     });
 
+    useInterval(() => {
+        dispatch({ type: 'tick' });
+    }, timerInterval);
     
-    useEffect(() => {
-        const interval = setInterval(() => {
-            dispatch({ type: 'tick' });
-        }, timerInterval);
-        return () => clearInterval(interval);
-    }, [dispatch]);
-
-    function setTimerInterval(ti: number): void {
-        timerInterval = ti;
+    function disembleCountdown(totalSeconds: number) {
+        const days = Math.floor(totalSeconds / (60 * 60 * 24));
+        const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+        const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+        const seconds = totalSeconds % 60;
+        return { days, hours, minutes, seconds };
     }
-    
-    const getDays = (seconds: number) => Math.floor(seconds / 86400);
-    const getHours = (seconds: number) =>  Math.floor((seconds % 86400) / 3600);
-    const getMinutes = (seconds: number) =>  Math.floor(((seconds % 86400) % 3600) / 60);
-    const getSeconds = (seconds: number) =>  Math.floor(((seconds % 86400) % 3600) % 60);
 
-    let days = getDays(totalSeconds);
-    let hours = getHours(totalSeconds);
-    let minutes = getMinutes(totalSeconds);
-    let seconds = getSeconds(totalSeconds);
+    return [disembleCountdown(totalSeconds), (ti: number): void => { timerInterval = ti }];
+}
 
-    return [{ days, hours, minutes, seconds }, setTimerInterval];
+// https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+function useInterval(callback: () => void, delay: number) {
+    let callbackRef: React.MutableRefObject<() => void> = useRef(callback);
+
+    // always update callbackRef to the latest callbacks
+    useEffect(() => {
+        callbackRef.current = callback;
+    })
+
+    useEffect(() => {
+        function tick() {
+            callbackRef.current()
+        }
+
+        if (delay !== null) {
+            let id = setInterval(() => tick(), delay);
+            return () => clearInterval(id);
+        }
+    }, [delay])
 }
 
 function randomWithRange(min: number, max: number) {
