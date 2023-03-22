@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './index.module.css'
 
 function PreviewCardComponent() {
@@ -134,8 +134,99 @@ function PricingComponent() {
     )
 }
 
+// https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+
+function CountdownTimer() {
+    const totalSeconds = randomWithRange(1, 8639999);
+
+    function randomWithRange(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    type Props = [{ days: number, hours: number, minutes: number, seconds: number }, (ti: number) => void];
+
+    function useCountDownTimer({ totalSeconds, timerInterval }: { totalSeconds: number, timerInterval: number }): Props {
+        const [days, setDays] = useState(getDays(totalSeconds));
+        const [hours, setHours] = useState(getHours(totalSeconds - days * 86400));
+        const [minutes, setMinutes] = useState(getMinutes(totalSeconds - days * 86400 - hours * 3600));
+        const [seconds, setSeconds] = useState(totalSeconds - days * 86400 - hours * 3600 - minutes * 60);
+        
+
+        function getDays(seconds: number) {
+            return Math.floor(seconds / 86400);
+        }
+
+        function getHours(seconds: number) {
+            return Math.floor((seconds % 86400) / 3600);
+        }
+
+        function getMinutes(seconds: number) {
+            return Math.floor(((seconds % 86400) % 3600) / 60);
+        }
+
+        useEffect(() => {
+            const interval = setInterval(() => {
+                if (seconds - 1 >= 0) {
+                    setSeconds(prev => prev - 1);
+                    return;
+                }
+                setSeconds(_ => 59);
+                if (minutes - 1 >= 0) {
+                    setMinutes(prev => prev - 1);
+                    return;
+                }
+                setMinutes(_ => 59);
+                if (hours - 1 >= 0) {
+                    setHours(prev => prev - 1);
+                    return;
+                }
+                setHours(_ => 23);
+                if (days - 1 >= 0) {
+                    setDays(prev => prev - 1);
+                    return;
+                }
+                setDays(_ => 99);
+            }, timerInterval);
+            return () => clearInterval(interval);
+        }, [seconds]);
+
+        function setTimerInterval(ti: number): void {
+            timerInterval = ti;
+        }
+
+        return [{ days, hours, minutes, seconds } , setTimerInterval];
+    }
+
+    const [{ days, hours, minutes, seconds }, _setTimerInterval]: Props = useCountDownTimer({ totalSeconds, timerInterval: 1000 });
+
+    return (
+        <div className="text-center">
+            <div className="mb-16">WE'RE LAUNCHING SOON</div>
+            <div className="flex justify-center gap-4">
+                <div className="flex flex-col">
+                    <span className="text-xs">{days}</span>
+                    <div className="font-bold">Days</div>
+                </div>
+                <div className="flex flex-col">
+                    <span className="text-xs">{hours}</span>
+                    <div className="font-bold">Hours</div>
+                </div>
+                <div className="flex flex-col">
+                    <span className="text-xs">{minutes}</span>
+                    <div className="font-bold">Minutes</div>
+                </div>
+                <div className="flex flex-col">
+                    <span className="text-xs">{seconds}</span>
+                    <div className="font-bold">Seconds</div>
+                </div>
+            </div>
+            <div>social icons</div>
+        </div>
+    )
+}
+
 export default function Layout() {
-    const layouts = ["Preview Card", "Profile Card", "Pricing Component"];
+    const layouts = ["Preview Card", "Profile Card", "Pricing Component", "Countdown timer"];
     const [activeLayout, setActiveLayout] = useState(0);
     
     return (
@@ -157,6 +248,9 @@ export default function Layout() {
             }
             {
                 activeLayout === 2 && <PricingComponent />
+            }
+            {
+                activeLayout === 3 && <CountdownTimer />
             }
         </div>
     )   
