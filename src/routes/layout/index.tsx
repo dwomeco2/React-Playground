@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import styles from './index.module.css'
 
 function PreviewCardComponent() {
@@ -136,46 +136,66 @@ function PricingComponent() {
 
 // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 
+interface TimerProps {
+    state: {
+        totalSeconds: number;
+    },
+    countdownParams: { initTotalSeconds: number, timerInterval: number },
+    countdownReturns: [{ days: number, hours: number, minutes: number, seconds: number }, (ti: number) => void]
+}
+
+function useCountDownTimer({ initTotalSeconds, timerInterval }: TimerProps["countdownParams"]): TimerProps["countdownReturns"] {
+    function reducer(state: TimerProps["state"], action: { type: string }): TimerProps["state"] {
+        const { totalSeconds } = state;
+        if ( action.type == 'tick' ) {
+            if ( totalSeconds >= 0 ) {
+                return { totalSeconds: totalSeconds - 1 };
+            }
+            return { totalSeconds: 0 };
+        } else {
+            throw new Error();
+        }
+    }
+
+    const [{ totalSeconds }, dispatch] = useReducer(reducer, {
+        totalSeconds: initTotalSeconds
+    });
+
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            dispatch({ type: 'tick' });
+        }, timerInterval);
+        return () => clearInterval(interval);
+    }, [dispatch]);
+
+    function setTimerInterval(ti: number): void {
+        timerInterval = ti;
+    }
+    
+    const getDays = (seconds: number) => Math.floor(seconds / 86400);
+    const getHours = (seconds: number) =>  Math.floor((seconds % 86400) / 3600);
+    const getMinutes = (seconds: number) =>  Math.floor(((seconds % 86400) % 3600) / 60);
+    const getSeconds = (seconds: number) =>  Math.floor(((seconds % 86400) % 3600) % 60);
+
+    let days = getDays(totalSeconds);
+    let hours = getHours(totalSeconds);
+    let minutes = getMinutes(totalSeconds);
+    let seconds = getSeconds(totalSeconds);
+
+    return [{ days, hours, minutes, seconds }, setTimerInterval];
+}
+
+function randomWithRange(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function CountdownTimer() {
     const initTotalSeconds = randomWithRange(1, 8639999);
 
-    function randomWithRange(min: number, max: number) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    const [state, _setTimerInterval]: TimerProps["countdownReturns"] = useCountDownTimer({ initTotalSeconds, timerInterval: 1000 });
 
-    type Props = [{ days: number, hours: number, minutes: number, seconds: number }, (ti: number) => void];
-
-    function useCountDownTimer({ initTotalSeconds, timerInterval }: { initTotalSeconds: number, timerInterval: number }): Props {
-        const [totalSeconds, setTotalSeconds] = useState(initTotalSeconds);
-
-        const getDays = (seconds: number) => Math.floor(seconds / 86400);
-        const getHours = (seconds: number) =>  Math.floor((seconds % 86400) / 3600);
-        const getMinutes = (seconds: number) =>  Math.floor(((seconds % 86400) % 3600) / 60);
-        const getSeconds = (seconds: number) =>  Math.floor(((seconds % 86400) % 3600) % 60);
-
-        useEffect(() => {
-            const interval = setInterval(() => {
-                if (totalSeconds - 1 >= 0) {
-                    setTotalSeconds(prev => prev - 1);
-                    return;
-                }
-            }, timerInterval);
-            return () => clearInterval(interval);
-        }, [totalSeconds]);
-
-        function setTimerInterval(ti: number): void {
-            timerInterval = ti;
-        }
-
-        let days = getDays(totalSeconds);
-        let hours = getHours(totalSeconds);
-        let minutes = getMinutes(totalSeconds);
-        let seconds = getSeconds(totalSeconds);
-
-        return [{ days, hours, minutes, seconds }, setTimerInterval];
-    }
-
-    const [{ days, hours, minutes, seconds }, _setTimerInterval]: Props = useCountDownTimer({ initTotalSeconds, timerInterval: 1000 });
+    let { days, hours, minutes, seconds } = state;
 
     return (
         <div className="text-center">
