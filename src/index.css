@@ -1,5 +1,6 @@
 @import "./routes/layout/index.module.css";
 @import "./routes/layout/CountdownTimer/index.module.css";
+@import "./routes/layout/SidebarComponent/index.module.css";
 
 @tailwind base;
 @tailwind components;

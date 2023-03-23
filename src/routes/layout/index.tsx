@@ -4,11 +4,10 @@ import PreviewCardComponent from './PreviewCard';
 import ProfileCardComponent from './ProfileCard';
 import PricingComponent from './PricingComponent';
 import CountdownTimer from './CountdownTimer';
-
-import styles from './index.module.css'
+import SidebarComponent from './SidebarComponent';
 
 export default function Layout() {
-    const layouts = ["Preview Card", "Profile Card", "Pricing Component", "Countdown timer"];
+    const layouts = ["Preview Card", "Profile Card", "Pricing Component", "Countdown timer", "Sidebar Component"];
     const [activeLayout, setActiveLayout] = useState(0);
     
     return (
@@ -33,6 +32,9 @@ export default function Layout() {
             }
             {
                 activeLayout === 3 && <CountdownTimer />
+            }
+            {
+                activeLayout === 4 && <SidebarComponent />
             }
         </div>
     )   
