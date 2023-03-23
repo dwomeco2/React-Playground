@@ -6,6 +6,7 @@ type ThemeType = 'light' | 'dark';
 type ListContextProp = {
     theme: ThemeType;
     isCollapse: boolean;
+    iconStyle: React.SVGProps<SVGSVGElement>;
     setIsCollapse: () => void;
     toggleTheme: () => void;
 }
@@ -16,6 +17,10 @@ function createListContext() {
     const [listContextState, setListContextState] = useState<ListContextProp>({
         theme: "dark",
         isCollapse: false,
+        iconStyle: {
+            width: "1.3rem",
+            height: "1.3rem",
+        },
         setIsCollapse: () => {
             setListContextState(prev => {
                 return { ...prev, isCollapse: !prev.isCollapse }
@@ -127,6 +132,16 @@ function IconText({ children, buttonText, className }: { children: JSX.Element, 
     )
 }
 
+function IconTextButton({ buttonText, onClick = () => {}, iconComponent }: { buttonText: string, onClick?: () => void, iconComponent: JSX.Element }) {
+    return (
+        <ListButton onClick={onClick}>
+            <IconText buttonText={`${buttonText}`}>
+                { iconComponent }
+            </IconText>
+        </ListButton>
+    )
+}
+
 function List({ width, height, children }: { width?: string, height?: string, children?: JSX.Element | JSX.Element[] }) {
     const { theme } = useContext(ListContext);
 
@@ -148,22 +163,18 @@ function List({ width, height, children }: { width?: string, height?: string, ch
 export default function SidebarComponent() {
     const listContextState = createListContext();
 
-    const { isCollapse, setIsCollapse, toggleTheme } = listContextState;
+    const { isCollapse, iconStyle, setIsCollapse, toggleTheme } = listContextState;
 
     return (
         <ListContext.Provider value={listContextState as ListContextProp}>
             <List width={isCollapse ? "53px" : "250px"} height={"100%"}>
                 <ListItem>
                     <IconText buttonText='Logoipsum' className="px-2 [&>div:nth-child(2)]:font-bold">
-                        <IconFruitWatermelon width="1.3rem" height={`${isCollapse ? "1.3rem" : "2rem"}`} />
+                        <IconFruitWatermelon  {...iconStyle} height={`${isCollapse ? "1.3rem" : "2rem"}`} />
                     </IconText>
                 </ListItem>
                 <ListItem>
-                    <ListButton onClick={setIsCollapse}>
-                        <IconText buttonText='Collapse Menu'>
-                            <IconLayoutSidebarLeftCollapse width="1.3rem" height="1.3rem" />
-                        </IconText>
-                    </ListButton>
+                    <IconTextButton onClick={setIsCollapse} buttonText='Collapse Menu' iconComponent={<IconLayoutSidebarLeftCollapse {...iconStyle} />} />
                 </ListItem>
                 <ListDivider />
                 <ListItem>
@@ -171,51 +182,23 @@ export default function SidebarComponent() {
                 </ListItem>
                 <ListItem>
                     <ListSection title="Home">
-                        <ListButton>
-                            <IconText buttonText='Start'>
-                                <IconHome width="1.3rem" height="1.3rem" />
-                            </IconText>
-                        </ListButton>
-                        <ListButton>
-                            <IconText buttonText='Analytics'>
-                                <IconAnalytics width="1.3rem" height="1.3rem" />
-                            </IconText>
-                        </ListButton>
-                        <ListButton>
-                            <IconText buttonText='IconSecurity'>
-                                <IconSecurity width="1.3rem" height="1.3rem" />
-                            </IconText>
-                        </ListButton>
+                        <IconTextButton buttonText='Start' iconComponent={<IconHome {...iconStyle} />} />
+                        <IconTextButton buttonText='Analytics' iconComponent={<IconAnalytics {...iconStyle} />} />
+                        <IconTextButton buttonText='IconSecurity' iconComponent={<IconSecurity {...iconStyle} />} />
                     </ListSection>
                 </ListItem>
                 <ListItem>
                     <ListSection title="Reports">
-                        <ListButton>
-                            <IconText buttonText='Timed Reports'>
-                                <IconTimer width="1.3rem" height="1.3rem" />
-                            </IconText>
-                        </ListButton>
-                        <ListButton>
-                            <IconText buttonText='Support Center'>
-                                <IconLifeRing width="1.3rem" height="1.3rem" />
-                            </IconText>
-                        </ListButton>
-                        <ListButton>
-                            <IconText buttonText='Data Reports'>
-                                <IconFileText width="1.3rem" height="1.3rem" />
-                            </IconText>
-                        </ListButton>
+                        <IconTextButton buttonText='Timed Reports' iconComponent={<IconTimer {...iconStyle} />} />
+                        <IconTextButton buttonText='Support Center' iconComponent={<IconLifeRing {...iconStyle} />} />
+                        <IconTextButton buttonText='Data Reports' iconComponent={<IconFileText {...iconStyle} />} />
                     </ListSection>
                 </ListItem>
                 <ListItem>
                     <ListSpaceExpander />
                 </ListItem>
                 <ListItem>
-                    <ListButton onClick={toggleTheme}>
-                        <IconText buttonText='Switch to light Theme'>
-                            <IconLightDown width="1.3rem" height="1.3rem" />
-                        </IconText>
-                    </ListButton>
+                    <IconTextButton onClick={toggleTheme} buttonText='Switch to light Theme' iconComponent={<IconLightDown {...iconStyle} />} />
                 </ListItem>
                 <ListDivider />
                 <ListItem>
@@ -229,7 +212,7 @@ export default function SidebarComponent() {
                                 </div>
                                 <button>
                                     <i>
-                                        <IconMore width="1.3rem" height="1.3rem" />
+                                        <IconMore  {...iconStyle} />
                                     </i>
                                 </button>
                             </>
