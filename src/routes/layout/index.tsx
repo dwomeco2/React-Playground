@@ -5,9 +5,10 @@ import ProfileCardComponent from './ProfileCard';
 import PricingComponent from './PricingComponent';
 import CountdownTimer from './CountdownTimer';
 import SidebarComponent from './SidebarComponent';
+import PriceSlider from './PriceSlider';
 
 export default function Layout() {
-    const layouts = ["Preview Card", "Profile Card", "Pricing Component", "Countdown timer", "Sidebar Component"];
+    const layouts = ["Preview Card", "Profile Card", "Pricing Component", "Countdown timer", "Sidebar Component", "Price Slider"];
     const [activeLayout, setActiveLayout] = useState(0);
     
     return (
@@ -35,6 +36,9 @@ export default function Layout() {
             }
             {
                 activeLayout === 4 && <SidebarComponent />
+            }
+            {
+                activeLayout === 5 && <PriceSlider />
             }
         </div>
     )   

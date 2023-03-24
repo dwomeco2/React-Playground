@@ -58,7 +58,7 @@ function ListDivider() {
 }
 
 function ListInput() {
-    const { theme, isCollapse } = useContext(ListContext);
+    const { theme, isCollapse, iconStyle } = useContext(ListContext);
 
     let collapseClassName =  isCollapse ? ' hidden ': '';
 
@@ -68,7 +68,7 @@ function ListInput() {
     return (
         <div className={` ${!isCollapse && sidebar_surface_color} ${sidebar_on_surface_color} flex items-center h-full w-hull px-2 py-2 rounded-full overflow-hidden`}>
             <i>
-                <IconSearch width="auto" height="1.3rem" />
+                <IconSearch {...iconStyle} />
             </i>
             <input type="text" className={` ${sidebar_surface_color} outline-none text-xs w-full px-2 ${collapseClassName} `} placeholder="Search" />
         </div>
@@ -117,7 +117,7 @@ function ListItem({ children }: { children?: JSX.Element | JSX.Element[] }) {
 }
 
 // Focus on how to position Icon & text
-function IconText({ children, buttonText, className }: { children: JSX.Element, buttonText: string, className?: string }) {
+function IconText({ children, buttonText, className = '' }: { children: JSX.Element, buttonText: string, className?: string }) {
     const { isCollapse } = useContext(ListContext);
 
     let collapseClassName =  isCollapse ? ' hidden ': '';
