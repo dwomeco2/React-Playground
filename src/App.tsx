@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './App.css'
 
 function App() {
@@ -6,7 +7,7 @@ function App() {
       <h1>React UI Practice</h1>
       <ul>
         <li>
-          <a href="/layout">Layout</a>
+          <Link to="/react-playground-dist/layout">Layout</Link>
         </li>
       </ul>
     </div>

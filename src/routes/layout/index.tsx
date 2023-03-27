@@ -6,16 +6,17 @@ import PricingComponent from './PricingComponent';
 import CountdownTimer from './CountdownTimer';
 import SidebarComponent from './SidebarComponent';
 import PriceSlider from './PriceSlider';
+import ImageSlider from './ImageSlider';
 
 export default function Layout() {
-    const layouts = ["Preview Card", "Profile Card", "Pricing Component", "Countdown timer", "Sidebar Component", "Price Slider"];
+    const layouts = ["Preview Card", "Profile Card", "Pricing Component", "Countdown timer", "Sidebar Component", "Price Slider", "Image Slider"];
     const [activeLayout, setActiveLayout] = useState(0);
     
     return (
         <div className="w-full h-full p-8 bg-gray-200">
             <div>
                 <h1 className="font-bold text-2xl">Show different components</h1>
-                <div className="flex">
+                <div className="flex flex-wrap">
                     { layouts.map((layout, index) => {
                         return <button key={index} className="p-2 m-4 bg-blue-400" onClick={e => setActiveLayout(index)}>{layout}</button>
                     })}
@@ -39,6 +40,9 @@ export default function Layout() {
             }
             {
                 activeLayout === 5 && <PriceSlider />
+            }
+            {
+                activeLayout === 6 && <ImageSlider />
             }
         </div>
     )   

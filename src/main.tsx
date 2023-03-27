@@ -12,17 +12,17 @@ import {
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/react-playground-dist",
     element: <App />,
   },
   {
-    path: "/layout",
+    path: "/react-playground-dist/layout",
     element: <Layout />
   }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  <>
     <RouterProvider router={router} />
-  </React.StrictMode>,
+  </>,
 )

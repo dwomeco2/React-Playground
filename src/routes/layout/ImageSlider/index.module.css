@@ -1,0 +1,28 @@
+@layer components{ 
+    
+    .image_slide {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: scroll;
+        overflow-x: scroll;
+        /* scroll-behavior: smooth; */
+        scroll-snap-align: center;  
+    }
+    
+    .image_slide > div {
+        width: 9rem;
+        height: 9rem;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+        transition: all 0.25s ease-in-out;
+    }
+
+    .primary {
+        width: 15rem !important;
+        height: 15rem !important; 
+    }
+
+    .secondary {
+        width: 12rem !important;
+        height: 12rem !important;
+    }
+}
