@@ -10,6 +10,7 @@ import ImageSlider from './ImageSlider';
 
 export default function Layout() {
     const layouts = ["Preview Card", "Profile Card", "Pricing Component", "Countdown timer", "Sidebar Component", "Price Slider", "Image Slider"];
+    const layoutComponent = [<PreviewCardComponent />, <ProfileCardComponent />, <PricingComponent />, <CountdownTimer />, <SidebarComponent />, <PriceSlider />, <ImageSlider />];
     const [activeLayout, setActiveLayout] = useState(0);
     
     return (
@@ -22,28 +23,7 @@ export default function Layout() {
                     })}
                 </div>
             </div>
-            { activeLayout === 0 && <div className="grid grid-cols-4 gap-4">
-                { [1,2,3,4,5,6].map((n) => <PreviewCardComponent key={n} />) }
-            </div> 
-            }
-            {
-                activeLayout === 1 && <ProfileCardComponent />
-            }
-            {
-                activeLayout === 2 && <PricingComponent />
-            }
-            {
-                activeLayout === 3 && <CountdownTimer />
-            }
-            {
-                activeLayout === 4 && <SidebarComponent />
-            }
-            {
-                activeLayout === 5 && <PriceSlider />
-            }
-            {
-                activeLayout === 6 && <ImageSlider />
-            }
-        </div>
+            { layoutComponent[activeLayout] }
+       </div>
     )   
 }

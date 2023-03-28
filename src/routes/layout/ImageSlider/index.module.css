@@ -92,7 +92,7 @@
         margin-left: -140px;
     }
 
-    img {
+    .image_slide_item > img {
         width: 100%;
         height: 100%;
     }
