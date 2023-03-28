@@ -12,11 +12,11 @@ import {
 
 const router = createBrowserRouter([
   {
-    path: "/react-playground-dist",
+    path: "/react-playground",
     element: <App />,
   },
   {
-    path: "/react-playground-dist/layout",
+    path: "/react-playground/layout",
     element: <Layout />
   }
 ]);

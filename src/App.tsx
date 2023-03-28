@@ -7,7 +7,7 @@ function App() {
       <h1>React UI Practice</h1>
       <ul>
         <li>
-          <Link to="/react-playground-dist/layout">Layout</Link>
+          <Link to="/react-playground/layout">Layout</Link>
         </li>
       </ul>
     </div>
