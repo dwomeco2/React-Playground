@@ -1,170 +1,92 @@
-import { useEffect, useState } from 'react';
-
-type ImageProps = {
-    id: number,
-    name: string,
-}
-
-function initializeImages() {
-    let images_tmp:ImageProps[] = [];
-    for (let i = 0; i < 10; i++) {
-        images_tmp.push({
-            id: i,
-            name: `Image ${i}`,
-        })
-    }
-    return images_tmp;
-}
-
-function preventNegMod(total: number) {
-    return (index: number)  => (index + total) % total;
-}
-
-function createScrollStopListener(element: HTMLElement, callback: () => void, timeout: number = 200) {
-    let handle: number | undefined = undefined;
-    let onScroll = function() {
-        if (handle) {
-            clearTimeout(handle);
-        }
-        handle = setTimeout(callback, timeout); // default 200 ms
-    };
-    element.addEventListener('scroll', onScroll);
-    return () => {
-        element.removeEventListener('scroll', onScroll);
-    };
-}
-
-type BoundsType = {
-    containerBounds: DOMRect;
-    itemsBounds: {
-        item: HTMLDivElement;
-        bounds: DOMRect;
-        offsetX: number;
-    }[];
-}
-
-// saving for preventing trigger reflow
-function storeBounds (container: HTMLElement, items: HTMLDivElement[]): BoundsType {
-    let containerBounds = container.getBoundingClientRect() // triggers reflow
-    let itemsBounds = items.map((item) => {
-        let bounds = item.getBoundingClientRect(); // triggers reflow
-        return {
-            item, 
-            bounds,
-            offsetX: bounds.left - containerBounds.left
-        } 
-    });
-
-    return {
-        containerBounds,
-        itemsBounds,
-    };
-}
-
-function generateCircularImages(activeImageIndex: number, totalImages: number, images: ImageProps[]): {imageId: number, type: string}[] {
-    let circularMod = preventNegMod(totalImages);
-
-    let circularImages = Array(totalImages).fill({});
-    circularImages[activeImageIndex] = { imageId: images[activeImageIndex].id, type: 'primary' };
-    circularImages[circularMod(activeImageIndex + 1)] = { imageId: images[circularMod(activeImageIndex + 1)].id, type: 'secondary' };
-    circularImages[circularMod(activeImageIndex - 1)] = { imageId: images[circularMod(activeImageIndex - 1)].id, type: 'secondary' };
-    for(let i = 2; i < totalImages - 1; i++) {
-        circularImages[circularMod(activeImageIndex + i)] = { imageId: images[circularMod(activeImageIndex + i)].id, type: 'normal' };
-    }
-
-    return circularImages;
-}
+import { useState, cloneElement } from 'react';
+import { initializeImageSliderState, ImageSliderStateType } from './ImageSliderState';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 export default function ImageSlider() {
-    const [activeTab, setActiveTab] = useState(0);
-    const [activeImageId, setActiveImageId] = useState(0);
-    const [images, setImages] = useState<ImageProps[]>(initializeImages())
+    const [imageSliderState, setImageSliderState] = useState(initializeImageSliderState());
 
-    const [bounds, setBounds] = useState<BoundsType>({} as BoundsType)
-
-    let totalImages = images.length;
-
-    if (totalImages < 5) {
+    if (imageSliderState.total_images < imageSliderState.visible_no_image) {
         return (
             <div>Not enought Images</div>
         )
     }
-    
-    useEffect(() => {
-        let container = document.querySelector('.image_slide')! as HTMLElement;
-        let childs = container.childNodes;
-        let circularImages = generateCircularImages(activeImageId, totalImages, images);
-        // console.log(circularImages);
-        circularImages.forEach((image, index) => {
-            let el = childs[index] as HTMLElement;
-            el.classList.remove('normal');
-            el.classList.remove('secondary');
-            el.classList.remove('primary');
-            el.classList.add(image.type);
-            el.innerHTML = image.imageId + "";
-            el.setAttribute('data-imageId', image.imageId.toString());
-            // console.log(el);
-        })
-    }, [activeImageId, images])
 
-    // saving for preventing trigger reflow
-    useEffect(() => {
-        let container = document.querySelector('.image_slide')! as HTMLElement;
-        const items = Array.from(document.querySelectorAll('.image_slide > div')) as HTMLDivElement[]
-
-        setBounds(storeBounds(container, items));
-
-        const resizecallback = () => {
-            setBounds(storeBounds(container, items));
+    function next() {
+        let cid = (imageSliderState.current_imageId + 1) % imageSliderState.total_images;
+        let new_images = imageSliderState.images;
+        let new_back_images = imageSliderState.back_images;
+        
+        if (imageSliderState.back_images.length > 0 && imageSliderState.images.length > 0) {
+            new_images.push(new_back_images.pop()!);
+            new_back_images.unshift(new_images.shift()!);
         }
 
-        window.addEventListener('resize', resizecallback)
-        return () => {
-            window.removeEventListener('resize', resizecallback)
-        }
-    }, [])
-
-    useEffect(() => {
-        let container = document.querySelector('.image_slide')! as HTMLElement;
-        let removeOnScrollCallback = createScrollStopListener(container, () => {
-            const detectCurrent = () => {
-                let { containerBounds, itemsBounds } = bounds;
-
-                const scrollX = container.scrollLeft
-                const goal = containerBounds.width / 2
-
-                // Find item closest to the goal
-                let { item: currentItem } = itemsBounds.reduce((prev, curr) => {
-                    const { offsetX: currOffsetX } = curr;
-                    const { offsetX: prevOffsetX } = prev;
-                    return (Math.abs(currOffsetX - scrollX - goal) < Math.abs(prevOffsetX - scrollX - goal) ? curr : prev);
-                });
-
-                // Do stuff with currentItem
-                let found = images.find(image => image.id === +currentItem.getAttribute('data-imageId')!);
-                if (found) {
-                    setActiveImageId(found.id);
-                }
+        setImageSliderState((prev) => {
+            return {
+                ...prev,
+                direction: 'rtl',
+                current_imageId: cid,
+                images: new_images,
+                back_images: new_back_images
             }
-            detectCurrent();
-        });
-        return () => {
-            removeOnScrollCallback();
+        })
+    }
+
+    function before() {
+        let c = imageSliderState.current_imageId;
+        let t = imageSliderState.total_images;
+        let new_images = imageSliderState.images;
+        let new_back_images = imageSliderState.back_images;
+        
+        if (imageSliderState.back_images.length > 0 && imageSliderState.images.length > 0) {
+            new_back_images.push(new_images.pop()!);
+            new_images.unshift(new_back_images.shift()!);
         }
-    }, [bounds])
+
+        setImageSliderState((prev) => {
+            return {
+                ...prev,
+                direction: 'ltr',
+                current_imageId: c == 1 ? t : c - 1,
+                images: new_images,
+                back_images: new_back_images
+            }
+        })
+    }
 
     return (
-        <div className="image_slide flex items-center gap-8">
-            <div className="shrink-0 rounded-full bg-slate-600"></div>
-            <div className="shrink-0 rounded-full bg-slate-600"></div>
-            <div className="shrink-0 rounded-full bg-slate-600"></div>
-            <div className="shrink-0 rounded-full bg-slate-600"></div>
-            <div className="shrink-0 rounded-full bg-slate-600"></div>
-            <div className="shrink-0 rounded-full bg-slate-600"></div>
-            <div className="shrink-0 rounded-full bg-slate-600"></div>
-            <div className="shrink-0 rounded-full bg-slate-600"></div>
-            <div className="shrink-0 rounded-full bg-slate-600"></div>
-            <div className="shrink-0 rounded-full bg-slate-600"></div>
+        <div className="w-full">
+            <div className="flex justify-center mx-auto">
+                <TransitionGroup className="image_slider"
+                // The exiting component is already detached and therefore does not get any updates. 
+                // https://stackoverflow.com/questions/48655213/react-csstransition-wrong-class-used-on-exit
+                    childFactory={child => cloneElement(child, { classNames: `${imageSliderState.direction}` })}
+                >
+                    {imageSliderState.images.map((image, index) => {
+                        let { type, image_size } = mapImageSliderStateStyle();
+                        return (
+                            <CSSTransition key={image.id} timeout={200} classNames={`${imageSliderState.direction}`}
+                            addEndListener={(_doesntmatter: any) => {
+                                // image.nodeRef.current?.classList.toggle(`${dir}`)
+                            }}>
+                                <div className={`image_slide_item ${type[index]}`}>
+                                    <img src={image.src} width={image_size[index]} height={image_size[index]} />
+                                    {/* Hidden class for tailwindcss to not remove it from bundle */}
+                                    <div className="hidden ltr-enter ltr-enter-active rtl-enter rtl-enter-active ltr-exit ltr-exit-active rtl-exit rtl-exit-active" />
+                                </div>
+                            </CSSTransition>
+                        )
+                    })}
+                </TransitionGroup>
+            </div>
+            <button onClick={() => before()}>Before</button>
+            <button onClick={() => next()}>Next</button>
         </div>
     )
+}
+
+const mapImageSliderStateStyle = () => {
+    let type = ['carousel-2', 'carousel-1', 'carousel0', 'carousel1', 'carousel2'];
+    let image_size = [150, 200, 250, 200, 150];
+    return { type, image_size }
 }
