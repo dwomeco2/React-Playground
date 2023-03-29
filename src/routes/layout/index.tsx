@@ -7,11 +7,12 @@ import CountdownTimer from './CountdownTimer'
 import SidebarComponent from './SidebarComponent'
 import PriceSlider from './PriceSlider'
 import ImageSlider from './ImageSlider'
+import MasonryLayout from './MasonryLayout'
 
 export default function Layout() {
-  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Price Slider', 'Image Slider']
+  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Price Slider', 'Image Slider', 'Masonry layout']
   // eslint-disable-next-line react/jsx-key
-  const layoutComponent = [<PreviewCardComponent />, <ProfileCardComponent />, <PricingComponent />, <CountdownTimer />, <SidebarComponent />, <PriceSlider />, <ImageSlider />]
+  const layoutComponent = [<PreviewCardComponent />, <ProfileCardComponent />, <PricingComponent />, <CountdownTimer />, <SidebarComponent />, <PriceSlider />, <ImageSlider />, <MasonryLayout />]
   const [activeLayout, setActiveLayout] = useState(0)
 
   return (
