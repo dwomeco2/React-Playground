@@ -1,9 +1,9 @@
 export default function PreviewCardComponent() {
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="grid grid-cols-[repeat(auto-fit,_minmax(16rem,_1fr))] gap-4">
       {[1, 2, 3, 4, 5, 6].map(n => {
         return (
-          <div key={n} className=" shrink-0 w-64 h-128 rounded-lg overflow-clip bg-white py-2 hover:card_hover_shadow">
+          <div key={n} className="w-64 h-128 rounded-lg overflow-clip bg-white py-2 hover:card_hover_shadow">
             <div className="flex px-2 pb-2 items-center">
               <img src="https://picsum.photos/50/50" className="w-6 h-6 rounded-full"></img>
               <div className="flex flex-col flex-1 text-start ml-2">
