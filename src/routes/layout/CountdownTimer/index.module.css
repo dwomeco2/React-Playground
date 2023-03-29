@@ -1,6 +1,4 @@
-
-
-.flip_card {  
+.flip_card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -39,7 +37,8 @@
   background-color: black;
 }
 
-.top-half, .top-half-flip {
+.top-half,
+.top-half-flip {
   position: relative;
   width: 100%;
   height: 50%;
@@ -52,10 +51,14 @@
 }
 
 /* punch hole */
-.top-half::before, .top-half-flip::before,
-.bottom-half::before, .bottom-half-flip::before,
-.top-half-flip::after, .top-half-flip::after, 
-.bottom-half::after, .bottom-half-flip::after {
+.top-half::before,
+.top-half-flip::before,
+.bottom-half::before,
+.bottom-half-flip::before,
+.top-half-flip::after,
+.top-half-flip::after,
+.bottom-half::after,
+.bottom-half-flip::after {
   content: '';
   display: block;
   position: absolute;
@@ -66,27 +69,32 @@
   z-index: 100;
 }
 
-.top-half::before, .top-half-flip::before {
+.top-half::before,
+.top-half-flip::before {
   bottom: -4px;
   left: -4px;
 }
 
-.top-half::after, .top-half-flip::after {
+.top-half::after,
+.top-half-flip::after {
   bottom: -4px;
   right: -4px;
 }
 
-.bottom-half::before, .bottom-half-flip::before {
+.bottom-half::before,
+.bottom-half-flip::before {
   top: -4px;
   left: -4px;
 }
 
-.bottom-half::after, .bottom-half-flip::after {
+.bottom-half::after,
+.bottom-half-flip::after {
   top: -4px;
   right: -4px;
 }
 
-.bottom-half, .bottom-half-flip {
+.bottom-half,
+.bottom-half-flip {
   position: relative;
   width: 100%;
   height: 50%;
@@ -111,7 +119,7 @@
 
 @keyframes from_top_to_middle {
   100% {
-      transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
   }
 }
 
@@ -128,6 +136,6 @@
 
 @keyframes from_middle_to_bottom {
   100% {
-      transform: rotateX(0deg);
+    transform: rotateX(0deg);
   }
 }

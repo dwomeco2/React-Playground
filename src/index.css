@@ -1,8 +1,8 @@
-@import "./routes/layout/PricingComponent/index.module.css";
-@import "./routes/layout/CountdownTimer/index.module.css";
-@import "./routes/layout/SidebarComponent/index.module.css";
-@import "./routes/layout/PriceSlider/index.module.css";
-@import "./routes/layout/ImageSlider/index.module.css";
+@import './routes/layout/PricingComponent/index.module.css';
+@import './routes/layout/CountdownTimer/index.module.css';
+@import './routes/layout/SidebarComponent/index.module.css';
+@import './routes/layout/PriceSlider/index.module.css';
+@import './routes/layout/ImageSlider/index.module.css';
 
 @tailwind base;
 @tailwind components;

@@ -5,24 +5,21 @@ import Layout from './routes/layout'
 
 import './index.css'
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 const router = createBrowserRouter([
   {
-    path: "/react-playground",
-    element: <App />,
+    path: '/react-playground',
+    element: <App />
   },
   {
-    path: "/react-playground/layout",
+    path: '/react-playground/layout',
     element: <Layout />
   }
-]);
+])
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <>
     <RouterProvider router={router} />
-  </>,
+  </>
 )

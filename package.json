@@ -6,7 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "pnpm dlx eslint src",
+    "lint:fix": "pnpm run lint -- --fix",
+    "prettier": "pnpm dlx prettier src --check",
+    "prettier:fix": "pnpm run prettier -- --write",
+    "format": "pnpm run prettier:fix && npm run lint:fix"
   },
   "dependencies": {
     "localforage": "^1.10.0",
@@ -21,11 +26,21 @@
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@types/react-transition-group": "^4.4.5",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "autoprefixer": "^10.4.14",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.32.2",
     "postcss": "^8.4.21",
+    "prettier": "^2.8.7",
     "tailwindcss": "^3.2.7",
-    "typescript": "^4.9.3",
+    "typescript": "^4.9.5",
     "vite": "^4.2.0"
   }
 }
