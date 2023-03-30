@@ -112,8 +112,9 @@ export default function MasonryLayout() {
           Add 5
         </button>
       </div>
-      <div className="scroller max-h-[50rem] overflow-y-scroll bg-gray-400">
-        <div className="scroller-item columns-3 gap-2 w-full rounded-md p-6">
+      <div className="scroller w-full max-h-[50rem] relative overflow-y-scroll bg-gray-400">
+        {isLoading && <div className="sticky top-0 w-full h-12 leading-[3rem] backdrop-blur text-center text-white font-bold text-lg z-20">Loading</div>}
+        <div className={`scroller-item columns-3 gap-2 w-full rounded-md p-6 ${isLoading ? 'mt-[-3rem]' : ''}`}>
           {images.map(item => {
             return (
               <div key={item.id} ref={item.ref} className="flex justify-center items-center relative mb-2 hover:scale-110 hover:z-10 cursor-pointer">
@@ -130,7 +131,7 @@ export default function MasonryLayout() {
           })}
         </div>
         {/* We must do this because of animation of scroller-item may trigger intersection, h-0 would not trigger */}
-        {isLoading ? <div>Loading</div> : <div className="w-full h-[1px]"></div>}
+        <div className="w-full h-[1px]"></div>
       </div>
     </div>
   )
