@@ -1,4 +1,4 @@
-import { useState, useEffect, createRef, Dispatch, SetStateAction } from 'react'
+import { useState, useEffect, createRef, Dispatch, SetStateAction, useReducer } from 'react'
 import imagesjson from './images.json'
 
 type imageType = {
@@ -29,7 +29,6 @@ function useAnimatedImage(imagesProp: imageType[] | null): AnimatedLayoutHookTyp
           const deltaY = oldItem.br.top - newItem.br.top
 
           if (deltaX !== 0 || deltaY !== 0) {
-            // console.log(deltaX, deltaY)
             domNode.style.transform = `translate(${deltaX}px, ${deltaY}px)`
             domNode.style.transition = 'transform 0s'
             requestAnimationFrame(() => {
@@ -61,6 +60,9 @@ export default function MasonryLayout() {
   const [isLoading, setIsLoading] = useState(false)
 
   function addFiveImage() {
+    if (isLoading) return
+    setIsLoading(true)
+
     const maxId = Math.max(...images.map(item => item.id))
     const result: any = []
     for (let i = 0; i < 5; i++) {
@@ -68,7 +70,6 @@ export default function MasonryLayout() {
     }
 
     // simulate 2 seconds delay
-    setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
       setImages([...images, ...result])
@@ -78,22 +79,25 @@ export default function MasonryLayout() {
   useEffect(() => {
     const scroller = document.querySelector('.scroller')
     const obCallback = (entries: IntersectionObserverEntry[]) => {
-      if (isLoading) return
       if (scroller == null || scroller.scrollHeight <= scroller.clientHeight) return
       for (const e of entries) {
         if (e.isIntersecting) {
           // Scrolled to bottom
+          // This could potentially replaced by useEffectEvent which is an experienmental API in React 18
+          // Or use reducer for managing the state and dispatch an event here
           addFiveImage()
         }
       }
     }
     const ob = new IntersectionObserver(obCallback, {
       root: scroller,
-      threshold: 1
+      threshold: 0
     })
-    ob?.observe(scroller?.lastElementChild as HTMLElement)
+
+    ob?.observe(scroller?.lastChild as HTMLElement)
     return () => {
-      ob?.unobserve(scroller?.lastElementChild as HTMLElement)
+      ob?.unobserve(scroller?.lastChild as HTMLElement)
+      ob?.disconnect()
     }
   }, [images, isLoading])
 
@@ -109,7 +113,7 @@ export default function MasonryLayout() {
         </button>
       </div>
       <div className="scroller max-h-[50rem] overflow-y-scroll bg-gray-400">
-        <div className="columns-3 gap-2 w-full rounded-md p-6">
+        <div className="scroller-item columns-3 gap-2 w-full rounded-md p-6">
           {images.map(item => {
             return (
               <div key={item.id} ref={item.ref} className="flex justify-center items-center relative mb-2 hover:scale-110 hover:z-10 cursor-pointer">
@@ -125,9 +129,8 @@ export default function MasonryLayout() {
             )
           })}
         </div>
-        {isLoading && <div> Loading </div>}
-        {/* element for IntersectionObserver */}
-        <div className="w-full h-2 mb-40"></div>
+        {/* We must do this because of animation of scroller-item may trigger intersection, h-0 would not trigger */}
+        {isLoading ? <div>Loading</div> : <div className="w-full h-[1px]"></div>}
       </div>
     </div>
   )
