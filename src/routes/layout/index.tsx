@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { useState, Suspense, lazy } from 'react'
 
-import PreviewCardComponent from './PreviewCard'
-import ProfileCardComponent from './ProfileCard'
-import PricingComponent from './PricingComponent'
-import CountdownTimer from './CountdownTimer'
-import SidebarComponent from './SidebarComponent'
-import PriceSlider from './PriceSlider'
-import ImageSlider from './ImageSlider'
-import MasonryLayout from './MasonryLayout'
+const PreviewCardComponent = lazy(() => import('./PreviewCard'))
+const ProfileCardComponent = lazy(() => import('./ProfileCard'))
+const PricingComponent = lazy(() => import('./PricingComponent'))
+const CountdownTimer = lazy(() => import('./CountdownTimer'))
+const SidebarComponent = lazy(() => import('./SidebarComponent'))
+const PriceSlider = lazy(() => import('./PriceSlider'))
+const ImageSlider = lazy(() => import('./ImageSlider'))
+const MasonryLayout = lazy(() => import('./MasonryLayout'))
 
 export default function Layout() {
   const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Price Slider', 'Image Slider', 'Masonry layout']
@@ -29,7 +29,7 @@ export default function Layout() {
           })}
         </div>
       </div>
-      {layoutComponent[activeLayout]}
+      <Suspense fallback={<div>Loading</div>}>{layoutComponent[activeLayout]}</Suspense>
     </div>
   )
 }
