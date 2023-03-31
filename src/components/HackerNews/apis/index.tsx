@@ -20,15 +20,8 @@ export const queryItem = async (itemID: number) => {
   if (res.status !== 200) {
     return Promise.reject(`Failed to fetch item ${itemID} res.status:${res.status}`)
   }
+
   return res.json().then(json => {
-    // return ItemSchema.safeParseAsync(json).then(safeParseResult => {
-    //   console.log('success?', safeParseResult)
-    //   if (!safeParseResult.success) {
-    //     return Promise.reject(`Failed to parse item itemID:${itemID} json:${json}`)
-    //   }
-    //   console.log('success?', safeParseResult.data)
-    //   return safeParseResult.data
-    // })
     const safeParseResult = ItemSchema.safeParse(json)
     if (!safeParseResult.success) {
       return Promise.reject(`Failed to parse item itemID:${itemID} json:${json}`)

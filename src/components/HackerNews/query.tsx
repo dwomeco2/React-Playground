@@ -18,7 +18,8 @@ export const useItemQuery = (itemID: number, isSuspense = false) => {
     queryFn: () => queryItem(itemID),
     cacheTime: 6 * 5 * 60 * 1000, // 30 minutes
     staleTime: 3 * 5 * 60 * 1000, // 15 minutes
-    suspense: isSuspense
+    suspense: isSuspense,
+    enabled: Boolean(itemID)
   })
 }
 
@@ -61,7 +62,6 @@ interface UseContentQueryProps {
 }
 
 export const useContentQuery = ({ data, page, maxCommentsPerPage }: UseContentQueryProps) => {
-  console.log(`useContentQuery data: ${JSON.stringify(data)} page: ${page} maxCommentsPerPage: ${maxCommentsPerPage}`)
   const originPostData = useItemQuery(data.id)
 
   const sortedKids = sortKidsOldestFirst(data.kids)
@@ -69,3 +69,30 @@ export const useContentQuery = ({ data, page, maxCommentsPerPage }: UseContentQu
 
   return { originPostData, kidsQueries }
 }
+
+// experimental
+// interface QueryBoundariesProps {
+//   children: ReactNode
+//   LoadingView: React.ComponentType<any>
+// }
+
+// export const QueryBoundaries = ({ children, LoadingView }: QueryBoundariesProps) => (
+//   <QueryErrorResetBoundary>
+//     {({ reset }) => (
+//       <ErrorBoundary onReset={reset} FallbackComponent={ErrorView}>
+//         <Suspense fallback={<LoadingView />}>{children}</Suspense>
+//       </ErrorBoundary>
+//     )}
+//   </QueryErrorResetBoundary>
+// )
+
+// // Error + retry
+// export const ErrorView = ({ error, resetErrorBoundary }: FallbackProps) => {
+//   console.log('ErrorView: ', error)
+//   return (
+//     <div>
+//       <div>{JSON.stringify(error ?? {})}</div>
+//       <button title="Retry" onClick={resetErrorBoundary} />
+//     </div>
+//   )
+// }

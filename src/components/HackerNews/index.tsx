@@ -1,4 +1,5 @@
-import { useState, Suspense } from 'react'
+import { useState } from 'react'
+import { UseQueryResult } from '@tanstack/react-query'
 import { useTopStoriesQuery, usePaginatedItemQueries, useContentQuery } from './query'
 import { timeAgo } from './util'
 import { HackerNewsItemType } from './zod.schema'
@@ -60,22 +61,29 @@ function HackerNewsItem({ item }: { item: any }) {
 }
 
 interface StoryCommentProps {
-  data: HackerNewsItemType
-  index: number
+  queryResult: UseQueryResult<HackerNewsItemType>
+  floor: number
 }
 
 function StoryComment(props: StoryCommentProps) {
-  const { data, index } = props
-  const { by, time, text } = data
+  const { queryResult, floor } = props
 
+  if (queryResult.status === 'loading') {
+    return <div>Loading...</div>
+  }
+  if (queryResult.status === 'error') {
+    return <div>Error: {JSON.stringify(queryResult.error)}</div>
+  }
+
+  const { by, time, text } = queryResult.data
   if (by === '') {
-    return <div key={index + 2}></div>
+    return <div></div>
   }
 
   return (
     <div className="bg-gray-800 text-gray-200 p-2 mb-4">
       <div className="flex">
-        <div>#{index}</div>&nbsp;
+        <div>#{floor}</div>&nbsp;
         <div className="text-blue-400">{by}</div>&nbsp;
         <div>{timeAgo(time)}</div>
       </div>
@@ -93,39 +101,16 @@ function HackerNewsStoryContent() {
 
   const { originPostData, kidsQueries } = useContentQuery({ data, page, maxCommentsPerPage })
 
-  let originPostDataDiv = <div></div>
-  if (originPostData.status === 'loading') {
-    originPostDataDiv = <div>originPostData Loading...</div>
-  } else if (originPostData.status === 'error') {
-    originPostDataDiv = <div>originPostData Error...</div>
-  } else {
-    originPostDataDiv = <StoryComment data={originPostData.data as HackerNewsItemType} index={1} />
-  }
-
-  // <Suspense fallback={<div>originPostData Loading...</div>}>
-  //           <StoryComment data={originPostData.data as HackerNewsItemType} index={1} />
-  //         </Suspense>
-
-  let content = <div className="text-center">Loading...</div>
-  if (data != null) {
-    content = (
+  return (
+    <div className="bg-gray-900 text-gray-200 p-2 h-full overflow-y-scroll">
       <div>
-        <div className="flex">{originPostDataDiv}</div>
-        {kidsQueries.map(({ status, error, data }, index) => {
-          if (status === 'loading') {
-            return <div key={index + 2}>Loading...</div>
-          }
-          if (status === 'error') {
-            return <div key={index + 2}>Error: {JSON.stringify(error)}</div>
-          }
-
-          return <StoryComment data={data} index={index + 2} />
+        <StoryComment queryResult={originPostData} key={1} floor={1} />
+        {kidsQueries.map((queryResult, index) => {
+          return <StoryComment queryResult={queryResult} key={index + 2} floor={index + 2} />
         })}
       </div>
-    )
-  }
-
-  return <div className="bg-gray-900 text-gray-200 p-2 h-full overflow-y-scroll">{content}</div>
+    </div>
+  )
 }
 
 export default function HackerNews() {
