@@ -2,8 +2,35 @@ import { useQueries, useQuery } from '@tanstack/react-query'
 import { fetchTopStories, queryItem } from './apis'
 import { HackerNewsItemType } from './zod.schema'
 import { sortKidsOldestFirst } from './util'
+import global from './global'
 
-export const useTopStoriesIDsQuery = () => {
+interface UseContentQueryProps {
+  data: HackerNewsItemType
+  page: number
+}
+
+export const useContentQuery = ({ data, page }: UseContentQueryProps) => {
+  const originPostData = useItemQuery(data.id)
+
+  const sortedKids = sortKidsOldestFirst(data.kids)
+  const kidsQueries = usePaginatedItemQueries(page, global.maxCommentsPerPage, sortedKids)
+
+  return { originPostData, kidsQueries }
+}
+
+interface UseTopStoriesListProps {
+  page: number
+}
+
+export const useTopStoriesList = ({ page }: UseTopStoriesListProps) => {
+  const topStoriesIDsQuery = useTopStoriesIDsQuery()
+
+  const topStoriesQueries = usePaginatedItemQueries(page, global.maxPageItems, topStoriesIDsQuery.data)
+
+  return topStoriesQueries
+}
+
+const useTopStoriesIDsQuery = () => {
   return useQuery({
     queryKey: ['topStories'],
     queryFn: fetchTopStories,
@@ -12,7 +39,7 @@ export const useTopStoriesIDsQuery = () => {
   })
 }
 
-export const useItemQuery = (itemID: number, isSuspense = false) => {
+const useItemQuery = (itemID: number, isSuspense = false) => {
   return useQuery({
     queryKey: ['item', itemID],
     queryFn: () => queryItem(itemID),
@@ -23,7 +50,7 @@ export const useItemQuery = (itemID: number, isSuspense = false) => {
   })
 }
 
-export const useItemQueries = (itemIDs: number[] = []) => {
+const useItemQueries = (itemIDs: number[] = []) => {
   return useQueries({
     queries: itemIDs.map(itemID => {
       return {
@@ -37,7 +64,7 @@ export const useItemQueries = (itemIDs: number[] = []) => {
 }
 
 // Min value for page is 1
-export const usePaginatedItemQueries = (currentPage: number, maxQueriesPerPage: number, itemIDs: number[] | undefined = []) => {
+const usePaginatedItemQueries = (currentPage: number, maxQueriesPerPage: number, itemIDs: number[] | undefined = []) => {
   const divisor = Math.floor(itemIDs.length / maxQueriesPerPage)
   const remainder = itemIDs.length % maxQueriesPerPage
   const totalPages = remainder === 0 ? divisor : divisor + 1
@@ -53,34 +80,6 @@ export const usePaginatedItemQueries = (currentPage: number, maxQueriesPerPage: 
   const paginatedItemIDs = itemIDs.slice((currentPage - 1) * maxQueriesPerPage, (currentPage - 1) * maxQueriesPerPage + currentQueriesCount)
 
   return useItemQueries(paginatedItemIDs)
-}
-
-interface UseContentQueryProps {
-  data: HackerNewsItemType
-  page: number
-  maxCommentsPerPage: number
-}
-
-export const useContentQuery = ({ data, page, maxCommentsPerPage }: UseContentQueryProps) => {
-  const originPostData = useItemQuery(data.id)
-
-  const sortedKids = sortKidsOldestFirst(data.kids)
-  const kidsQueries = usePaginatedItemQueries(page, maxCommentsPerPage, sortedKids)
-
-  return { originPostData, kidsQueries }
-}
-
-interface UseTopStoriesListProps {
-  page: number
-  maxPageItems: number
-}
-
-export const useTopStoriesList = ({ page, maxPageItems }: UseTopStoriesListProps) => {
-  const topStoriesIDsQuery = useTopStoriesIDsQuery()
-
-  const topStoriesQueries = usePaginatedItemQueries(page, maxPageItems, topStoriesIDsQuery.data)
-
-  return topStoriesQueries
 }
 
 // experimental
