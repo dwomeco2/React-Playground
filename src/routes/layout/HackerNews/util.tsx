@@ -6,29 +6,32 @@ export function timeAgo(timestamp: number | undefined) {
   if (timestamp === undefined) {
     return ''
   }
-  return timeDifference(Date.now() / 1000, timestamp)
+  const now = Date.now()
+  return timeDifference(now, timestamp)
 }
 
-function timeDifference(current: number, previous: number) {
-  var msPerMinute = 60 * 1000
-  var msPerHour = msPerMinute * 60
-  var msPerDay = msPerHour * 24
-  var msPerMonth = msPerDay * 30
-  var msPerYear = msPerDay * 365
+function timeDifference(now: number, previous: number) {
+  const seconds = Math.floor(now / 1000 - previous)
 
-  var elapsed = current - previous
-
-  if (elapsed < msPerMinute) {
-    return Math.round(elapsed / 1000) + ' secs ago'
-  } else if (elapsed < msPerHour) {
-    return Math.round(elapsed / msPerMinute) + ' mins ago'
-  } else if (elapsed < msPerDay) {
-    return Math.round(elapsed / msPerHour) + ' hrs ago'
-  } else if (elapsed < msPerMonth) {
-    return Math.round(elapsed / msPerDay) + ' days ago'
-  } else if (elapsed < msPerYear) {
-    return Math.round(elapsed / msPerMonth) + ' months ago'
-  } else {
-    return Math.round(elapsed / msPerYear) + ' years ago'
+  let interval = seconds / 31536000
+  if (interval > 1) {
+    return Math.floor(interval) + ' years'
   }
+  interval = seconds / 2592000
+  if (interval > 1) {
+    return Math.floor(interval) + ' months'
+  }
+  interval = seconds / 86400
+  if (interval > 1) {
+    return Math.floor(interval) + ' days'
+  }
+  interval = seconds / 3600
+  if (interval > 1) {
+    return Math.floor(interval) + ' hrs'
+  }
+  interval = seconds / 60
+  if (interval > 1) {
+    return Math.floor(interval) + ' mins'
+  }
+  return Math.floor(seconds) + ' secs'
 }
