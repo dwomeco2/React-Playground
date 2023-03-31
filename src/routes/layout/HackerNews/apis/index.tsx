@@ -1,15 +1,38 @@
-export const fetchTopStories: () => Promise<number[]> = async () => {
+import { topStoriesSchema, ItemSchema } from '../zod.schema'
+
+export const fetchTopStories = async () => {
   const res = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json')
   if (res.status !== 200) {
-    throw new Error('Failed to fetch top stories')
+    return Promise.reject(`Failed to fetch top stories res.status:${res.status}`)
   }
-  return res.json() as Promise<number[]>
+
+  return res.json().then(json => {
+    const safeParseResult = topStoriesSchema.safeParse(json)
+    if (!safeParseResult.success) {
+      return Promise.reject(`Failed to parse top stories json:${json}`)
+    }
+    return safeParseResult.data
+  })
 }
 
 export const queryItem = async (itemID: number) => {
   const res = await fetch(`https://hacker-news.firebaseio.com/v0/item/${itemID}.json`)
   if (res.status !== 200) {
-    throw new Error('Failed to fetch top stories')
+    return Promise.reject(`Failed to fetch item ${itemID} res.status:${res.status}`)
   }
-  return res.json()
+  return res.json().then(json => {
+    // return ItemSchema.safeParseAsync(json).then(safeParseResult => {
+    //   console.log('success?', safeParseResult)
+    //   if (!safeParseResult.success) {
+    //     return Promise.reject(`Failed to parse item itemID:${itemID} json:${json}`)
+    //   }
+    //   console.log('success?', safeParseResult.data)
+    //   return safeParseResult.data
+    // })
+    const safeParseResult = ItemSchema.safeParse(json)
+    if (!safeParseResult.success) {
+      return Promise.reject(`Failed to parse item itemID:${itemID} json:${json}`)
+    }
+    return safeParseResult.data
+  })
 }
