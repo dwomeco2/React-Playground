@@ -1,9 +1,24 @@
+import { useState } from 'react'
 import { useAtom } from 'jotai'
+import { useTopStoriesList } from '../query'
 import { timeAgo } from '../util'
 import { HackerNewsItemType } from '../zod.schema'
 import global from '../global'
 
-export default function HackerNewsListItem({ item }: { item: any }) {
+export default function HackerNewsList() {
+  const [page, setPage] = useState(1)
+  const topStoriesQueries = useTopStoriesList({ page })
+
+  return (
+    <>
+      {topStoriesQueries.map((item, index) => {
+        return <HackerNewsListItem key={index} item={item} />
+      })}
+    </>
+  )
+}
+
+function HackerNewsListItem({ item }: { item: any }) {
   const setContent = useAtom(global.hackerNewsStoryContentAtom)[1]
   const { status, error, data } = item
   if (status === 'loading') {
