@@ -69,11 +69,11 @@ export default function MasonryLayout() {
       result.push(addImage(maxId + i))
     }
 
-    // simulate 2 seconds delay
+    // simulate 1 seconds delay
     setTimeout(() => {
       setIsLoading(false)
       setImages([...images, ...result])
-    }, 2000)
+    }, 1000)
   }
 
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function MasonryLayout() {
 
   return (
     <div>
-      <p>masonry in grid layout only implemented by firefox</p>
+      <p className="text-center">masonry in grid layout only implemented by firefox</p>
       <div className="flex gap-x-4 justify-center my-6">
         <button className="bg-slate-700 rounded-full py-2 px-8 text-white" onClick={() => setImages(randomize(images))}>
           Randomize
@@ -114,7 +114,7 @@ export default function MasonryLayout() {
       </div>
       <div className="scroller w-full max-h-[50rem] relative overflow-y-scroll bg-gray-400">
         {isLoading && <div className="sticky top-0 w-full h-12 leading-[3rem] backdrop-blur text-center text-white font-bold text-lg z-20">Loading</div>}
-        <div className={`scroller-item columns-3 gap-2 w-full rounded-md p-6 ${isLoading ? 'mt-[-3rem]' : ''}`}>
+        <div className={`scroller-item columns-7 gap-2 w-full rounded-md p-6 ${isLoading ? 'mt-[-3rem]' : ''}`}>
           {images.map(item => {
             return (
               <div key={item.id} ref={item.ref} className="flex justify-center items-center relative mb-2 hover:scale-110 hover:z-10 cursor-pointer">
@@ -152,7 +152,7 @@ function randomize(images: any[]) {
 }
 
 function addImage(maxId: number) {
-  const randomHeight = `${Math.floor(Math.random() * (38 - 10 + 1)) + 10}rem`
+  const randomHeight = `${Math.floor(Math.random() * (38 - 5 + 1)) + 5}rem`
   const randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`
 
   return { id: maxId + 1, h: randomHeight, bg: randomColor, ref: createRef<HTMLDivElement>() }

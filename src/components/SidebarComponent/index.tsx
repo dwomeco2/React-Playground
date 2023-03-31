@@ -12,7 +12,7 @@ import {
   IconLightDown,
   IconSecurity,
   IconTimer
-} from '../../../utils/icons'
+} from '../../utils/icons'
 
 type ThemeType = 'light' | 'dark'
 type ListContextProp = {
@@ -169,7 +169,7 @@ export default function SidebarComponent() {
 
   return (
     <ListContext.Provider value={listContextState as ListContextProp}>
-      <List width={isCollapse ? '53px' : '250px'} height={'100%'}>
+      <List width={isCollapse ? '53px' : '250px'} height={''}>
         <ListItem>
           <IconText buttonText="Logoipsum" className="px-2 [&>div:nth-child(2)]:font-bold">
             <IconFruitWatermelon {...iconStyle} height={`${isCollapse ? '1.3rem' : '2rem'}`} />

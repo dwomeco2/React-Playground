@@ -2,8 +2,7 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import Layout from './routes/layout'
-import GithubCorner from './component/GithubCorner/index'
+import GithubCorner from './components/GithubCorner/index'
 
 import './index.css'
 
@@ -13,10 +12,6 @@ const router = createBrowserRouter([
   {
     path: '/react-playground',
     element: <App />
-  },
-  {
-    path: '/react-playground/layout',
-    element: <Layout />
   }
 ])
 

@@ -1,9 +1,9 @@
-@import './routes/layout/PricingComponent/index.module.css';
-@import './routes/layout/CountdownTimer/index.module.css';
-@import './routes/layout/SidebarComponent/index.module.css';
-@import './routes/layout/PriceSlider/index.module.css';
-@import './routes/layout/ImageSlider/index.module.css';
-@import './component/GithubCorner/index.module.css';
+@import './components/PricingComponent/index.module.css';
+@import './components/CountdownTimer/index.module.css';
+@import './components/SidebarComponent/index.module.css';
+@import './components/PriceSlider/index.module.css';
+@import './components/ImageSlider/index.module.css';
+@import './components/GithubCorner/index.module.css';
 
 @tailwind base;
 @tailwind components;

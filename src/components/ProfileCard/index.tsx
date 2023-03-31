@@ -1,6 +1,6 @@
 export default function ProfileCardComponent() {
   return (
-    <div className="flex flex-col rounded-lg overflow-clip pd-4 w-64 h-80 bg-white">
+    <div className="flex flex-col rounded-lg overflow-clip pd-4 w-64 h-80 bg-white mx-auto shadow-md shadow-gray-400">
       <div>
         <figure>
           <img src="https://picsum.photos/300/200" width="100%" className="h-32 object-cover" />
@@ -8,9 +8,9 @@ export default function ProfileCardComponent() {
       </div>
       <div className="flex-1 relative">
         <img src="https://picsum.photos/50/50" width="50" height="50" className="absolute top-[calc(-25px)] left-[calc(50%_-_25px)] rounded-full outline outline-4 outline-offset-0 outline-white" />
-        <div className="my-4 items-center mt-12">
+        <div className="ml-4 my-4 items-center mt-12">
           <div>
-            <span className="font-bold">Victor Crest &nbsp;</span>
+            <span className="text-xl font-bold">Victor Crest &nbsp;</span>
             <span>26</span>
           </div>
           <span className="font-light text-xs">London</span>

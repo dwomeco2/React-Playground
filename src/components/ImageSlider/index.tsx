@@ -86,8 +86,14 @@ export default function ImageSlider() {
           })}
         </TransitionGroup>
       </div>
-      <button onClick={() => before()}>Before</button>
-      <button onClick={() => next()}>Next</button>
+      <div className="flex justify-center gap-x-8 mt-4">
+        <button className="text-center py-2 px-6 rounded-full bg-emerald-600 text-white" onClick={() => before()}>
+          Before
+        </button>
+        <button className="text-center py-2 px-6 rounded-full bg-emerald-600 text-white" onClick={() => next()}>
+          Next
+        </button>
+      </div>
     </div>
   )
 }
