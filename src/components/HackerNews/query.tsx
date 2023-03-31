@@ -3,7 +3,7 @@ import { fetchTopStories, queryItem } from './apis'
 import { HackerNewsItemType } from './zod.schema'
 import { sortKidsOldestFirst } from './util'
 
-export const useTopStoriesQuery = () => {
+export const useTopStoriesIDsQuery = () => {
   return useQuery({
     queryKey: ['topStories'],
     queryFn: fetchTopStories,
@@ -68,6 +68,19 @@ export const useContentQuery = ({ data, page, maxCommentsPerPage }: UseContentQu
   const kidsQueries = usePaginatedItemQueries(page, maxCommentsPerPage, sortedKids)
 
   return { originPostData, kidsQueries }
+}
+
+interface UseTopStoriesListProps {
+  page: number
+  maxPageItems: number
+}
+
+export const useTopStoriesList = ({ page, maxPageItems }: UseTopStoriesListProps) => {
+  const topStoriesIDsQuery = useTopStoriesIDsQuery()
+
+  const topStoriesQueries = usePaginatedItemQueries(page, maxPageItems, topStoriesIDsQuery.data)
+
+  return topStoriesQueries
 }
 
 // experimental

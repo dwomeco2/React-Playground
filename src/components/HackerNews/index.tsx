@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { UseQueryResult } from '@tanstack/react-query'
-import { useTopStoriesQuery, usePaginatedItemQueries, useContentQuery } from './query'
+import { useTopStoriesIDsQuery, usePaginatedItemQueries, useContentQuery, useTopStoriesList } from './query'
 import { timeAgo } from './util'
 import { HackerNewsItemType } from './zod.schema'
 import { atom, useAtom } from 'jotai'
@@ -116,32 +116,18 @@ function HackerNewsStoryContent() {
 export default function HackerNews() {
   const [page, setPage] = useState(1)
 
-  const topStoriesIDsQuery = useTopStoriesQuery()
+  const topStoriesQueries = useTopStoriesList({ page, maxPageItems })
 
-  const topStoriesQueries = usePaginatedItemQueries(page, maxPageItems, topStoriesIDsQuery.data)
-
-  let content = null
-  if (topStoriesIDsQuery.status === 'loading') {
-    content = <div>Loading...</div>
-  }
-  if (topStoriesIDsQuery.status === 'error') {
-    content = <div>Error: {JSON.stringify(topStoriesIDsQuery.error)}</div>
-  }
-
-  if (topStoriesIDsQuery.data) {
-    content = (
-      <>
-        <div className="shrink-0 w-[28rem] h-full overflow-y-scroll">
-          {topStoriesQueries.map((item, index) => {
-            return <HackerNewsItem key={index} item={item} />
-          })}
-        </div>
-        <div className="grow">
-          <HackerNewsStoryContent />
-        </div>
-      </>
-    )
-  }
-
-  return <div className="flex w-full h-screen">{content}</div>
+  return (
+    <div className="flex w-full h-screen">
+      <div className="shrink-0 w-[28rem] h-full overflow-y-scroll">
+        {topStoriesQueries.map((item, index) => {
+          return <HackerNewsItem key={index} item={item} />
+        })}
+      </div>
+      <div className="grow">
+        <HackerNewsStoryContent />
+      </div>
+    </div>
+  )
 }
