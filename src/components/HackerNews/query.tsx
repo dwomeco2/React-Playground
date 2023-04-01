@@ -1,7 +1,6 @@
 import { useQueries, useQuery, UseQueryResult } from '@tanstack/react-query'
 import { fetchTopStories, queryItem } from './apis'
 import { HackerNewsItemType } from './zod.schema'
-import { sortKidsOldestFirst } from './util'
 import global from './global'
 
 interface UseContentQueryProps {
@@ -12,8 +11,7 @@ interface UseContentQueryProps {
 export const useContentQuery = ({ data, page }: UseContentQueryProps) => {
   const originPostData = useItemQuery(data.id)
 
-  const sortedKids = sortKidsOldestFirst(data.kids)
-  const [totalPages, kidsQueries] = useInfiniteItemQueries(page, global.maxCommentsPerPage, sortedKids)
+  const [totalPages, kidsQueries] = useInfiniteItemQueries(page, global.maxCommentsPerPage, data.kids)
 
   return { totalPages, originPostData, kidsQueries }
 }
@@ -50,7 +48,7 @@ const useItemQuery = (itemID: number, isSuspense = false) => {
   })
 }
 
-const useItemQueries = (itemIDs: number[] = []) => {
+export const useItemQueries = (itemIDs: number[] = []) => {
   return useQueries({
     queries: itemIDs.map(itemID => {
       return {

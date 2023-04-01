@@ -1,7 +1,7 @@
-import { useState, RefObject } from 'react'
+import { useState, RefObject, Suspense } from 'react'
 import { useAtom } from 'jotai'
 import { UseQueryResult } from '@tanstack/react-query'
-import { useContentQuery } from '../query'
+import { useContentQuery, useItemQueries } from '../query'
 import { timeAgo } from '../util'
 import { HackerNewsItemType } from '../zod.schema'
 import { useBottomScrollListener } from 'react-bottom-scroll-listener'
@@ -39,10 +39,11 @@ export default function HackerNewsStoryContent() {
 
 interface StoryCommentProps {
   queryResult: UseQueryResult<HackerNewsItemType>
-  floor: number
+  floor?: number
 }
 
 function StoryComment(props: StoryCommentProps) {
+  const [loadChild, setLoadChild] = useState(false)
   const { queryResult, floor } = props
 
   if (queryResult.status === 'loading') {
@@ -51,22 +52,41 @@ function StoryComment(props: StoryCommentProps) {
   if (queryResult.status === 'error') {
     return <div>Error: {JSON.stringify(queryResult.error)}</div>
   }
+  const { by, time, text, kids } = queryResult.data
 
-  const { by, time, text } = queryResult.data
   if (by === '') {
     return <div></div>
   }
 
   return (
-    <div className="bg-gray-800 text-gray-200 p-2 mb-4">
+    <div className="bg-gray-800 text-gray-200 px-2 my-2 py-1">
       <div className="flex">
-        <div>#{floor}</div>&nbsp;
+        {floor != null ? <div>#{floor}&nbsp;</div> : <div></div>}
         <div className="text-blue-400">{by}</div>&nbsp;
         <div>{timeAgo(time)}</div>
+        <div>
+          {floor != 1 && kids != null && kids.length > 0 && (
+            <button className="px-2" onClick={() => setLoadChild(!loadChild)}>
+              &nbsp;▾
+            </button>
+          )}
+        </div>
       </div>
       <div>
-        <div className="text-left" dangerouslySetInnerHTML={{ __html: text }}></div>
+        <div className="text-left mb-3" dangerouslySetInnerHTML={{ __html: text }}></div>
+        <div className="pl-4">{floor != 1 && <Suspense fallback={<></>}>{loadChild && <StoryCommentChildren kids={kids} />}</Suspense>}</div>
       </div>
     </div>
+  )
+}
+
+function StoryCommentChildren({ kids }: { kids: number[] }) {
+  const childQueries = useItemQueries(kids)
+  return (
+    <>
+      {childQueries.map((childQueryResult, index) => {
+        return <StoryComment queryResult={childQueryResult} key={index} />
+      })}
+    </>
   )
 }

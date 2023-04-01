@@ -1,4 +1,4 @@
-import { topStoriesSchema, ItemSchema } from '../zod.schema'
+import { topStoriesSchema, ItemSchema, HackerNewsItemType } from '../zod.schema'
 
 export const fetchTopStories = async () => {
   const res = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json')
