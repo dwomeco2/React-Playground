@@ -3,18 +3,37 @@ import { useAtom } from 'jotai'
 import { useTopStoriesList } from '../query'
 import { timeAgo } from '../util'
 import { HackerNewsItemType } from '../zod.schema'
+import { useScrollToBottom, useDebounce } from '../hooks'
 import global from '../global'
 
 export default function HackerNewsList() {
   const [page, setPage] = useState(1)
-  const topStoriesQueries = useTopStoriesList({ page })
+  const [totalPages, topStoriesQueries] = useTopStoriesList({ page })
+
+  const nextPage = useDebounce(() => {
+    // wouldn't rerender if set to the same value as preve
+    setPage(prev => (prev < totalPages ? prev + 1 : prev))
+  }, 300)
+
+  useScrollToBottom({
+    options: {
+      scrollerClass: '.list-scroller',
+      threshold: 1
+    },
+    reachBottomCallback: () => {
+      nextPage()
+    },
+    dependencies: []
+  })
 
   return (
-    <>
+    <div className="list-scroller w-full h-full overflow-y-scroll">
       {topStoriesQueries.map((item, index) => {
         return <HackerNewsListItem key={index} item={item} />
       })}
-    </>
+      {/* Placeholder for scroll to bottom detector */}
+      <div className="bottom-1 w-full h-[1px]"></div>
+    </div>
   )
 }
 
@@ -22,7 +41,7 @@ function HackerNewsListItem({ item }: { item: any }) {
   const setContent = useAtom(global.hackerNewsStoryContentAtom)[1]
   const { status, error, data } = item
   if (status === 'loading') {
-    return <div>Item Loading...</div>
+    return <div className="bg-gray-900 text-gray-200 pl-8 pr-2">Item Loading...</div>
   }
   if (status === 'error') {
     return <div>Item Error: {JSON.stringify(error)}</div>

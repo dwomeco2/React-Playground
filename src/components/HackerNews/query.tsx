@@ -1,4 +1,4 @@
-import { useQueries, useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery, UseQueryResult } from '@tanstack/react-query'
 import { fetchTopStories, queryItem } from './apis'
 import { HackerNewsItemType } from './zod.schema'
 import { sortKidsOldestFirst } from './util'
@@ -25,9 +25,9 @@ interface UseTopStoriesListProps {
 export const useTopStoriesList = ({ page }: UseTopStoriesListProps) => {
   const topStoriesIDsQuery = useTopStoriesIDsQuery()
 
-  const topStoriesQueries = usePaginatedItemQueries(page, global.maxPageItems, topStoriesIDsQuery.data)
+  const [totalPages, topStoriesQueries] = useInfiniteItemQueries(page, global.maxPageItems, topStoriesIDsQuery.data)
 
-  return topStoriesQueries
+  return [totalPages, topStoriesQueries] as useInfiniteItemQueriesProps
 }
 
 const useTopStoriesIDsQuery = () => {
@@ -80,6 +80,26 @@ const usePaginatedItemQueries = (currentPage: number, maxQueriesPerPage: number,
   const paginatedItemIDs = itemIDs.slice((currentPage - 1) * maxQueriesPerPage, (currentPage - 1) * maxQueriesPerPage + currentQueriesCount)
 
   return useItemQueries(paginatedItemIDs)
+}
+
+type useInfiniteItemQueriesProps = [number, UseQueryResult<HackerNewsItemType, unknown>[]]
+
+const useInfiniteItemQueries = (currentPage: number, maxQueriesPerPage: number, itemIDs: number[] | undefined = []) => {
+  const divisor = Math.floor(itemIDs.length / maxQueriesPerPage)
+  const remainder = itemIDs.length % maxQueriesPerPage
+  const totalPages = remainder === 0 ? divisor : divisor + 1
+
+  let currentQueriesCount = maxQueriesPerPage
+  if (currentPage > totalPages) {
+    // Here when queries is undefined or ...
+    currentQueriesCount = 0
+  } else if (currentPage == totalPages) {
+    currentQueriesCount = remainder
+  }
+
+  const paginatedItemIDs = itemIDs.slice(0, (currentPage - 1) * maxQueriesPerPage + currentQueriesCount)
+
+  return [totalPages, useItemQueries(paginatedItemIDs)] as useInfiniteItemQueriesProps
 }
 
 // experimental
