@@ -10,11 +10,12 @@ const PriceSlider = lazy(() => import('./components/PriceSlider'))
 const ImageSlider = lazy(() => import('./components/ImageSlider'))
 const MasonryLayout = lazy(() => import('./components/MasonryLayout'))
 const HackerNews = lazy(() => import('./components/HackerNews'))
+const Game2048 = lazy(() => import('./components/Game2048'))
 
 const queryClient = new QueryClient()
 
 export default function App() {
-  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Price Slider', 'Image Slider', 'Masonry layout', 'Hacker News']
+  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Price Slider', 'Image Slider', 'Masonry layout', 'Hacker News', '2048']
   // eslint-disable-next-line react/jsx-key
   const layoutComponent = [
     <PreviewCardComponent />,
@@ -25,13 +26,14 @@ export default function App() {
     <PriceSlider />,
     <ImageSlider />,
     <MasonryLayout />,
-    <HackerNews />
+    <HackerNews />,
+    <Game2048 />
   ]
   const [activeLayout, setActiveLayout] = useState(layouts.length - 1)
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="w-full h-screen p-8 bg-gray-300">
+      <div className="w-full h-screen p-8 bg-gray-300 overflow-y-scroll">
         <div>
           <h1 className="font-bold text-center text-2xl">Show different components</h1>
           <div className="flex flex-wrap justify-center">
