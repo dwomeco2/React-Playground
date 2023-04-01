@@ -13,9 +13,9 @@ export const useContentQuery = ({ data, page }: UseContentQueryProps) => {
   const originPostData = useItemQuery(data.id)
 
   const sortedKids = sortKidsOldestFirst(data.kids)
-  const kidsQueries = usePaginatedItemQueries(page, global.maxCommentsPerPage, sortedKids)
+  const [totalPages, kidsQueries] = useInfiniteItemQueries(page, global.maxCommentsPerPage, sortedKids)
 
-  return { originPostData, kidsQueries }
+  return { totalPages, originPostData, kidsQueries }
 }
 
 interface UseTopStoriesListProps {

@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, RefObject } from 'react'
 import { useAtom } from 'jotai'
 import { UseQueryResult } from '@tanstack/react-query'
 import { useContentQuery } from '../query'
 import { timeAgo } from '../util'
 import { HackerNewsItemType } from '../zod.schema'
+import { useBottomScrollListener } from 'react-bottom-scroll-listener'
 import global from '../global'
 
 export default function HackerNewsStoryContent() {
@@ -11,10 +12,21 @@ export default function HackerNewsStoryContent() {
 
   const data = useAtom(global.hackerNewsStoryContentAtom)[0]
 
-  const { originPostData, kidsQueries } = useContentQuery({ data, page })
+  const { totalPages, originPostData, kidsQueries } = useContentQuery({ data, page })
+
+  const scrollRef = useBottomScrollListener(
+    () => {
+      setPage(prev => (prev < totalPages ? prev + 1 : prev))
+    },
+    {
+      offset: 20,
+      debounce: 300,
+      triggerOnNoScroll: true
+    }
+  )
 
   return (
-    <div className="bg-gray-900 text-gray-200 p-2 h-full overflow-y-scroll">
+    <div ref={scrollRef as RefObject<HTMLDivElement>} className="bg-gray-900 text-gray-200 p-2 h-full overflow-y-scroll">
       <div>
         <StoryComment queryResult={originPostData} key={1} floor={1} />
         {kidsQueries.map((queryResult, index) => {

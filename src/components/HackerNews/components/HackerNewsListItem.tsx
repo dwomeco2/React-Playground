@@ -1,33 +1,28 @@
-import { useState } from 'react'
+import { RefObject, useState } from 'react'
 import { useAtom } from 'jotai'
 import { useTopStoriesList } from '../query'
 import { timeAgo } from '../util'
 import { HackerNewsItemType } from '../zod.schema'
-import { useScrollToBottom, useDebounce } from '../hooks'
+import { useBottomScrollListener } from 'react-bottom-scroll-listener'
 import global from '../global'
 
 export default function HackerNewsList() {
   const [page, setPage] = useState(1)
   const [totalPages, topStoriesQueries] = useTopStoriesList({ page })
 
-  const nextPage = useDebounce(() => {
-    // wouldn't rerender if set to the same value as preve
-    setPage(prev => (prev < totalPages ? prev + 1 : prev))
-  }, 300)
-
-  useScrollToBottom({
-    options: {
-      scrollerClass: '.list-scroller',
-      threshold: 1
+  const scrollRef = useBottomScrollListener(
+    () => {
+      setPage(prev => (prev < totalPages ? prev + 1 : prev))
     },
-    reachBottomCallback: () => {
-      nextPage()
-    },
-    dependencies: []
-  })
+    {
+      offset: 20,
+      debounce: 300,
+      triggerOnNoScroll: true
+    }
+  )
 
   return (
-    <div className="list-scroller w-full h-full overflow-y-scroll">
+    <div ref={scrollRef as RefObject<HTMLDivElement>} className="list-scroller w-full h-full overflow-y-scroll">
       {topStoriesQueries.map((item, index) => {
         return <HackerNewsListItem key={index} item={item} />
       })}
