@@ -1,6 +1,9 @@
-export default function ProfileCardComponent() {
+import Accordion from './Accordion'
+import ShareCard from './ShareContentCard'
+
+function ProfileCardComponent() {
   return (
-    <div className="flex flex-col rounded-lg overflow-clip pd-4 w-64 h-80 bg-white mx-auto shadow-md shadow-gray-400">
+    <div className="flex flex-col rounded-lg overflow-clip pd-4 w-64 h-80 bg-white shadow-md shadow-gray-400">
       <div>
         <figure>
           <img src="https://picsum.photos/300/200" width="100%" className="h-32 object-cover" />
@@ -37,6 +40,18 @@ export default function ProfileCardComponent() {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+export default function ProfileCard() {
+  return (
+    <div>
+      <div className="flex justify-center gap-x-8">
+        <ProfileCardComponent />
+        <ShareCard />
+      </div>
+      <Accordion />
     </div>
   )
 }

@@ -1,0 +1,5 @@
+@layer components {
+  .goo-effect {
+    filter: url('#fancy-goo');
+  }
+}
