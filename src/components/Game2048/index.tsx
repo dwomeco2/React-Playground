@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { useSpring, animated } from '@react-spring/web'
 
 export default function Game2048() {
   return (
@@ -8,31 +8,35 @@ export default function Game2048() {
   )
 }
 
-const variants = {
-  visible: { opacity: 1 },
-  hidden: { opacity: 0 }
-}
-
 export const MyComponent = () => {
-  // className="rounded-full bg-blue-700  w-40 h-40"
+  const [springs, api] = useSpring(() => ({
+    from: { width: 50 }
+  }))
+
+  const handleClick = () => {
+    api.start({
+      from: {
+        width: 80
+      },
+      to: {
+        width: 120
+      }
+    })
+  }
+
   return (
     <div>
-      <div className="relative goo-effect">
-        <motion.div
-          className="absolute bg-orange-700 w-40 h-40 "
-          animate={{
-            opacity: [1, 1, 1, 0]
+      <div className="haha relative">
+        <animated.div
+          style={{
+            // width: 80,
+            height: 80,
+            background: '#ff6d6d',
+            borderRadius: 8,
+            ...springs
           }}
-          transition={{ duration: 2, type: 'spring', times: [0, 0, 0, 1], repeat: Infinity, repeatDelay: 1 }}
-        ></motion.div>
-        <motion.div
-          className="absolute bg-blue-700 w-40 h-40"
-          animate={{
-            translateX: [200, 0],
-            backgroundColor: ['rgb(29 78 216)', 'rgb(29 78 216)', 'rgb(29 78 216)', 'rgb(29 78 216)', 'rgb(194 65 12)']
-          }}
-          transition={{ duration: 2, type: 'spring', times: [0, 0.25, 0.5, 0.75, 1], repeat: Infinity, repeatDelay: 1 }}
-        ></motion.div>
+          onClick={handleClick}
+        />
       </div>
       <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
         <defs>

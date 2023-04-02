@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, Suspense, useContext, useState } from 'react'
 
 import {
   IconMore,
@@ -162,7 +162,7 @@ function List({ width, height, children }: { width?: string; height?: string; ch
   )
 }
 
-export default function SidebarComponent() {
+function SidebarComponent() {
   const listContextState = createListContext()
 
   const { isCollapse, iconStyle, setIsCollapse, toggleTheme } = listContextState
@@ -223,5 +223,38 @@ export default function SidebarComponent() {
         </ListItem>
       </List>
     </ListContext.Provider>
+  )
+}
+
+export default function SideBar() {
+  const [toggle, setToggle] = useState(false)
+
+  return (
+    <div>
+      <div className="text-center">
+        <p>Not sure why backgroundColor not animate in framer-motion</p>
+        <button className="py-2 px-8 bg-red-500 rounded-full" onClick={() => setToggle(!toggle)}>
+          Toggle
+        </button>
+      </div>
+      <div className="flex">
+        <div>
+          <SidebarComponent />
+        </div>
+        <div className="flex-1">
+          <Suspense fallback={<></>}>
+            {toggle && (
+              <iframe
+                src="https://codesandbox.io/embed/backgroundcolor-in-framer-motion-forked-fij3sd?fontsize=14&hidenavigation=1&theme=dark"
+                style={{ width: '100%', height: '100%', border: 0, borderRadius: '4px', overflow: 'hidden' }}
+                title="backgroundColor in Framer-motion (forked)"
+                allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+                sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+              ></iframe>
+            )}
+          </Suspense>
+        </div>
+      </div>
+    </div>
   )
 }
