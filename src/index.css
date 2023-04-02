@@ -2,6 +2,18 @@
 @import './components/ImageSlider/index.module.css';
 @import './components/Game2048/index.module.css';
 
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

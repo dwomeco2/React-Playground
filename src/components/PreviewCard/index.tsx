@@ -2,7 +2,7 @@ import styles from './index.module.css'
 
 export default function PreviewCardComponent() {
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,_minmax(16rem,_1fr))] gap-4">
+    <div className="grid grid-cols-[repeat(auto-fit,_minmax(16rem,_1fr))] gap-4 place-items-center">
       {[1, 2, 3, 4, 5, 6].map(n => {
         return (
           <div key={n} className={`w-64 h-128 rounded-lg overflow-clip bg-white py-2 ${styles.card_hover_shadow}`}>

@@ -10,12 +10,12 @@ const PriceSlider = lazy(() => import('./components/PriceSlider'))
 const ImageSlider = lazy(() => import('./components/ImageSlider'))
 const MasonryLayout = lazy(() => import('./components/MasonryLayout'))
 const HackerNews = lazy(() => import('./components/HackerNews'))
-const Game2048 = lazy(() => import('./components/Game2048'))
+// const Game2048 = lazy(() => import('./components/Game2048'))
 
 const queryClient = new QueryClient()
 
 export default function App() {
-  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Price Slider', 'Image Slider', 'Masonry layout', 'Hacker News', '2048']
+  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Price Slider', 'Image Slider', 'Masonry layout', 'Hacker News']
   // eslint-disable-next-line react/jsx-key
   const layoutComponent = [
     <PreviewCardComponent />,
@@ -26,22 +26,22 @@ export default function App() {
     <PriceSlider />,
     <ImageSlider />,
     <MasonryLayout />,
-    <HackerNews />,
-    <Game2048 />
+    <HackerNews />
+    // <Game2048 />
   ]
-  const [activeLayout, setActiveLayout] = useState(layouts.length - 1)
+  const [activeLayout, setActiveLayout] = useState(0)
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="w-full h-screen p-8 bg-gray-300 overflow-y-scroll">
         <div>
           <h1 className="font-bold text-center text-2xl">Show different components</h1>
-          <div className="flex flex-wrap justify-center">
+          <div className="no-scrollbar component-selector flex w-full overflow-x-auto mb-2">
             {layouts.map((layout, index) => {
               return (
-                <button key={index} className="p-2 m-4 bg-blue-400" onClick={() => setActiveLayout(index)}>
+                <div key={index} className={`inline select-none p-2 px-4 cursor-pointer ${activeLayout === index && 'border-b-red-500 border-b border-solid'}`} onClick={() => setActiveLayout(index)}>
                   {layout}
-                </button>
+                </div>
               )
             })}
           </div>
