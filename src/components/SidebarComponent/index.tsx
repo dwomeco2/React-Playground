@@ -227,14 +227,19 @@ function SidebarComponent() {
 }
 
 export default function SideBar() {
-  const [toggle, setToggle] = useState(false)
+  const [toggleFramerMotion, setToggleFramerMotion] = useState(false)
+  const [toggleEditor, setEditor] = useState(false)
 
   return (
     <div>
       <div className="text-center">
         <p>Not sure why backgroundColor not animate in framer-motion</p>
-        <button className="py-2 px-8 bg-red-500 rounded-full" onClick={() => setToggle(!toggle)}>
-          Toggle
+        <button className="py-2 px-8 bg-red-500 rounded-full" onClick={() => setToggleFramerMotion(!toggleFramerMotion)}>
+          Toggle the issue
+        </button>
+        <p>WYSIWYG Editor</p>
+        <button className="py-2 px-8 bg-red-500 rounded-full" onClick={() => setEditor(!toggleEditor)}>
+          Toggle Editor
         </button>
       </div>
       <div className="flex">
@@ -243,12 +248,19 @@ export default function SideBar() {
         </div>
         <div className="flex-1">
           <Suspense fallback={<></>}>
-            {toggle && (
+            {toggleFramerMotion && (
               <iframe
                 src="https://codesandbox.io/embed/backgroundcolor-in-framer-motion-forked-fij3sd?fontsize=14&hidenavigation=1&theme=dark"
                 style={{ width: '100%', height: '100%', border: 0, borderRadius: '4px', overflow: 'hidden' }}
-                title="backgroundColor in Framer-motion (forked)"
-                allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+                title="backgroundColor in Framer-motion"
+                sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+              ></iframe>
+            )}
+            {toggleEditor && (
+              <iframe
+                src="https://lihkg-wysiwyg-editor.surge.sh"
+                style={{ width: '100%', height: '100%', border: 0, borderRadius: '4px', overflow: 'hidden' }}
+                title="WYSIWYG Editor"
                 sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
               ></iframe>
             )}
