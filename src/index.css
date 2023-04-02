@@ -1,9 +1,5 @@
-@import './components/PricingComponent/index.module.css';
-@import './components/CountdownTimer/index.module.css';
 @import './components/SidebarComponent/index.module.css';
-@import './components/PriceSlider/index.module.css';
 @import './components/ImageSlider/index.module.css';
-@import './components/GithubCorner/index.module.css';
 @import './components/Game2048/index.module.css';
 
 @tailwind base;

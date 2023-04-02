@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
+import styles from './index.module.css'
 
 function Slider() {
   const [sliderProgress, setSliderProgress] = useState(30)
 
   useEffect(() => {
-    const slider = document.querySelector('.slider-bar') as HTMLInputElement
+    const slider = document.querySelector(`.${styles['slider-bar']}`) as HTMLInputElement
 
     const min = +slider.min
     const max = +slider.max
@@ -15,7 +16,7 @@ function Slider() {
 
   return (
     <div className="w-full h-1 rounded-lg relative mt-12 mb-16">
-      <input min={0} max={100} type="range" className="slider-bar w-full appearance-none" value={sliderProgress} onChange={e => setSliderProgress(+e.target.value)} />
+      <input min={0} max={100} type="range" className={`${styles['slider-bar']} w-full appearance-none`} value={sliderProgress} onChange={e => setSliderProgress(+e.target.value)} />
     </div>
   )
 }
@@ -30,7 +31,7 @@ function Toggle({ className = '' }: { className?: string }) {
     <div className={className}>
       <div className="flex justify-center relative">
         <div className="text-sm text-gray-600 mr-2">Monthly Billing</div>
-        <button className={`pricing_slider_toggle ${isMonthly ? 'active' : ''} rounded-full`} onClick={() => toggle(prev => !prev)} />
+        <button className={`${styles.pricing_slider_toggle} ${isMonthly ? `${styles.active}` : ''} rounded-full`} onClick={() => toggle(prev => !prev)} />
         <div className="text-sm text-gray-600 ml-2">Yearly Billing</div>
         <div className={`absolute right-10 top-[2px] font-medium text-xs px-2 rounded-full ${discount_background_color} ${discount_on_background_color}`}>25% discount</div>
       </div>
@@ -39,7 +40,7 @@ function Toggle({ className = '' }: { className?: string }) {
 }
 
 function Card({ children }: { children?: JSX.Element | JSX.Element[] }) {
-  return <div className="slider-container w-[36rem] rounded-md bg-white p-8 overflow-hidden">{children}</div>
+  return <div className="w-[36rem] rounded-md bg-white p-8 overflow-hidden">{children}</div>
 }
 
 export default function PriceSlider() {

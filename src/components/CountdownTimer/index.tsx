@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useRef } from 'react'
+import styles from './index.module.css'
 
 interface TimerProps {
   state: {
@@ -84,11 +85,11 @@ function FlippingCountDownComponent({ num, upperLimit, scale }: { num: number; u
   }
 
   useEffect(() => {
-    const top_half = document.querySelector(`.${scale}.top-half`)
-    const bottom_half = document.querySelector(`.${scale}.bottom-half`)
+    const top_half = document.querySelector(`.${scale}.${styles['top-half']}`)
+    const bottom_half = document.querySelector(`.${scale}.${styles['bottom-half']}`)
 
-    const top_half_flip = document.querySelector(`.${scale}.top-half-flip`)
-    const bottom_half_flip = document.querySelector(`.${scale}.bottom-half-flip`)
+    const top_half_flip = document.querySelector(`.${scale}.${styles['top-half-flip']}`)
+    const bottom_half_flip = document.querySelector(`.${scale}.${styles['bottom-half-flip']}`)
 
     if (top_half == null || bottom_half == null || top_half_flip == null || bottom_half_flip == null) {
       return
@@ -99,13 +100,13 @@ function FlippingCountDownComponent({ num, upperLimit, scale }: { num: number; u
     }
     const top_half_flip_animationend_callback = () => {
       contentNextTick(top_half_flip)
-      top_half_flip.classList.remove('flip_animate')
-      bottom_half_flip.classList.add('flip_animate')
+      top_half_flip.classList.remove(`${styles.flip_animate}`)
+      bottom_half_flip.classList.add(`${styles.flip_animate}`)
     }
     const bottom_half_flip_animmationend_callback = () => {
       contentNextTick(bottom_half)
       contentNextTick(bottom_half_flip)
-      bottom_half_flip.classList.remove('flip_animate')
+      bottom_half_flip.classList.remove(`${styles.flip_animate}`)
     }
 
     top_half_flip.addEventListener('animationstart', top_half_flip_animationstart_callback)
@@ -120,18 +121,18 @@ function FlippingCountDownComponent({ num, upperLimit, scale }: { num: number; u
   }, [])
 
   useEffect(() => {
-    const top_half_flip = document.querySelector(`.${scale}.top-half-flip`)
+    const top_half_flip = document.querySelector(`.${scale}.${styles['top-half-flip']}`)
     if (top_half_flip != null) {
-      top_half_flip.classList.add('flip_animate')
+      top_half_flip.classList.add(`${styles.flip_animate}`)
     }
   }, [current])
 
   return (
-    <div className="flip_card">
-      <div className={`top-half ${scale}`}> {current}</div>
-      <div className={`bottom-half ${scale}`}> {current}</div>
-      <div className={`top-half-flip ${scale}`}> {current}</div>
-      <div className={`bottom-half-flip ${scale}`}> {next}</div>
+    <div className={`${styles.flip_card}`}>
+      <div className={`${styles['top-half']} ${scale}`}> {current}</div>
+      <div className={`${styles['bottom-half']} ${scale}`}> {current}</div>
+      <div className={`${styles['top-half-flip']} ${scale}`}> {current}</div>
+      <div className={`${styles['bottom-half-flip']} ${scale}`}> {next}</div>
     </div>
   )
 }

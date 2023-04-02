@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import styles from './index.module.css'
 
 export default function PricingComponent() {
   const [isMonthly, setIsMonthly] = useState(false)
@@ -8,7 +9,7 @@ export default function PricingComponent() {
       setIsMonthly(!isMonthly)
     }
 
-    return <button className={`pricing_toggle_btn ${isMonthly ? 'active' : ''} rounded-full`} onClick={toggle}></button>
+    return <button className={`${styles.pricing_toggle_btn} ${isMonthly ? `${styles.active}` : ''} rounded-full`} onClick={toggle}></button>
   }
 
   return (
@@ -31,7 +32,7 @@ export default function PricingComponent() {
             <div className="py-2 border-b-2">2 Users Allowed</div>
             <div className="py-2 border-b-2">Send up to 3 GB</div>
           </div>
-          <button className="w-full font-bold py-2 text-xs btn_learn_more rounded-md">LEARN MORE</button>
+          <button className={`w-full font-bold py-2 text-xs ${styles.btn_learn_more} rounded-md`}>LEARN MORE</button>
         </div>
         <div className="w-72 h-[24rem] mt-[-1rem] p-4 text-white bg-[var(--pricing-primary-color)] rounded-xl">
           <div className="mt-[1rem]"></div>
@@ -45,7 +46,7 @@ export default function PricingComponent() {
             <div className="py-2 border-b-2">5 Users Allowed</div>
             <div className="py-2 border-b-2">Send up to 10 GB</div>
           </div>
-          <button className="w-full font-bold py-2 text-xs btn_learn_more_main rounded-md">LEARN MORE</button>
+          <button className={`w-full font-bold py-2 text-xs ${styles.btn_learn_more_main} rounded-md`}>LEARN MORE</button>
         </div>
         <div className="w-72 h-[22rem] p-4 bg-white text-gray-600 rounded-xl">
           <div className="font-bold">Master</div>
@@ -58,7 +59,7 @@ export default function PricingComponent() {
             <div className="py-2  border-b-2">10 Users Allowed</div>
             <div className="py-2  border-b-2">Send up to 20 GB</div>
           </div>
-          <button className="w-full font-bold py-2 text-xs btn_learn_more rounded-md">LEARN MORE</button>
+          <button className={`w-full font-bold py-2 text-xs ${styles.btn_learn_more} rounded-md`}>LEARN MORE</button>
         </div>
       </div>
     </div>
