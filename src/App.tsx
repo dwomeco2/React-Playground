@@ -1,5 +1,14 @@
+import React from 'react'
 import { useState, Suspense, lazy } from 'react'
+import { createPortal } from 'react-dom'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import ReactDOM from 'react-dom/client'
+import GithubCorner from './components/GithubCorner/index'
+
+import './index.css'
+import './App.css'
+
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 const PreviewCardComponent = lazy(() => import('./components/PreviewCard'))
 const ProfileCardComponent = lazy(() => import('./components/ProfileCard'))
@@ -14,7 +23,7 @@ const HackerNews = lazy(() => import('./components/HackerNews'))
 
 const queryClient = new QueryClient()
 
-export default function App() {
+function App() {
   const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Price Slider', 'Image Slider', 'Masonry layout', 'Hacker News']
   // eslint-disable-next-line react/jsx-key
   const layoutComponent = [
@@ -55,3 +64,19 @@ export default function App() {
     </QueryClientProvider>
   )
 }
+
+const router = createBrowserRouter([
+  {
+    path: '/react-playground',
+    element: <App />
+  }
+])
+
+const githubCornerDiv = document.getElementById('github-corner-div') as HTMLElement
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <>
+    <RouterProvider router={router} />
+    {createPortal(<GithubCorner />, githubCornerDiv)}
+  </>
+)
