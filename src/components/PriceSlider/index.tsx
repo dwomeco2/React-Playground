@@ -40,7 +40,7 @@ function Toggle({ className = '' }: { className?: string }) {
 }
 
 function Card({ children }: { children?: JSX.Element | JSX.Element[] }) {
-  return <div className="w-[36rem] rounded-md bg-white p-8 overflow-hidden">{children}</div>
+  return <div className="w-[36rem] rounded-md bg-[var(--colar-gray-1)] p-8 overflow-hidden">{children}</div>
 }
 
 export default function PriceSlider() {

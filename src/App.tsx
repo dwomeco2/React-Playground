@@ -15,7 +15,6 @@ const ProfileCardComponent = lazy(() => import('./components/ProfileCard'))
 const PricingComponent = lazy(() => import('./components/PricingComponent'))
 const CountdownTimer = lazy(() => import('./components/CountdownTimer'))
 const SidebarComponent = lazy(() => import('./components/SidebarComponent'))
-const PriceSlider = lazy(() => import('./components/PriceSlider'))
 const ImageSlider = lazy(() => import('./components/ImageSlider'))
 const MasonryLayout = lazy(() => import('./components/MasonryLayout'))
 const HackerNews = lazy(() => import('./components/HackerNews'))
@@ -24,7 +23,7 @@ const HackerNews = lazy(() => import('./components/HackerNews'))
 const queryClient = new QueryClient()
 
 function App() {
-  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Price Slider', 'Image Slider', 'Masonry layout', 'Hacker News']
+  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Image Slider', 'Masonry layout', 'Hacker News']
   // eslint-disable-next-line react/jsx-key
   const layoutComponent = [
     <PreviewCardComponent />,
@@ -32,7 +31,6 @@ function App() {
     <PricingComponent />,
     <CountdownTimer />,
     <SidebarComponent />,
-    <PriceSlider />,
     <ImageSlider />,
     <MasonryLayout />,
     <HackerNews />
@@ -42,7 +40,8 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="w-full h-screen p-8 overflow-y-scroll">
+      <BackgroundContent />
+      <div className="w-full h-screen p-8 overflow-y-scroll no-scrollbar">
         <div>
           <h1 className="font-bold text-center text-2xl mb-2">Show different components</h1>
           <div className="no-scrollbar component-selector flex w-full overflow-x-auto mb-2">
@@ -59,9 +58,23 @@ function App() {
             })}
           </div>
         </div>
-        <Suspense fallback={<div>Loading</div>}>{layoutComponent[activeLayout]}</Suspense>
+        <div className="mt-4">
+          <Suspense fallback={<div>Loading</div>}>{layoutComponent[activeLayout]}</Suspense>
+        </div>
       </div>
     </QueryClientProvider>
+  )
+}
+
+function BackgroundContent() {
+  return (
+    <div className="background">
+      <div className="backgroundContent blobs">
+        <div className="bgc-1"></div>
+        <div className="bgc-2"></div>
+        <div className="blob"></div>
+      </div>
+    </div>
   )
 }
 

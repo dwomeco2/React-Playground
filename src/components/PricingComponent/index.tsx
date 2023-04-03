@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import PriceSlider from '../PriceSlider'
 import styles from './index.module.css'
 
-export default function PricingComponent() {
+function PricingComponent() {
   const [isMonthly, setIsMonthly] = useState(false)
 
   function JustAToggle() {
@@ -22,7 +23,7 @@ export default function PricingComponent() {
       </div>
       <div className="h-full p-4 mt-10 overflow-x-auto no-scrollbar">
         <div className={`${styles['pricing-container']}`}>
-          <div className="shrink-0 w-64 h-[22rem] p-4 bg-white text-gray-600 rounded-xl">
+          <div className="shrink-0 w-64 h-[22rem] p-4 bg-[var(--colar-gray-1)] text-gray-600 rounded-xl">
             <div className="font-bold">Basic</div>
             <div className="my-6 flex justify-center">
               <span className="text-2xl font-bold self-center">$</span>
@@ -49,7 +50,7 @@ export default function PricingComponent() {
             </div>
             <button className={`w-full font-bold py-2 text-xs ${styles.btn_learn_more_main} rounded-md`}>LEARN MORE</button>
           </div>
-          <div className="shrink-0 w-64 h-[22rem] p-4 bg-white text-gray-600 rounded-xl">
+          <div className="shrink-0 w-64 h-[22rem] p-4 bg-[var(--colar-gray-1)] text-gray-600 rounded-xl">
             <div className="font-bold">Master</div>
             <div className="my-6 flex justify-center">
               <span className="text-2xl font-bold self-center">$</span>
@@ -64,6 +65,15 @@ export default function PricingComponent() {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+export default () => {
+  return (
+    <div>
+      <PricingComponent />
+      <PriceSlider />
     </div>
   )
 }
