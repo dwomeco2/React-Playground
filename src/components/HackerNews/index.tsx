@@ -2,6 +2,8 @@ import { useState } from 'react'
 import HackerNewsList from './components/HackerNewsListItem'
 import HackerNewsStoryContent from './components/HackerNewsStoryContent'
 
+import styles from './index.module.css'
+
 export default function HackerNews() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -13,10 +15,10 @@ export default function HackerNews() {
         </div>
       </div>
       <div className="flex w-full h-screen relative overflow-hidden">
-        <div className={`shrink-0 ${sidebarOpen ? '' : 'absolute left-[-28rem]'} w-[28rem] h-full`}>
+        <div className={`shrink-0 ${sidebarOpen ? '' : 'absolute left-[-100%]'} ${styles.sideBarList} h-full`}>
           <HackerNewsList />
         </div>
-        <div className="grow">
+        <div className="grow w-full">
           <HackerNewsStoryContent />
         </div>
       </div>
