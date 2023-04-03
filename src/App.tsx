@@ -39,7 +39,11 @@ export default function App() {
           <div className="no-scrollbar component-selector flex w-full overflow-x-auto mb-2">
             {layouts.map((layout, index) => {
               return (
-                <div key={index} className={`inline select-none p-2 px-4 cursor-pointer ${activeLayout === index && 'border-b-red-500 border-b border-solid'}`} onClick={() => setActiveLayout(index)}>
+                <div
+                  key={index}
+                  className={`inline select-none p-2 px-4 cursor-pointer ${activeLayout === index && 'border-b-red-500 border-b-2 border-solid'}`}
+                  onClick={() => setActiveLayout(index)}
+                >
                   {layout}
                 </div>
               )

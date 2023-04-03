@@ -22,7 +22,7 @@ export default function HackerNewsList() {
   )
 
   return (
-    <div ref={scrollRef as RefObject<HTMLDivElement>} className="list-scroller w-full h-full overflow-y-scroll">
+    <div ref={scrollRef as RefObject<HTMLDivElement>} className={`list-scroller w-full h-full overflow-y-scroll`}>
       {topStoriesQueries.map((item, index) => {
         return <HackerNewsListItem key={index} item={item} />
       })}
