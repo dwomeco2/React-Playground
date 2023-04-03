@@ -1,6 +1,7 @@
-import { useState, cloneElement, useEffect } from 'react'
+import { useState, cloneElement, Suspense } from 'react'
 import { initializeImageSliderState } from './ImageSliderState'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import { SuspenseImage } from '../share/SuspenseImage'
 
 export default function ImageSlider() {
   const [imageSliderState, setImageSliderState] = useState(initializeImageSliderState())
@@ -77,6 +78,9 @@ export default function ImageSlider() {
                 }}
               >
                 <div className={`image_slide_item ${type[index]}`}>
+                  <Suspense fallback={<div className="w-full h-full flex justify-center items-center">Loading...</div>}>
+                    <SuspenseImage src={image.src} width={image_size[index]} height={image_size[index]} />
+                  </Suspense>
                   <img src={image.src} width={image_size[index]} height={image_size[index]} />
                   {/* Hidden class for tailwindcss to not remove it from bundle */}
                   <div className="hidden ltr-enter ltr-enter-active rtl-enter rtl-enter-active ltr-exit ltr-exit-active rtl-exit rtl-exit-active" />

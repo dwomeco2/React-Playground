@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+import { SuspenseImage } from '../share/SuspenseImage'
 import styles from './index.module.css'
 
 export default function PreviewCardComponent() {
@@ -21,7 +23,9 @@ export default function PreviewCardComponent() {
               </button>
             </div>
             <figure>
-              <img src="https://picsum.photos/104/208" className="w-full h-52" loading="lazy" />
+              <Suspense fallback={<div className="w-full h-52 flex justify-center items-center">Loading...</div>}>
+                <SuspenseImage src="https://picsum.photos/104/208" className="w-full h-52" />
+              </Suspense>
             </figure>
             <div className="text-start p-2">
               <div className="font-medium mb-0">Flores</div>
