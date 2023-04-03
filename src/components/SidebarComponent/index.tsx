@@ -232,15 +232,19 @@ export default function SideBar() {
 
   return (
     <div>
-      <div className="text-center">
-        <p>Not sure why backgroundColor not animate in framer-motion</p>
-        <button className="py-2 px-8 bg-red-500 rounded-full" onClick={() => setToggleFramerMotion(!toggleFramerMotion)}>
-          Toggle the issue
-        </button>
-        <p>WYSIWYG Editor</p>
-        <button className="py-2 px-8 bg-red-500 rounded-full" onClick={() => setEditor(!toggleEditor)}>
-          Toggle Editor
-        </button>
+      <div className="columns-2 text-center mb-2">
+        <div>
+          <p>backgroundColor issue in framer-motion</p>
+          <button className="py-2 px-8 w-full bg-red-500 text-white" onClick={() => setToggleFramerMotion(!toggleFramerMotion)}>
+            Toggle issue
+          </button>
+        </div>
+        <div>
+          <p>WYSIWYG Editor</p>
+          <button className="py-2 px-8 w-full bg-green-500 text-white" onClick={() => setEditor(!toggleEditor)}>
+            Toggle Editor
+          </button>
+        </div>
       </div>
       <div className="flex">
         <div>

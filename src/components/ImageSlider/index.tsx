@@ -1,4 +1,4 @@
-import { useState, cloneElement } from 'react'
+import { useState, cloneElement, useEffect } from 'react'
 import { initializeImageSliderState } from './ImageSliderState'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
@@ -60,7 +60,7 @@ export default function ImageSlider() {
     <div className="w-full">
       <div className="flex justify-center mx-auto">
         <TransitionGroup
-          className="image_slider"
+          className="image_slider no-scrollbar"
           // The exiting component is already detached and therefore does not get any updates.
           // https://stackoverflow.com/questions/48655213/react-csstransition-wrong-class-used-on-exit
           childFactory={child => cloneElement(child, { classNames: `${imageSliderState.direction}` })}

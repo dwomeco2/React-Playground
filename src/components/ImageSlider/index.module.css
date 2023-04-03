@@ -1,9 +1,9 @@
 @layer components {
   .image_slider {
     position: relative;
-    width: 1010px;
+    width: 100%;
     height: 280px;
-    overflow-x: hidden;
+    overflow-x: auto;
     align-items: center;
   }
 
