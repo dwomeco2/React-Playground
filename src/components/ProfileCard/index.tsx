@@ -46,11 +46,9 @@ function ProfileCardComponent() {
 
 export default function ProfileCard() {
   return (
-    <div>
-      <div className="flex justify-center gap-x-8">
-        <ProfileCardComponent />
-        <ShareCard />
-      </div>
+    <div className="flex flex-col gap-8 justify-center items-center">
+      <ProfileCardComponent />
+      <ShareCard />
       <Accordion />
     </div>
   )
