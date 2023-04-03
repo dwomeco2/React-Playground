@@ -146,8 +146,7 @@ export default function CountdownTimer() {
 
   return (
     <div className="text-center">
-      <div className="mb-16">WE&apos;RE LAUNCHING SOON</div>
-      <div className="flex justify-center gap-4">
+      <div className={`${styles.clock} flex gap-4`}>
         <div className="flex flex-col">
           <FlippingCountDownComponent num={days} upperLimit={99} scale={'countdown_days'} />
           <div className="font-bold mt-6">Days</div>
@@ -165,7 +164,6 @@ export default function CountdownTimer() {
           <div className="font-bold mt-6">Seconds</div>
         </div>
       </div>
-      <div>social icons</div>
     </div>
   )
 }

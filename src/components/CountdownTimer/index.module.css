@@ -139,3 +139,16 @@
     transform: rotateX(0deg);
   }
 }
+
+@media screen and (min-width: 500px) {
+  .clock {
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+@media screen and (max-width: 500px) {
+  .clock {
+    gap: 1rem;
+    overflow-x: auto;
+  }
+}
