@@ -46,7 +46,7 @@ function ProfileCardComponent() {
 
 export default function ProfileCard() {
   return (
-    <div className="flex flex-col gap-8 justify-center items-center">
+    <div className="flex flex-col gap-8 justify-center items-center text-[var(--colar-teal-12)]">
       <ProfileCardComponent />
       <ShareCard />
       <Accordion />

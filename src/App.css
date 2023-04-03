@@ -4,6 +4,8 @@
   margin: 0 auto;
   text-align: center;
   font-size: 16px;
+  background-color: var(--colar-gray-11);
+  color: var(--colar-sand-1);
 }
 
 html {

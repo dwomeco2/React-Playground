@@ -14,11 +14,11 @@ export default function PricingComponent() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">Our Pricing</h1>
-      <div className="flex justify-center gap-6 items-center">
-        <div className="text-sm text-gray-600">Annually</div>
+      <h1 className="text-2xl font-bold text-center mb-6 text-[var(--colar-purple-1)]">Our Pricing</h1>
+      <div className="flex justify-center gap-6 items-center text-[var(--colar-purple-1)]">
+        <div className="text-sm">Annually</div>
         <JustAToggle />
-        <div className="text-sm text-gray-600">Monthly</div>
+        <div className="text-sm">Monthly</div>
       </div>
       <div className="h-full p-4 mt-10 overflow-x-auto no-scrollbar">
         <div className={`${styles['pricing-container']}`}>

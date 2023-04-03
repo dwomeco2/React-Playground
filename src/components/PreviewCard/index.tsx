@@ -5,9 +5,9 @@ export default function PreviewCardComponent() {
     <div className="grid grid-cols-[repeat(auto-fit,_minmax(16rem,_1fr))] gap-4 place-items-center">
       {[1, 2, 3, 4, 5, 6].map(n => {
         return (
-          <div key={n} className={`w-64 h-128 rounded-lg overflow-clip bg-white py-2 ${styles.card_hover_shadow}`}>
+          <div key={n} className={`w-64 h-128 rounded-lg overflow-clip bg-white py-2 ${styles.card_hover_shadow} text-[var(--colar-sand-10)] cursor-pointer`}>
             <div className="flex px-2 pb-2 items-center">
-              <img src="https://picsum.photos/50/50" className="w-6 h-6 rounded-full"></img>
+              <img src="https://picsum.photos/50/50" className="w-6 h-6 rounded-full" loading="lazy"></img>
               <div className="flex flex-col flex-1 text-start ml-2">
                 <span className="text-sm font-semibold">Stuar Manson</span>
                 <span className="text-xs">published 2 hours ago</span>
@@ -21,7 +21,7 @@ export default function PreviewCardComponent() {
               </button>
             </div>
             <figure>
-              <img src="https://picsum.photos/104/208" className="w-full h-52" />
+              <img src="https://picsum.photos/104/208" className="w-full h-52" loading="lazy" />
             </figure>
             <div className="text-start p-2">
               <div className="font-medium mb-0">Flores</div>

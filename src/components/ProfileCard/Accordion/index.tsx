@@ -5,7 +5,7 @@ function AccordionItem({ props, onToggle }: { props: { title: string; toggle: bo
   return (
     <div className="flex mb-4">
       <div className={`w-2 ${props.color}`}></div>
-      <div className={`flex flex-col w-full ${props.color2}`}>
+      <div className={`flex flex-col text-start w-full ${props.color2}`}>
         <button className="flex" onClick={e => onToggle()}>
           <div className="flex-grow text-start pl-2 my-3">{props.title}</div>
           <div className={'w-12 self-center transition-transform ' + (props.toggle ? 'rotate-45' : '')}>+</div>
@@ -71,11 +71,11 @@ export default function Accordion() {
   return (
     <div className="flex">
       <div className="mx-auto w-3/4">
-        <div className="my-4 text-center">
+        <div className="my-4 text-center text-[var(--colar-sand-2)]">
           <h3 className="my-1 font-bold text-3xl">Frequently Asked Questions</h3>
           <p className="text-sm mx-auto max-w-xs">Answers to common questions about our frontend challenge website.</p>
         </div>
-        <div>
+        <div className="text-[var(--colar-sand-11)]">
           {accordionItems.map((props, index) => (
             <AccordionItem key={index} props={props} onToggle={() => toggleContent(index)} />
           ))}

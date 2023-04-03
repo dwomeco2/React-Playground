@@ -58,7 +58,7 @@ export default function PriceSlider() {
         <Toggle className="my-8" />
         <hr className="mb-8" />
         <div className="flex items-center justify-between mb-2">
-          <ul className="flex flex-col gap-2 items-start">
+          <ul className="flex flex-col gap-2 items-start text-[var(--colar-gray-6)]">
             <li>✅ Unlimited websites</li>
             <li>✅ 100% data ownership</li>
             <li>✅ Email reports</li>

@@ -42,9 +42,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="w-full h-screen p-8 bg-gray-300 overflow-y-scroll">
+      <div className="w-full h-screen p-8 overflow-y-scroll">
         <div>
-          <h1 className="font-bold text-center text-2xl">Show different components</h1>
+          <h1 className="font-bold text-center text-2xl mb-2">Show different components</h1>
           <div className="no-scrollbar component-selector flex w-full overflow-x-auto mb-2">
             {layouts.map((layout, index) => {
               return (

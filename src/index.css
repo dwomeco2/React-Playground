@@ -1,3 +1,4 @@
+@import './colar.css';
 @import './components/SidebarComponent/index.module.css';
 @import './components/ImageSlider/index.module.css';
 @import './components/Game2048/index.module.css';
