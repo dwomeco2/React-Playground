@@ -227,27 +227,14 @@ function SidebarComponent() {
 }
 
 export default function SideBar() {
-  const [toggleFramerMotion, setToggleFramerMotion] = useState(false)
   const [toggleEditor, setEditor] = useState(false)
-  const [toggleDndKit, setToggleDndKit] = useState(false)
 
   return (
     <div>
-      <div className="w-full p-2">List of issues I encounter with library</div>
-      <div className="columns-3 text-center mb-2">
+      <div className="flex w-full justify-center text-center mb-2">
         <div>
           <button className="py-2 px-8 w-full bg-green-500 text-white" onClick={() => setEditor(!toggleEditor)}>
             WYSIWYG Editor
-          </button>
-        </div>
-        <div>
-          <button className="py-2 px-8 w-full bg-red-500 text-white" onClick={() => setToggleFramerMotion(!toggleFramerMotion)}>
-            framer-motion issue
-          </button>
-        </div>
-        <div>
-          <button className="py-2 px-8 w-full bg-red-500 text-white" onClick={() => setEditor(!setToggleDndKit)}>
-            Dnd-kit Issue
           </button>
         </div>
       </div>
@@ -257,27 +244,11 @@ export default function SideBar() {
         </div>
         <div className="flex-1">
           <Suspense fallback={<></>}>
-            {toggleFramerMotion && (
-              <iframe
-                src="https://codesandbox.io/embed/backgroundcolor-in-framer-motion-forked-fij3sd?fontsize=14&hidenavigation=1&theme=dark"
-                style={{ width: '100%', height: '100%', border: 0, borderRadius: '4px', overflow: 'hidden' }}
-                title="backgroundColor in Framer-motion"
-                sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-              ></iframe>
-            )}
             {toggleEditor && (
               <iframe
                 src="https://lihkg-wysiwyg-editor.surge.sh"
                 style={{ width: '100%', height: '100%', border: 0, borderRadius: '4px', overflow: 'hidden' }}
                 title="WYSIWYG Editor"
-                sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-              ></iframe>
-            )}
-            {toggleDndKit && (
-              <iframe
-                src="https://codesandbox.io/embed/dnd-kit-resortable-lots-of-render-issue-ftlh3c?fontsize=14&hidenavigation=1&theme=dark"
-                style={{ width: '100%', height: '100%', border: 0, borderRadius: '4px', overflow: 'hidden' }}
-                title="Dnd-kit Resortable lots of render issue"
                 sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
               ></iframe>
             )}
