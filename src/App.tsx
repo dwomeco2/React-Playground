@@ -18,12 +18,13 @@ const SidebarComponent = lazy(() => import('./components/SidebarComponent'))
 const ImageSlider = lazy(() => import('./components/ImageSlider'))
 const MasonryLayout = lazy(() => import('./components/MasonryLayout'))
 const HackerNews = lazy(() => import('./components/HackerNews'))
+const TailWindUI = lazy(() => import('./components/TailwindUIFramework'))
 // const Game2048 = lazy(() => import('./components/Game2048'))
 
 const queryClient = new QueryClient()
 
 function App() {
-  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Image Slider', 'Masonry layout', 'Hacker News']
+  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Image Slider', 'Masonry layout', 'Hacker News', 'Tailwind UI Framework']
   // eslint-disable-next-line react/jsx-key
   const layoutComponent = [
     <PreviewCardComponent />,
@@ -33,10 +34,11 @@ function App() {
     <SidebarComponent />,
     <ImageSlider />,
     <MasonryLayout />,
-    <HackerNews />
+    <HackerNews />,
+    <TailWindUI />
     // <Game2048 />
   ]
-  const [activeLayout, setActiveLayout] = useState(0)
+  const [activeLayout, setActiveLayout] = useState(layouts.length - 1)
 
   return (
     <QueryClientProvider client={queryClient}>

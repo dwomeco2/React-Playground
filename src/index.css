@@ -22,8 +22,13 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    /* transform: translateX(-50%) translateY(-50%); */
     @apply -translate-x-1/2;
+    @apply -translate-y-1/2;
+  }
+
+  .absolute-center-y {
+    position: absolute;
+    top: 50%;
     @apply -translate-y-1/2;
   }
 
@@ -31,5 +36,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .reset-input {
+    border-color: transparent;
+  }
+  .reset-input:focus {
+    border-color: transparent;
+    @apply ring-0;
+    @apply outline-0;
   }
 }
