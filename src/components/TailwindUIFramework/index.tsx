@@ -3,18 +3,18 @@ import TodoList from './Todolist'
 import Game2048 from './Game2048'
 
 export default function TailwindUI() {
-  const [show, setShow] = useState(0)
+  const [show, setShow] = useState(2)
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-wrap w-full justify-center gap-2 text-center mb-2">
         <div>
-          <button className="py-2 px-8 w-full bg-red-500 text-white" onClick={() => setShow(1)}>
-            framer-motion issue
+          <button className="py-2 px-8 w-full bg-green-500 text-white" onClick={() => setShow(1)}>
+            TodoList
           </button>
         </div>
         <div>
-          <button className="py-2 px-8 w-full bg-red-500 text-white" onClick={() => setShow(2)}>
-            Dnd-kit Issue
+          <button className="py-2 px-8 w-full bg-orange-500 text-white" onClick={() => setShow(2)}>
+            2048
           </button>
         </div>
       </div>
