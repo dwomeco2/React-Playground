@@ -4,7 +4,7 @@ export default function IssueWithLibrary() {
   const [issue, setIssue] = useState(0)
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <div className="flex flex-wrap w-full justify-center gap-2 text-center mb-2">
         <div>
           <button className="py-2 px-8 w-full bg-red-500 text-white" onClick={() => setIssue(1)}>
