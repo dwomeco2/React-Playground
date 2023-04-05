@@ -18,14 +18,25 @@ const SidebarComponent = lazy(() => import('./components/SidebarComponent'))
 const ImageSlider = lazy(() => import('./components/ImageSlider'))
 const MasonryLayout = lazy(() => import('./components/MasonryLayout'))
 const HackerNews = lazy(() => import('./components/HackerNews'))
-// const TailWindUI = lazy(() => import('./components/TailwindUIFramework'))
+const IssuesWithLibrary = lazy(() => import('./components/IssuesWithLibrary'))
+const TailWindUI = lazy(() => import('./components/TailwindUIFramework'))
 // const Game2048 = lazy(() => import('./components/Game2048'))
 
 const queryClient = new QueryClient()
 
 function App() {
-  // const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Image Slider', 'Masonry layout', 'Hacker News', 'Tailwind UI Framework']
-  const layouts = ['Preview Card', 'Profile Card', 'Pricing Component', 'Countdown timer', 'Sidebar Component', 'Image Slider', 'Masonry layout', 'Hacker News']
+  const layouts = [
+    'Preview Card',
+    'Profile Card',
+    'Pricing Component',
+    'Countdown timer',
+    'Sidebar Component',
+    'Image Slider',
+    'Masonry layout',
+    'Hacker News',
+    'Library encounterd issues log',
+    'Tailwind UI Framework'
+  ]
   // eslint-disable-next-line react/jsx-key
   const layoutComponent = [
     <PreviewCardComponent />,
@@ -35,8 +46,9 @@ function App() {
     <SidebarComponent />,
     <ImageSlider />,
     <MasonryLayout />,
-    <HackerNews />
-    // <TailWindUI />
+    <HackerNews />,
+    <IssuesWithLibrary />,
+    <TailWindUI />
     // <Game2048 />
   ]
   const [activeLayout, setActiveLayout] = useState(layouts.length - 1)
@@ -46,7 +58,7 @@ function App() {
       <BackgroundContent />
       <div className="w-full h-screen p-8 overflow-y-scroll no-scrollbar">
         <div>
-          <h1 className="font-bold text-center text-2xl mb-2">Show different components</h1>
+          <h1 className="font-bold text-center text-2xl mb-2">List of things I make for practice</h1>
           <div className="no-scrollbar component-selector flex w-full overflow-x-auto mb-2">
             {layouts.map((layout, index) => {
               return (
