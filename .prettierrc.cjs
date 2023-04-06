@@ -1,14 +1,16 @@
-module.exports = {
-  tabWidth: 2,
-  printWidth: 200,
-  useTabs: false,
-  semi: false,
-  singleQuote: true,
-  trailingComma: 'none',
-  bracketSpacing: true,
-  bracketSameLine: false,
-  jsxSingleQuote: false,
-  quoteProps: 'as-needed',
-  arrowParens: 'avoid',
-  insertPragma: false
-}
+/** @type {import('prettier').Config} */
+const config = {
+	arrowParens: 'always',
+	printWidth: 80,
+	singleQuote: false,
+	jsxSingleQuote: true,
+	arrowParens: 'avoid',
+	semi: true,
+	trailingComma: 'all',
+	tabWidth: 2,
+	useTabs: true,
+	bracketSpacing: true,
+	bracketSameLine: false,
+};
+
+module.exports = config;
