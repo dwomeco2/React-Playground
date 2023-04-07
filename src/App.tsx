@@ -53,18 +53,18 @@ function App() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<BackgroundContent />
+			<div className='background' />
 			<div className='w-full h-screen p-8 overflow-y-scroll no-scrollbar'>
-				<div className='menu-text'>
-					<h1 className='font-bold text-center text-2xl mb-2'>
+				<div>
+					<h1 className='font-bold text-center text-3xl mb-4'>
 						My react playground
 					</h1>
-					<div className='no-scrollbar component-selector flex w-full overflow-x-auto mb-2'>
+					<div className='no-scrollbar component-selector flex w-full sm:mx-auto sm:w-[620px] overflow-x-auto mb-6'>
 						{layouts.map((layout, index) => {
 							return (
 								<div
 									key={index}
-									className={`inline select-none p-2 px-4 cursor-pointer ${
+									className={`menu-text inline select-none p-2 px-4 cursor-pointer ${
 										activeLayout === index &&
 										"border-b-red-500 border-b-2 border-solid"
 									}`}
@@ -83,18 +83,6 @@ function App() {
 				</div>
 			</div>
 		</QueryClientProvider>
-	)
-}
-
-function BackgroundContent() {
-	return (
-		<div className='background'>
-			<div className='backgroundContent blobs'>
-				<div className='bgc-1'></div>
-				<div className='bgc-2'></div>
-				<div className='blob'></div>
-			</div>
-		</div>
 	)
 }
 
