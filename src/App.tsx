@@ -20,7 +20,6 @@ const MasonryLayout = lazy(() => import("./components/MasonryLayout"))
 const HackerNews = lazy(() => import("./components/HackerNews"))
 const IssuesWithLibrary = lazy(() => import("./components/IssuesWithLibrary"))
 const TailWindUI = lazy(() => import("./components/TailwindUIFramework"))
-// const Game2048 = lazy(() => import('./components/Game2048'))
 
 const queryClient = new QueryClient()
 
@@ -36,7 +35,7 @@ function App() {
 		"Hacker News",
 		"Library encounterd issues log",
 		"TodoList / 2048"
-	]
+	].reverse()
 	// eslint-disable-next-line react/jsx-key
 	const layoutComponent = [
 		<PreviewCardComponent />,
@@ -49,9 +48,8 @@ function App() {
 		<HackerNews />,
 		<IssuesWithLibrary />,
 		<TailWindUI />
-		// <Game2048 />
-	]
-	const [activeLayout, setActiveLayout] = useState(layouts.length - 1)
+	].reverse()
+	const [activeLayout, setActiveLayout] = useState(0)
 
 	return (
 		<QueryClientProvider client={queryClient}>
