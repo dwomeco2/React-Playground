@@ -55,9 +55,9 @@ function App() {
 		<QueryClientProvider client={queryClient}>
 			<BackgroundContent />
 			<div className='w-full h-screen p-8 overflow-y-scroll no-scrollbar'>
-				<div>
+				<div className='menu-text'>
 					<h1 className='font-bold text-center text-2xl mb-2'>
-						List of things I make for practice
+						My react playground
 					</h1>
 					<div className='no-scrollbar component-selector flex w-full overflow-x-auto mb-2'>
 						{layouts.map((layout, index) => {
