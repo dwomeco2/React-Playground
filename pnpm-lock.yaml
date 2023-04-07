@@ -38,6 +38,7 @@ specifiers:
   react-error-boundary: ^4.0.3
   react-icons: ^4.8.0
   react-router-dom: ^6.9.0
+  react-swipeable: ^7.0.0
   react-transition-group: ^4.4.5
   sort-by: ^1.2.0
   sortable: link:@types/dnd-kit/sortable
@@ -66,6 +67,7 @@ dependencies:
   react-error-boundary: 4.0.3_react@18.2.0
   react-icons: 4.8.0_react@18.2.0
   react-router-dom: 6.9.0_biqbaboplfbrettd7655fr4n2y
+  react-swipeable: 7.0.0_react@18.2.0
   react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
   sort-by: 1.2.0
   sortable: link:@types/dnd-kit/sortable
@@ -3176,6 +3178,14 @@ packages:
       react: '>=16.8'
     dependencies:
       '@remix-run/router': 1.4.0
+      react: 18.2.0
+    dev: false
+
+  /react-swipeable/7.0.0_react@18.2.0:
+    resolution: {integrity: sha512-NI7KGfQ6gwNFN0Hor3vytYW3iRfMMaivGEuxcADOOfBCx/kqwXE8IfHFxEcxSUkxCYf38COLKYd9EMYZghqaUA==}
+    peerDependencies:
+      react: ^16.8.3 || ^17 || ^18
+    dependencies:
       react: 18.2.0
     dev: false
 

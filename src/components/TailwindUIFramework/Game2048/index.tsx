@@ -1,6 +1,11 @@
-import { useState, useEffect, useMemo, useReducer } from "react"
+import { useState, useEffect, useReducer } from "react"
 import { nanoid } from "nanoid"
 import { z } from "zod"
+
+import styles from "./index.module.css"
+import { useClientSizeDetector, useGlobalKeyDownEffect } from "../../../hooks"
+import { deepClone } from "../../../utils"
+import { useSwipeable } from "react-swipeable"
 
 const colors = [
 	"#392A1A",
@@ -19,6 +24,12 @@ const colors = [
 export default function Game2048() {
 	const [cells, dispatch] = useReducer(reducer, initializeGame())
 	const [isEnd, setEnd] = useState(false)
+	const size = useClientSizeDetector({
+		sizes: [
+			{ minSize: 640, key: "sm" },
+			{ minSize: 0, key: "xs" }
+		]
+	})
 
 	useGlobalKeyDownEffect(
 		["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"],
@@ -30,6 +41,13 @@ export default function Game2048() {
 		],
 		[]
 	)
+
+	const swipeHandlers = useSwipeable({
+		onSwipedRight: onArrowKeyDown(rightSequence, dispatch),
+		onSwipedLeft: onArrowKeyDown(leftSequence, dispatch),
+		onSwipedUp: onArrowKeyDown(upSequence, dispatch),
+		onSwipedDown: onArrowKeyDown(downSequence, dispatch)
+	})
 
 	useEffect(() => {
 		if (cells.every(cell => cell.val !== 0)) {
@@ -43,35 +61,78 @@ export default function Game2048() {
 		}
 	}, [cells])
 
+	const restart = () => {
+		dispatch({ type: "restart" } as ActionType)
+		setEnd(false)
+	}
+
+	let cellSize = (index: number) =>
+		(size === "sm" ? 8 : 4) + (size === "sm" ? 118 : 76.75) * index
+
 	return (
-		<div>
-			<div className='relative mx-auto sm:h-[480px] sm:w-[480px] w-[311px] aspect-square p-1 sm:p-2 rounded-md bg-emerald-200 sm:gap-2 gap-1'>
-				{cells.map(cell => (
-					<div
-						key={cell.id}
-						className={`absolute w-[70.75px] h-[70.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center font-extrabold sm:text-4xl text-xl select-none`}
-						style={{
-							backgroundColor: `${
-								+cell.val === 0 ? "" : colors[Math.log2(+cell.val)]
-							}`,
-							top: `${8 + 118 * cell.cor.row}px`,
-							left: `${8 + 118 * cell.cor.col}px`
-						}}
-					>
-						<div className='flex flex-col'>
-							<div className='text-center text-[8px]'>{cell.id}</div>
-							<div>{cell.val != 0 ? cell.val : ""}</div>
+		<div className='relative'>
+			<div
+				{...swipeHandlers}
+				className='relative mx-auto sm:h-[480px] sm:w-[480px] w-[311px] aspect-square p-1 sm:p-2 rounded-md bg-emerald-200 sm:gap-2 gap-1'
+			>
+				{cells.map((cell, index) => {
+					// This for the background
+					return (
+						<div
+							key={index}
+							className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center select-none}`}
+							style={{
+								top: `${cellSize(cell.cor.row)}px`,
+								left: `${cellSize(cell.cor.col)}px`
+							}}
+						></div>
+					)
+				})}
+				{cells.map(cell => {
+					return (
+						<div
+							key={cell.id}
+							className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center font-extrabold sm:text-4xl text-xl select-none ${
+								styles["cell-animation"]
+							} ${cell.prevCor ? styles["cell-move-animation"] : ""} ${
+								cell.val !== 0 ? "z-10" : "z-0"
+							}`}
+							style={{
+								backgroundColor: `${
+									+cell.val === 0 ? "" : colors[Math.log2(+cell.val)]
+								}`,
+								top: `${cellSize(cell.cor.row)}px`,
+								left: `${cellSize(cell.cor.col)}px`
+							}}
+						>
+							<div className='flex flex-col'>
+								<div>{cell.val !== 0 ? cell.val : ""}</div>
+							</div>
 						</div>
-					</div>
-				))}
+					)
+				})}
 			</div>
-			{isEnd && <div>End</div>}
+			{isEnd && (
+				<div
+					className={`${
+						isEnd && styles["end-toast"]
+					} absolute top-1/2 left-1/2 flex flex-col justify-center items-center gap-4 w-64 h-36 z-10 text-gray-800 bg-gray-300 bg-opacity-80 rounded-md p-2`}
+				>
+					<div className='select-none font-bold'>End of game</div>
+					<div
+						className='text-gray-200 bg-green-800 rounded-md px-10 py-2 cursor-pointer'
+						onClick={() => restart()}
+					>
+						Restart
+					</div>
+				</div>
+			)}
 		</div>
 	)
 }
 
 type ActionType = {
-	type: "arrowkey"
+	type: "arrowkey" | "restart"
 	payload: {
 		lines: {
 			row: number
@@ -86,8 +147,13 @@ function reducer(state: CellsType, action: ActionType) {
 		// preprocess
 		const result = filterNoChange(action.payload.lines, cells)
 			.map(l => {
-				let line = l.map(deepClone)
-				return moveOrMerge(line as CellsType)
+				let line = l.map(deepClone) as CellsType
+				line.forEach(cell => {
+					if (cell.prevCor) {
+						cell.prevCor = undefined
+					}
+				})
+				return moveOrMerge(line)
 			})
 			.flat()
 
@@ -111,17 +177,24 @@ function reducer(state: CellsType, action: ActionType) {
 		})
 
 		// Arrow key with no changes
-		if (equalityCompare(state, newState)) {
-			console.log("no changes")
+		if (
+			equalityCompare(state, newState, item => ({
+				id: item.id,
+				val: item.val,
+				cor: item.cor
+			}))
+		) {
 			return state
 		}
 
-		// respwan
+		// respawn
 		if (newState.findIndex(cell => cell.val === 0) !== -1) {
 			newState = spawn(newState)
 		}
 
 		return newState
+	} else if (action.type === "restart") {
+		return initializeGame()
 	}
 	throw Error("Unknown action")
 }
@@ -215,17 +288,20 @@ const filterNoChange = (
 		})
 }
 
+const equalityCompare = <T extends any>(
+	a: T[],
+	b: T[],
+	mapFunc: (item: T) => any
+): boolean => {
+	let aSubset = a.map(mapFunc)
+	let bSubset = b.map(mapFunc)
+	return JSON.stringify(aSubset) === JSON.stringify(bSubset)
+}
+
 const leftSequence = (i: number) => [i * 4, i * 4 + 1, i * 4 + 2, i * 4 + 3]
 const rightSequence = (i: number) => leftSequence(i).reverse()
 const upSequence = (i: number) => [i, i + 4, i + 8, i + 12]
 const downSequence = (i: number) => upSequence(i).reverse()
-
-const deepClone = (obj: unknown) => JSON.parse(JSON.stringify(obj))
-
-const equalityCompare = (
-	a: { [key: string]: any },
-	b: { [key: string]: any }
-): boolean => JSON.stringify(a) === JSON.stringify(b)
 
 const spawnVal = () => (Math.random() <= 0.9 ? 2 : 4)
 
@@ -270,23 +346,3 @@ const cellZ = z.object({
 
 const CellsZod = z.array(cellZ)
 type CellsType = z.infer<typeof CellsZod>
-
-const useGlobalKeyDownEffect = <T extends unknown>(
-	keys: string[],
-	callbacks: ((deps: T[]) => void)[],
-	dependencies: T[]
-) => {
-	const keyDownCallback = (e: KeyboardEvent) => {
-		keys.forEach((key, index) => {
-			if (e.key == key) {
-				callbacks[index](dependencies)
-			}
-		})
-	}
-	useEffect(() => {
-		window.addEventListener("keydown", keyDownCallback)
-		return () => {
-			window.removeEventListener("keydown", keyDownCallback)
-		}
-	}, [dependencies])
-}

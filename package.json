@@ -33,6 +33,7 @@
     "react-error-boundary": "^4.0.3",
     "react-icons": "^4.8.0",
     "react-router-dom": "^6.9.0",
+    "react-swipeable": "^7.0.0",
     "react-transition-group": "^4.4.5",
     "sort-by": "^1.2.0",
     "sortable": "link:@types/dnd-kit/sortable",
