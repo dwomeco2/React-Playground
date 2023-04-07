@@ -71,6 +71,9 @@ export default function Game2048() {
 
 	return (
 		<div className='relative'>
+			<div className='py-2 px-4 text-sm font-semibold text-center'>
+				Canvas-less created in react & css animation
+			</div>
 			<div
 				{...swipeHandlers}
 				className='relative mx-auto sm:h-[480px] sm:w-[480px] w-[311px] aspect-square p-1 sm:p-2 rounded-md bg-emerald-200 sm:gap-2 gap-1'
