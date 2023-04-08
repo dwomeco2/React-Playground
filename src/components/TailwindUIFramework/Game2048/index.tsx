@@ -1,6 +1,7 @@
 import styles from "./index.module.css"
 import { useClientSizeDetector, useGlobalKeyDownEffect } from "../../../hooks"
 
+import { useSpring, animated } from "@react-spring/web"
 import { useSwipeable } from "react-swipeable"
 import { ActionType, useIsGameEnd, use2048Reducer } from "./backend/backend"
 import {
@@ -27,33 +28,59 @@ const colors = [
 
 interface CellProps {
 	size: string | null
-	key: number | string
-	row: number
-	col: number
+	cor: {
+		row: number
+		col: number
+	}
+	prevCor?: {
+		row: number
+		col: number
+	}
 	children?: React.ReactNode
 	[x: string]: any
 }
 
 const Cell = (props: CellProps) => {
-	const { size, key, row, col, children, style, className, ...rest } = props
+	const { size, cor, prevCor, children, style, className, ...rest } = props
 
 	let cellSize = (index: number) =>
 		(size === "sm" ? 8 : 4) + (size === "sm" ? 118 : 76.75) * index
 
-	console.log(children)
+	let newTop = cellSize(cor.row)
+	let newLeft = cellSize(cor.col)
+	const springProps = useSpring({
+		from: {
+			top: cellSize(prevCor?.row ?? cor.row),
+			left: cellSize(prevCor?.col ?? cor.col)
+		},
+		to: {
+			top: newTop,
+			left: newLeft
+		},
+		config: {
+			tension: 210,
+			friction: 22,
+			precision: 0.01,
+			mass: 1
+		}
+	})
 
 	return (
-		<div
+		<animated.div
 			className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center select-none ${className}`}
 			style={{
-				top: `${cellSize(row)}px`,
-				left: `${cellSize(col)}px`,
-				...style
+				...style,
+				...(prevCor
+					? springProps
+					: {
+							top: `${newTop}px`,
+							left: `${newLeft}px`
+					  })
 			}}
 			{...rest}
 		>
 			{children}
-		</div>
+		</animated.div>
 	)
 }
 
@@ -80,33 +107,24 @@ export default function Game2048() {
 			>
 				{cells.map((cell, index) => {
 					// This for the background
-					return (
-						<Cell
-							key={index}
-							size={size}
-							row={cell.cor.row}
-							col={cell.cor.col}
-						/>
-					)
+					return <Cell key={index} size={size} cor={cell.cor} />
 				})}
 				{cells.map(cell => {
-					const val = cell.val !== 0 ? cell.val : ""
+					const val = cell.val !== 0 ? cell.val + "" : ""
 					return (
 						<Cell
 							key={cell.id}
 							className={` font-extrabold sm:text-4xl text-xl ${
 								styles["cell-animation"]
-							} ${cell.prevCor ? styles["cell-move-animation"] : ""} ${
-								cell.val !== 0 ? "z-10" : "z-0"
-							} `}
+							}  ${cell.val !== 0 ? "z-10" : "z-0"} `}
 							style={{
 								backgroundColor: `${
 									+cell.val === 0 ? "" : colors[Math.log2(+cell.val)]
 								}`
 							}}
 							size={size}
-							row={cell.cor.row}
-							col={cell.cor.col}
+							cor={cell.cor}
+							prevCor={cell.prevCor}
 						>
 							<div className='flex flex-col'>
 								<div>{val}</div>
