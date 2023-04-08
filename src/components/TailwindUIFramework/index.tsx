@@ -25,7 +25,11 @@ export default function TailwindUI() {
 				})}
 			</div>
 			<div className='w-full h-full'>
-				<div>{Components[show][0]}</div>
+				<div>
+					<Suspense fallback={<div>Loading...</div>}>
+						{Components[show][0]}
+					</Suspense>
+				</div>
 			</div>
 		</div>
 	)
