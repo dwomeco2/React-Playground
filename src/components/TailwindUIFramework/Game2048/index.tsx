@@ -25,6 +25,38 @@ const colors = [
 	"#EEC12E"
 ]
 
+interface CellProps {
+	size: string | null
+	key: number | string
+	row: number
+	col: number
+	children?: React.ReactNode
+	[x: string]: any
+}
+
+const Cell = (props: CellProps) => {
+	const { size, key, row, col, children, style, className, ...rest } = props
+
+	let cellSize = (index: number) =>
+		(size === "sm" ? 8 : 4) + (size === "sm" ? 118 : 76.75) * index
+
+	console.log(children)
+
+	return (
+		<div
+			className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center select-none ${className}`}
+			style={{
+				top: `${cellSize(row)}px`,
+				left: `${cellSize(col)}px`,
+				...style
+			}}
+			{...rest}
+		>
+			{children}
+		</div>
+	)
+}
+
 export default function Game2048() {
 	const [cells, dispatch] = use2048Reducer()
 	const isEnd = useIsGameEnd()
@@ -36,9 +68,6 @@ export default function Game2048() {
 	})
 
 	const swipeHandlers = useRegisterControlInterface(dispatch)
-
-	let cellSize = (index: number) =>
-		(size === "sm" ? 8 : 4) + (size === "sm" ? 118 : 76.75) * index
 
 	return (
 		<div className='relative'>
@@ -52,37 +81,37 @@ export default function Game2048() {
 				{cells.map((cell, index) => {
 					// This for the background
 					return (
-						<div
+						<Cell
 							key={index}
-							className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center select-none}`}
-							style={{
-								top: `${cellSize(cell.cor.row)}px`,
-								left: `${cellSize(cell.cor.col)}px`
-							}}
-						></div>
+							size={size}
+							row={cell.cor.row}
+							col={cell.cor.col}
+						/>
 					)
 				})}
 				{cells.map(cell => {
+					const val = cell.val !== 0 ? cell.val : ""
 					return (
-						<div
+						<Cell
 							key={cell.id}
-							className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center font-extrabold sm:text-4xl text-xl select-none ${
+							className={` font-extrabold sm:text-4xl text-xl ${
 								styles["cell-animation"]
 							} ${cell.prevCor ? styles["cell-move-animation"] : ""} ${
 								cell.val !== 0 ? "z-10" : "z-0"
-							}`}
+							} `}
 							style={{
 								backgroundColor: `${
 									+cell.val === 0 ? "" : colors[Math.log2(+cell.val)]
-								}`,
-								top: `${cellSize(cell.cor.row)}px`,
-								left: `${cellSize(cell.cor.col)}px`
+								}`
 							}}
+							size={size}
+							row={cell.cor.row}
+							col={cell.cor.col}
 						>
 							<div className='flex flex-col'>
-								<div>{cell.val !== 0 ? cell.val : ""}</div>
+								<div>{val}</div>
 							</div>
-						</div>
+						</Cell>
 					)
 				})}
 			</div>
