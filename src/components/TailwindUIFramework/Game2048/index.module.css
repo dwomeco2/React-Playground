@@ -1,9 +1,11 @@
 .cell-animation:has(> div > div:first-child:not(:empty)) {
-	animation: mount 0.5s ease-in-out;
+	opacity: 0;
+	animation: mount 0.5s ease-in-out 0.25s forwards;
 }
 
 @keyframes mount {
 	0% {
+		opacity: 0;
 		transform: scale(0.1);
 	}
 
@@ -11,6 +13,7 @@
 		transform: scale(1.1);
 	}
 	100% {
+		opacity: 1;
 		transform: scale(1);
 	}
 }
