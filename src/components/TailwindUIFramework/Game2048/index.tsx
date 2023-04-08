@@ -1,6 +1,7 @@
 import styles from "./index.module.css"
 import { useClientSizeDetector, useGlobalKeyDownEffect } from "../../../hooks"
 
+import { useSpring, animated } from "@react-spring/web"
 import { useSwipeable } from "react-swipeable"
 import { ActionType, useIsGameEnd, use2048Reducer } from "./backend/backend"
 import {
@@ -25,6 +26,64 @@ const colors = [
 	"#EEC12E"
 ]
 
+interface CellProps {
+	size: string | null
+	cor: {
+		row: number
+		col: number
+	}
+	prevCor?: {
+		row: number
+		col: number
+	}
+	children?: React.ReactNode
+	[x: string]: any
+}
+
+const Cell = (props: CellProps) => {
+	const { size, cor, prevCor, children, style, className, ...rest } = props
+
+	let cellSize = (index: number) =>
+		(size === "sm" ? 8 : 4) + (size === "sm" ? 118 : 76.75) * index
+
+	let newTop = cellSize(cor.row)
+	let newLeft = cellSize(cor.col)
+	const springProps = useSpring({
+		from: {
+			top: cellSize(prevCor?.row ?? cor.row),
+			left: cellSize(prevCor?.col ?? cor.col)
+		},
+		to: {
+			top: newTop,
+			left: newLeft
+		},
+		config: {
+			tension: 210,
+			friction: 22,
+			precision: 0.01,
+			mass: 1
+		}
+	})
+
+	return (
+		<animated.div
+			className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center select-none ${className}`}
+			style={{
+				...style,
+				...(prevCor
+					? springProps
+					: {
+							top: `${newTop}px`,
+							left: `${newLeft}px`
+					  })
+			}}
+			{...rest}
+		>
+			{children}
+		</animated.div>
+	)
+}
+
 export default function Game2048() {
 	const [cells, dispatch] = use2048Reducer()
 	const isEnd = useIsGameEnd()
@@ -37,9 +96,6 @@ export default function Game2048() {
 
 	const swipeHandlers = useRegisterControlInterface(dispatch)
 
-	let cellSize = (index: number) =>
-		(size === "sm" ? 8 : 4) + (size === "sm" ? 118 : 76.75) * index
-
 	return (
 		<div className='relative'>
 			<div className='py-2 px-4 text-sm font-semibold text-center'>
@@ -51,38 +107,29 @@ export default function Game2048() {
 			>
 				{cells.map((cell, index) => {
 					// This for the background
-					return (
-						<div
-							key={index}
-							className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center select-none}`}
-							style={{
-								top: `${cellSize(cell.cor.row)}px`,
-								left: `${cellSize(cell.cor.col)}px`
-							}}
-						></div>
-					)
+					return <Cell key={index} size={size} cor={cell.cor} />
 				})}
 				{cells.map(cell => {
+					const val = cell.val !== 0 ? cell.val + "" : ""
 					return (
-						<div
+						<Cell
 							key={cell.id}
-							className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center font-extrabold sm:text-4xl text-xl select-none ${
+							className={` font-extrabold sm:text-4xl text-xl ${
 								styles["cell-animation"]
-							} ${cell.prevCor ? styles["cell-move-animation"] : ""} ${
-								cell.val !== 0 ? "z-10" : "z-0"
-							}`}
+							}  ${cell.val !== 0 ? "z-10" : "z-0"} `}
 							style={{
 								backgroundColor: `${
 									+cell.val === 0 ? "" : colors[Math.log2(+cell.val)]
-								}`,
-								top: `${cellSize(cell.cor.row)}px`,
-								left: `${cellSize(cell.cor.col)}px`
+								}`
 							}}
+							size={size}
+							cor={cell.cor}
+							prevCor={cell.prevCor}
 						>
 							<div className='flex flex-col'>
-								<div>{cell.val !== 0 ? cell.val : ""}</div>
+								<div>{val}</div>
 							</div>
-						</div>
+						</Cell>
 					)
 				})}
 			</div>

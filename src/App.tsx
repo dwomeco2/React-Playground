@@ -24,30 +24,17 @@ const TailWindUI = lazy(() => import("./components/TailwindUIFramework"))
 const queryClient = new QueryClient()
 
 function App() {
-	const layouts = [
-		"Preview Card",
-		"Profile Card",
-		"Pricing Component",
-		"Countdown timer",
-		"Sidebar Component",
-		"Image Slider",
-		"Masonry layout",
-		"Hacker News",
-		"Library encounterd issues log",
-		"TodoList / 2048"
-	].reverse()
-	// eslint-disable-next-line react/jsx-key
 	const layoutComponent = [
-		<PreviewCardComponent />,
-		<ProfileCardComponent />,
-		<PricingComponent />,
-		<CountdownTimer />,
-		<SidebarComponent />,
-		<ImageSlider />,
-		<MasonryLayout />,
-		<HackerNews />,
-		<IssuesWithLibrary />,
-		<TailWindUI />
+		[<PreviewCardComponent />, "Preview Card"],
+		[<ProfileCardComponent />, "Profile Card"],
+		[<PricingComponent />, "Pricing Component"],
+		[<CountdownTimer />, "Countdown timer"],
+		[<SidebarComponent />, "Sidebar Component"],
+		[<ImageSlider />, "Image Slider"],
+		[<MasonryLayout />, "Masonry layout"],
+		[<HackerNews />, "Hacker News"],
+		[<IssuesWithLibrary />, "Library encounterd issues log"],
+		[<TailWindUI />, "TodoList / 2048"]
 	].reverse()
 	const [activeLayout, setActiveLayout] = useState(0)
 
@@ -60,7 +47,7 @@ function App() {
 						My react playground
 					</h1>
 					<div className='no-scrollbar component-selector flex w-full sm:mx-auto sm:w-[720px] overflow-x-auto mb-6'>
-						{layouts.map((layout, index) => {
+						{layoutComponent.map(([, layout], index) => {
 							return (
 								<div
 									key={index}
@@ -78,7 +65,7 @@ function App() {
 				</div>
 				<div className='mt-4'>
 					<Suspense fallback={<div>Loading</div>}>
-						{layoutComponent[activeLayout]}
+						{layoutComponent[activeLayout][0]}
 					</Suspense>
 				</div>
 			</div>
