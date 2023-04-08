@@ -1,5 +1,9 @@
 import styles from "./index.module.css"
-import { useClientSizeDetector, useGlobalKeyDownEffect } from "../../../hooks"
+import {
+	useClientSizeDetector,
+	useDelayedState,
+	useGlobalKeyDownEffect
+} from "../../../hooks"
 
 import { useSpring, animated } from "@react-spring/web"
 import { useSwipeable } from "react-swipeable"
@@ -25,6 +29,25 @@ const colors = [
 	"#EDC53F",
 	"#EEC12E"
 ]
+
+interface CellNumberProps {
+	val: string
+}
+
+const CellNumber = (props: CellNumberProps) => {
+	const { val } = props
+	const [prevVal, setPrevVal] = useDelayedState(val)
+
+	if (!!val && !!prevVal == false) {
+		// spawn
+		setPrevVal(val)
+	} else if (val !== prevVal) {
+		// merge
+		setPrevVal(val, 60)
+	}
+
+	return <div>{prevVal}</div>
+}
 
 interface CellProps {
 	size: string | null
@@ -127,7 +150,7 @@ export default function Game2048() {
 							prevCor={cell.prevCor}
 						>
 							<div className='flex flex-col'>
-								<div>{val}</div>
+								<CellNumber val={val} />
 							</div>
 						</Cell>
 					)

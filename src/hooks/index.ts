@@ -88,3 +88,27 @@ export const atomWithToggle = (initialValue?: boolean) => {
 	)
 	return booleanAtom
 }
+
+export const useDelayedState = <T extends any>(initialState: T) => {
+	const [state, setState] = useState(initialState)
+	const timeoutRef = useRef<number | undefined>(undefined)
+
+	const setDelayedState = (update: T, delayms?: number) => {
+		if (!delayms) {
+			setState(update)
+		} else {
+			if (timeoutRef.current) clearTimeout(timeoutRef.current)
+			timeoutRef.current = setTimeout(() => {
+				setState(initialState)
+			}, delayms)
+		}
+	}
+
+	useEffect(() => {
+		return () => {
+			if (timeoutRef.current) clearTimeout(timeoutRef.current)
+		}
+	}, [state])
+
+	return [state, setDelayedState] as const
+}
