@@ -1,6 +1,6 @@
 import styles from "./index.module.css"
 import {
-	useClientSizeDetector,
+	useMediaQuery,
 	useDelayedState,
 	useGlobalKeyDownEffect
 } from "../../../hooks"
@@ -50,7 +50,6 @@ const CellNumber = (props: CellNumberProps) => {
 }
 
 interface CellProps {
-	size: string | null
 	cor: {
 		row: number
 		col: number
@@ -64,10 +63,12 @@ interface CellProps {
 }
 
 const Cell = (props: CellProps) => {
-	const { size, cor, prevCor, children, style, className, ...rest } = props
+	const { cor, prevCor, children, style, className, ...rest } = props
+
+	const mediaMatches = useMediaQuery("(min-width: 640px)")
 
 	let cellSize = (index: number) =>
-		(size === "sm" ? 8 : 4) + (size === "sm" ? 118 : 76.75) * index
+		(mediaMatches ? 8 : 4) + (mediaMatches ? 118 : 76.75) * index
 
 	let newTop = cellSize(cor.row)
 	let newLeft = cellSize(cor.col)
@@ -110,12 +111,6 @@ const Cell = (props: CellProps) => {
 export default function Game2048() {
 	const [cells, dispatch] = use2048Reducer()
 	const isEnd = useIsGameEnd()
-	const size = useClientSizeDetector({
-		sizes: [
-			{ minSize: 640, key: "sm" },
-			{ minSize: 0, key: "xs" }
-		]
-	})
 
 	const swipeHandlers = useRegisterControlInterface(dispatch)
 
@@ -130,7 +125,7 @@ export default function Game2048() {
 			>
 				{cells.map((cell, index) => {
 					// This for the background
-					return <Cell key={index} size={size} cor={cell.cor} />
+					return <Cell key={index} cor={cell.cor} />
 				})}
 				{cells.map(cell => {
 					const val = cell.val !== 0 ? cell.val + "" : ""
@@ -145,7 +140,6 @@ export default function Game2048() {
 									+cell.val === 0 ? "" : colors[Math.log2(+cell.val)]
 								}`
 							}}
-							size={size}
 							cor={cell.cor}
 							prevCor={cell.prevCor}
 						>
