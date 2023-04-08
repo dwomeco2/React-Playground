@@ -46,7 +46,7 @@ function App() {
 					<h1 className='font-bold text-center text-3xl mb-4'>
 						My react playground
 					</h1>
-					<div className='no-scrollbar component-selector flex w-full sm:mx-auto sm:w-[720px] overflow-x-auto mb-6'>
+					<div className='no-scrollbar component-selector flex w-full sm:mx-auto sm:w-[524px] md:w-[720px] overflow-x-auto mb-6'>
 						{layoutComponent.map(([, layout], index) => {
 							return (
 								<div
