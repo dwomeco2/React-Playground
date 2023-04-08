@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useMemo } from "react"
+import { atom } from "jotai"
 import { debounce } from "../utils"
 
 export const useDebounce = (callback: () => void, ms: number) => {
@@ -75,4 +76,16 @@ export const useClientSizeDetector = (params: UseClientSizeDetectorParams) => {
 	}, [])
 
 	return size
+}
+
+// Atom creator
+export const toggleAtom = () => {
+	const booleanAtom = atom(false)
+
+	return atom(
+		get => get(booleanAtom),
+		(_get, set) => {
+			set(booleanAtom, (prev: boolean) => !prev)
+		}
+	)
 }

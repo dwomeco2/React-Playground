@@ -1,4 +1,4 @@
-import React from "react"
+import React, { StrictMode } from "react"
 import { useState, Suspense, lazy } from "react"
 import { createPortal } from "react-dom"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
@@ -59,7 +59,7 @@ function App() {
 					<h1 className='font-bold text-center text-3xl mb-4'>
 						My react playground
 					</h1>
-					<div className='no-scrollbar component-selector flex w-full sm:mx-auto sm:w-[620px] overflow-x-auto mb-6'>
+					<div className='no-scrollbar component-selector flex w-full sm:mx-auto sm:w-[720px] overflow-x-auto mb-6'>
 						{layouts.map((layout, index) => {
 							return (
 								<div
@@ -97,9 +97,11 @@ const githubCornerDiv = document.getElementById(
 	"github-corner-div"
 ) as HTMLElement
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-	<>
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
+
+root.render(
+	<StrictMode>
 		<RouterProvider router={router} />
 		{createPortal(<GithubCorner />, githubCornerDiv)}
-	</>
+	</StrictMode>
 )
