@@ -8,14 +8,11 @@ import {
 	leftSequence,
 	upSequence
 } from "./utils"
-import { toggleAtom } from "../../../../hooks"
+import { atomWithToggle } from "../../../../hooks"
 import { CellsType, CellsZod } from "./types"
 
-const isEndAtom = toggleAtom()
+const isEndAtom = atomWithToggle(false)
 const isEndReadOnlyAtom = atom(get => get(isEndAtom))
-const toggleEndAtom = atom(null, (_get, set) => {
-	set(isEndAtom)
-})
 
 export function useIsGameEnd() {
 	const [isEnd] = useAtom(isEndReadOnlyAtom)
@@ -25,14 +22,16 @@ export function useIsGameEnd() {
 const gameDataAtom = atom(initializeGame())
 
 export function use2048Reducer() {
-	const [, toggleEnd] = useAtom(toggleEndAtom)
+	const [, toggleEnd] = useAtom(isEndAtom)
 	return useReducerAtom(
 		gameDataAtom,
 		(prevState: CellsType, action: ActionType) => {
 			const newState = reducer(prevState, action)
 
-			if (action.type === "restart" || checkIfGameEnd(newState)) {
-				toggleEnd()
+			if (checkIfGameEnd(newState)) {
+				toggleEnd(true)
+			} else if (action.type === "restart") {
+				toggleEnd(false)
 			}
 
 			return newState

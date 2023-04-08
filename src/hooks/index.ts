@@ -79,13 +79,12 @@ export const useClientSizeDetector = (params: UseClientSizeDetectorParams) => {
 }
 
 // Atom creator
-export const toggleAtom = () => {
-	const booleanAtom = atom(false)
-
-	return atom(
-		get => get(booleanAtom),
-		(_get, set) => {
-			set(booleanAtom, (prev: boolean) => !prev)
+export const atomWithToggle = (initialValue?: boolean) => {
+	const booleanAtom = atom(
+		initialValue ?? false,
+		(get, set, update?: boolean) => {
+			set(booleanAtom, update ?? !get(booleanAtom))
 		}
 	)
+	return booleanAtom
 }
