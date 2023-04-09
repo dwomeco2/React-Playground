@@ -154,11 +154,11 @@ export default function Game2048() {
 				<div
 					className={`${
 						isEnd && styles["end-toast"]
-					} absolute top-1/2 left-1/2 flex flex-col justify-center items-center gap-4 w-64 h-36 z-10 text-gray-800 bg-gray-300 bg-opacity-80 rounded-md p-2`}
+					} absolute top-1/2 left-1/2 flex flex-col justify-center items-center gap-6 w-64 h-36 z-10 text-gray-800 bg-gray-300 bg-opacity-75 rounded-md p-2 shadow-md shadow-gray-800 `}
 				>
 					<div className='select-none font-bold'>End of game</div>
 					<div
-						className='text-gray-200 bg-green-800 rounded-md px-10 py-2 cursor-pointer'
+						className=' font-medium text-gray-200 bg-green-800 rounded-md px-10 py-2 cursor-pointer'
 						onClick={() => dispatch({ type: "restart" } as ActionType)}
 					>
 						Restart
