@@ -37,6 +37,7 @@ html {
 .menu-text {
 	background: linear-gradient(90deg, #e6fd81, #f87697);
 	background-attachment: fixed;
+	background-clip: text;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	font-weight: 600;

@@ -102,13 +102,13 @@ function FlippingCountDownComponent({
 	const current = (num + 1) % (upperLimit + 1);
 	const next = mod(current - 1, upperLimit + 1);
 
-	const contentNextTick = (element: Element) => {
-		element.innerHTML = (
-			String(mod(Number(element.innerHTML) - 1, upperLimit + 1))
-		).padStart(2, '0');
-	};
-
 	useEffect(() => {
+		const contentNextTick = (element: Element) => {
+			element.innerHTML = (
+				String(mod(Number(element.innerHTML) - 1, upperLimit + 1))
+			).padStart(2, '0');
+		};
+
 		const topHalf = document.querySelector(`.${scale}.${styles['top-half']}`);
 		const bottomHalf = document.querySelector(
 			`.${scale}.${styles['bottom-half']}`,
@@ -173,7 +173,7 @@ function FlippingCountDownComponent({
 				bottomHalfFlipAnimmationendCallback,
 			);
 		};
-	}, []);
+	}, [scale, upperLimit]);
 
 	useEffect(() => {
 		const topHalfFlip = document.querySelector(
