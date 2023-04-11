@@ -1,7 +1,7 @@
 /** @type {import('prettier').Config} */
 const config = {
 	arrowParens: "always",
-	printWidth: 80,
+	printWidth: 120,
 	singleQuote: false,
 	jsxSingleQuote: true,
 	arrowParens: "avoid",
@@ -10,7 +10,7 @@ const config = {
 	tabWidth: 2,
 	useTabs: true,
 	bracketSpacing: true,
-	bracketSameLine: false,
-};
+	bracketSameLine: false
+}
 
-module.exports = config;
+module.exports = config

@@ -16,10 +16,16 @@ specifiers:
   eslint: ^8.37.0
   eslint-config-prettier: ^8.8.0
   eslint-config-standard-with-typescript: ^34.0.1
+  eslint-config-xo: ^0.43.1
+  eslint-config-xo-react: ^0.27.0
+  eslint-config-xo-typescript: ^0.57.0
   eslint-plugin-import: ^2.25.2
   eslint-plugin-n: ^15.0.0
   eslint-plugin-promise: ^6.0.0
   eslint-plugin-react: ^7.32.2
+  eslint-plugin-react-hooks: ^4.6.0
+  fp-ts: ^2.13.1
+  fp-ts-std: ^0.15.1
   jotai: ^2.0.3
   nanoid: ^4.0.2
   postcss: ^8.4.21
@@ -45,6 +51,8 @@ dependencies:
   '@react-spring/web': 9.7.1_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query': 4.28.0_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query-devtools': 4.28.0_q4teel2yjbizrm4naiaqcdpjum
+  fp-ts: 2.13.1
+  fp-ts-std: 0.15.1_sddbbwftoqt3d5g3p7ix53ouca
   jotai: 2.0.3_react@18.2.0
   nanoid: 4.0.2
   postcss-preset-env: 8.3.0_postcss@8.4.21
@@ -74,10 +82,14 @@ devDependencies:
   eslint: 8.37.0
   eslint-config-prettier: 8.8.0_eslint@8.37.0
   eslint-config-standard-with-typescript: 34.0.1_qs75w2phpvqrkepayagh7ppjym
+  eslint-config-xo: 0.43.1_eslint@8.37.0
+  eslint-config-xo-react: 0.27.0_nxoa6sd4hnwqlk7c6oy7ergqem
+  eslint-config-xo-typescript: 0.57.0_q2zlbzifkdcy7r5dxdjaseoaaq
   eslint-plugin-import: 2.27.5_2niwd2uqke2jpnohndnwvllrkm
   eslint-plugin-n: 15.7.0_eslint@8.37.0
   eslint-plugin-promise: 6.1.1_eslint@8.37.0
   eslint-plugin-react: 7.32.2_eslint@8.37.0
+  eslint-plugin-react-hooks: 4.6.0_eslint@8.37.0
   postcss: 8.4.21
   postcss-nesting: 11.2.2_postcss@8.4.21
   tailwindcss: 3.2.7_postcss@8.4.21
@@ -1340,6 +1352,10 @@ packages:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
+  /confusing-browser-globals/1.0.11:
+    resolution: {integrity: sha512-JsPKdmh8ZkmnHxDk55FZ1TqVLvEQTvoByJZRN9jzI0UjxK/QgAmsphz7PGtqgPieQZ/CQcHWXCR7ATDNhGe+YA==}
+    dev: true
+
   /copy-anything/3.0.3:
     resolution: {integrity: sha512-fpW2W/BqEzqPp29QS+MwwfisHCQZtiduTe/m8idFo0xbti9fIZ2WVhAsCv4ggFVH3AgCkVdpoOCtQC6gBrdhjw==}
     engines: {node: '>=12.13'}
@@ -1643,6 +1659,44 @@ packages:
       eslint-plugin-promise: 6.1.1_eslint@8.37.0
     dev: true
 
+  /eslint-config-xo-react/0.27.0_nxoa6sd4hnwqlk7c6oy7ergqem:
+    resolution: {integrity: sha512-wiV215xQIn71XZyyVfaOXHaFpR1B14IJttwOjMi/eqUK1s+ojJdHr7eHqTLaGUfh6FKgWha1QNwePlIXx7mBUg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      eslint: '>=8.6.0'
+      eslint-plugin-react: '>=7.29.0'
+      eslint-plugin-react-hooks: '>=4.3.0'
+    dependencies:
+      eslint: 8.37.0
+      eslint-plugin-react: 7.32.2_eslint@8.37.0
+      eslint-plugin-react-hooks: 4.6.0_eslint@8.37.0
+    dev: true
+
+  /eslint-config-xo-typescript/0.57.0_q2zlbzifkdcy7r5dxdjaseoaaq:
+    resolution: {integrity: sha512-u+qcTaADHn2/+hbDqZHRWiAps8JS6BcRsJKAADFxYHIPpYqQeQv9mXuhRe/1+ikfZAIz9hlG1V+Lkj8J7nf34A==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@typescript-eslint/eslint-plugin': '>=5.57.0'
+      '@typescript-eslint/parser': '>=5.57.0'
+      eslint: '>=8.0.0'
+      typescript: '>=4.4'
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 5.57.0_x4rubgibnu7ujqspfqdeho4yiu
+      '@typescript-eslint/parser': 5.57.0_ip5up2nocltd47wbnuyybe5dxu
+      eslint: 8.37.0
+      typescript: 4.9.5
+    dev: true
+
+  /eslint-config-xo/0.43.1_eslint@8.37.0:
+    resolution: {integrity: sha512-azv1L2PysRA0NkZOgbndUpN+581L7wPqkgJOgxxw3hxwXAbJgD6Hqb/SjHRiACifXt/AvxCzE/jIKFAlI7XjvQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      eslint: '>=8.27.0'
+    dependencies:
+      confusing-browser-globals: 1.0.11
+      eslint: 8.37.0
+    dev: true
+
   /eslint-import-resolver-node/0.3.7:
     resolution: {integrity: sha512-gozW2blMLJCeFpBwugLTGyvVjNoeo1knonXAcatC6bjPBZitotxdWf7Gimr25N4c0AAOo4eOUfaG82IJPDpqCA==}
     dependencies:
@@ -1748,6 +1802,15 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
+    dependencies:
+      eslint: 8.37.0
+    dev: true
+
+  /eslint-plugin-react-hooks/4.6.0_eslint@8.37.0:
+    resolution: {integrity: sha512-oFc7Itz9Qxh2x4gNHStv3BqJq54ExXmfC+a1NjAta66IAN87Wu0R/QArgIS9qKzX3dXKPI9H5crl9QchNMY9+g==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
     dependencies:
       eslint: 8.37.0
     dev: true
@@ -1978,6 +2041,23 @@ packages:
     dependencies:
       is-callable: 1.2.7
     dev: true
+
+  /fp-ts-std/0.15.1_sddbbwftoqt3d5g3p7ix53ouca:
+    resolution: {integrity: sha512-JvWjUki14fxuse8QAFubdNi4g+o7qWq94n31sxlD8hobl8KbyfguK69yQZBkNQu+q+8b5yYxgyevs003w6sDNA==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      fp-ts: ^2.11.0
+      monocle-ts: ^2.3.0
+      newtype-ts: ^0.3.0
+    dependencies:
+      fp-ts: 2.13.1
+      monocle-ts: 2.3.13_fp-ts@2.13.1
+      newtype-ts: 0.3.5_y4ecnzjsatnzoei5elwf4wjeqa
+    dev: false
+
+  /fp-ts/2.13.1:
+    resolution: {integrity: sha512-0eu5ULPS2c/jsa1lGFneEFFEdTbembJv8e4QKXeVJ3lm/5hyve06dlKZrpxmMwJt6rYen7sxmHHK2CLaXvWuWQ==}
+    dev: false
 
   /fraction.js/4.2.0:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
@@ -2420,6 +2500,14 @@ packages:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
     dev: true
 
+  /monocle-ts/2.3.13_fp-ts@2.13.1:
+    resolution: {integrity: sha512-D5Ygd3oulEoAm3KuGO0eeJIrhFf1jlQIoEVV2DYsZUMz42j4tGxgct97Aq68+F8w4w4geEnwFa8HayTS/7lpKQ==}
+    peerDependencies:
+      fp-ts: ^2.5.0
+    dependencies:
+      fp-ts: 2.13.1
+    dev: false
+
   /ms/2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
     dev: true
@@ -2442,6 +2530,16 @@ packages:
   /natural-compare/1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
+
+  /newtype-ts/0.3.5_y4ecnzjsatnzoei5elwf4wjeqa:
+    resolution: {integrity: sha512-v83UEQMlVR75yf1OUdoSFssjitxzjZlqBAjiGQ4WJaML8Jdc68LJ+BaSAXUmKY4bNzp7hygkKLYTsDi14PxI2g==}
+    peerDependencies:
+      fp-ts: ^2.0.0
+      monocle-ts: ^2.0.0
+    dependencies:
+      fp-ts: 2.13.1
+      monocle-ts: 2.3.13_fp-ts@2.13.1
+    dev: false
 
   /node-releases/2.0.10:
     resolution: {integrity: sha512-5GFldHPXVG/YZmFzJvKK2zDSzPKhEp0+ZR5SVaoSag9fsL5YgHbUHDfnG5494ISANDcK4KwPXAx2xqVEydmd7w==}

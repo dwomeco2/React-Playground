@@ -1,18 +1,18 @@
-import { atom } from "jotai"
-import { HackerNewsItemType } from "./zod.schema"
+import {atom} from 'jotai';
+import {type HackerNewsItemType} from './zod.schema';
 
 export default {
 	maxPageItems: 9,
 	maxCommentsPerPage: 20,
 	hackerNewsStoryContentAtom: atom({} as HackerNewsItemType),
-	toggleSideBarAtom: atomWithToggle(true)
-}
+	toggleSideBarAtom: atomWithToggle(true),
+};
 
-export function atomWithToggle(initialValue: boolean = false) {
+export function atomWithToggle(initialValue = false) {
 	const anAtom = atom(initialValue, (get, set, nextValue?: boolean) => {
-		const update = nextValue ?? !get(anAtom)
-		set(anAtom, update)
-	})
+		const update = nextValue ?? !get(anAtom);
+		set(anAtom, update);
+	});
 
-	return anAtom
+	return anAtom;
 }
