@@ -26,7 +26,7 @@ export const initializeImageSliderState = () => {
 	const backImgTmp = [];
 	for (let i = startOfBackImage; i < startOfBackImage + totalImages; i++) {
 		const id = i % totalImages === 0 ? totalImages : i % totalImages;
-		const url = new URL(`/src/assets/imageslider/${id}.jpg`, import.meta.url).href;
+		const url = new URL(`/public/imageslider/${id}.jpg`, import.meta.url).href;
 
 		if (backImgTmp.length !== backImageSize) {
 			backImgTmp.unshift({id, src: url});
