@@ -1,4 +1,4 @@
-import { createContext, Suspense, useContext, useState } from "react"
+import {createContext, Suspense, useContext, useState} from 'react';
 
 import {
 	MdHome,
@@ -11,247 +11,241 @@ import {
 	MdSearch,
 	MdMenuOpen,
 	MdMoreVert,
-	MdOutlineWhatshot
-} from "react-icons/md"
+	MdOutlineWhatshot,
+} from 'react-icons/md';
 
-type ThemeType = "light" | "dark"
+type ThemeType = 'light' | 'dark';
 type ListContextProp = {
-	theme: ThemeType
-	isCollapse: boolean
-	iconStyle: {
-		[key: string]: string
-	}
-	setIsCollapse: () => void
-	toggleTheme: () => void
-}
+	theme: ThemeType;
+	isCollapse: boolean;
+	iconStyle: Record<string, string>;
+	setIsCollapse: () => void;
+	toggleTheme: () => void;
+};
 
-const ListContext = createContext({} as ListContextProp)
+const ListContext = createContext({} as ListContextProp);
 
-function createListContext() {
+function useListContext() {
 	const [listContextState, setListContextState] = useState<ListContextProp>({
-		theme: "dark",
+		theme: 'dark',
 		isCollapse: false,
 		iconStyle: {
-			size: "1.3rem"
+			size: '1.3rem',
 		},
-		setIsCollapse: () => {
-			setListContextState(prev => {
-				return { ...prev, isCollapse: !prev.isCollapse }
-			})
+		setIsCollapse() {
+			setListContextState(prev => ({...prev, isCollapse: !prev.isCollapse}));
 		},
-		toggleTheme: () => {
-			setListContextState(prev => {
-				return {
-					...prev,
-					theme: prev.theme == "dark" ? "light" : "dark"
-				}
-			})
-		}
-	})
+		toggleTheme() {
+			setListContextState(prev => ({
+				...prev,
+				theme: prev.theme === 'dark' ? 'light' : 'dark',
+			}));
+		},
+	});
 
-	return listContextState
+	return listContextState;
 }
 
 function ListSpaceExpander() {
-	return <div className='flex-1' />
+	return <div className='flex-1'/>;
 }
 
 function ListDivider() {
-	const { theme } = useContext(ListContext)
+	const {theme} = useContext(ListContext);
 
-	const sidebar_on_background_color =
-		theme === "dark"
-			? "border-[var(--sidebar-on-background-color-dark)]"
-			: "border-[var(--sidebar-on-background-color-light)]"
+	const sidebarOnBackgroundColor
+		= theme === 'dark'
+			? 'border-[var(--sidebar-on-background-color-dark)]'
+			: 'border-[var(--sidebar-on-background-color-light)]';
 
 	return (
 		<div>
 			<hr
-				className={`${sidebar_on_background_color} border-b border-solid h-0 `}
+				className={`${sidebarOnBackgroundColor} border-b border-solid h-0 `}
 			/>
 		</div>
-	)
+	);
 }
 
 function ListInput() {
-	const { theme, isCollapse, iconStyle } = useContext(ListContext)
+	const {theme, isCollapse, iconStyle} = useContext(ListContext);
 
-	const collapseClassName = isCollapse ? " hidden " : ""
+	const collapseClassName = isCollapse ? ' hidden ' : '';
 
-	const sidebar_surface_color =
-		theme === "dark"
-			? "bg-[var(--sidebar-surface-color-dark)]"
-			: "bg-[var(--sidebar-surface-color-light)]"
-	const sidebar_on_surface_color =
-		theme === "dark"
-			? "text-[var(--sidebar-on-surface-color-dark)]"
-			: "text-[var(--sidebar-on-surface-color-light)]"
+	const sidebarSurfaceColor
+		= theme === 'dark'
+			? 'bg-[var(--sidebar-surface-color-dark)]'
+			: 'bg-[var(--sidebar-surface-color-light)]';
+	const sidebarOnSurfaceColor
+		= theme === 'dark'
+			? 'text-[var(--sidebar-on-surface-color-dark)]'
+			: 'text-[var(--sidebar-on-surface-color-light)]';
 
 	return (
 		<div
 			className={` ${
-				!isCollapse && sidebar_surface_color
-			} ${sidebar_on_surface_color} flex items-center h-full w-hull px-2 py-2 rounded-full overflow-hidden`}
+				!isCollapse ? sidebarSurfaceColor : ''
+			} ${sidebarOnSurfaceColor} flex items-center h-full w-hull px-2 py-2 rounded-full overflow-hidden`}
 		>
 			<i>
-				<MdSearch {...iconStyle} />
+				<MdSearch {...iconStyle}/>
 			</i>
 			<input
 				type='text'
-				className={` ${sidebar_surface_color} outline-none text-xs w-full px-2 ${collapseClassName} `}
+				className={` ${sidebarSurfaceColor} outline-none text-xs w-full px-2 ${collapseClassName} `}
 				placeholder='Search'
 			/>
 		</div>
-	)
+	);
 }
 
 function ListSection({
 	title,
-	children
+	children,
 }: {
-	title: string
-	children?: JSX.Element | JSX.Element[]
+	title: string;
+	children?: JSX.Element | JSX.Element[];
 }) {
-	const { isCollapse } = useContext(ListContext)
+	const {isCollapse} = useContext(ListContext);
 
-	const collapseClassName = !isCollapse
-		? " text-left px-2 text-xs "
-		: " text-center text-[0.65rem] "
+	const collapseClassName = isCollapse
+		? ' text-center text-[0.65rem] '
+		: ' text-left px-2 text-xs ';
 
 	return (
 		<div>
 			<div className={` font-bold mb-2 ${collapseClassName}`}>{title}</div>
 			{children}
 		</div>
-	)
+	);
 }
 
 function ListButton({
 	onClick,
-	children
+	children,
 }: {
-	onClick?: () => void
-	children?: JSX.Element | JSX.Element[]
+	onClick?: () => void;
+	children?: JSX.Element | JSX.Element[];
 }) {
-	const { theme } = useContext(ListContext)
+	const {theme} = useContext(ListContext);
 
-	const sidebar_surface_color_hover =
-		theme === "dark"
-			? "hover:bg-[var(--sidebar-surface-color-dark)]"
-			: "hover:bg-[var(--sidebar-surface-color-light)]"
-	const sidebar_surface_color_hover_border = "hover:rounded"
-	const sidebar_on_surface_color_hover =
-		theme === "dark"
-			? "hover:text-[var(--sidebar-on-surface-color-dark)]"
-			: "hover:text-[var(--sidebar-on-surface-color-light)]"
+	const sidebarSurfaceColorHover
+		= theme === 'dark'
+			? 'hover:bg-[var(--sidebar-surface-color-dark)]'
+			: 'hover:bg-[var(--sidebar-surface-color-light)]';
+	const sidebarSurfaceColorHoverBorder = 'hover:rounded';
+	const sidebarOnSurfaceColorHover
+		= theme === 'dark'
+			? 'hover:text-[var(--sidebar-on-surface-color-dark)]'
+			: 'hover:text-[var(--sidebar-on-surface-color-light)]';
 
 	return (
 		<div
-			className={` ${sidebar_surface_color_hover} ${sidebar_surface_color_hover_border} ${sidebar_on_surface_color_hover} flex justify-start items-center p-2 text-xs`}
+			className={` ${sidebarSurfaceColorHover} ${sidebarSurfaceColorHoverBorder} ${sidebarOnSurfaceColorHover} flex justify-start items-center p-2 text-xs`}
 		>
-			<button className={`w-full h-full`} onClick={onClick}>
+			<button type='button' className='w-full h-full' onClick={onClick}>
 				{children}
 			</button>
 		</div>
-	)
+	);
 }
 
-function ListItem({ children }: { children?: JSX.Element | JSX.Element[] }) {
-	const { theme } = useContext(ListContext)
+function ListItem({children}: {children?: JSX.Element | JSX.Element[]}) {
+	const {theme} = useContext(ListContext);
 
-	const sidebar_on_background_color =
-		theme === "dark"
-			? "text-[var(--sidebar-on-background-color-dark)]"
-			: "text-[var(--sidebar-on-background-color-light)]"
+	const sidebarOnBackgroundColor
+		= theme === 'dark'
+			? 'text-[var(--sidebar-on-background-color-dark)]'
+			: 'text-[var(--sidebar-on-background-color-light)]';
 
 	return (
-		<div className={` ${sidebar_on_background_color} py-2 my-2 text-sm `}>
+		<div className={` ${sidebarOnBackgroundColor} py-2 my-2 text-sm `}>
 			{children}
 		</div>
-	)
+	);
 }
 
 // Focus on how to position Icon & text
 function IconText({
 	children,
 	buttonText,
-	className = ""
+	className = '',
 }: {
-	children: JSX.Element
-	buttonText: string
-	className?: string
+	children: JSX.Element;
+	buttonText: string;
+	className?: string;
 }) {
-	const { isCollapse } = useContext(ListContext)
+	const {isCollapse} = useContext(ListContext);
 
-	const collapseClassName = isCollapse ? " hidden " : ""
+	const collapseClassName = isCollapse ? ' hidden ' : '';
 
 	return (
 		<div className={`${className} flex items-center h-full w-full `}>
 			<i>{children}</i>
 			<div className={`pl-2 ${collapseClassName} `}>{buttonText}</div>
 		</div>
-	)
+	);
 }
 
 function IconTextButton({
 	buttonText,
 	onClick,
-	iconComponent
+	iconComponent,
 }: {
-	buttonText: string
-	onClick?: () => void
-	iconComponent: JSX.Element
+	buttonText: string;
+	onClick?: () => void;
+	iconComponent: JSX.Element;
 }) {
 	return (
 		<ListButton onClick={onClick}>
 			<IconText buttonText={`${buttonText}`}>{iconComponent}</IconText>
 		</ListButton>
-	)
+	);
 }
 
 function List({
 	width,
 	height,
-	children
+	children,
 }: {
-	width?: string
-	height?: string
-	children?: JSX.Element | JSX.Element[]
+	width?: string;
+	height?: string;
+	children?: JSX.Element | JSX.Element[];
 }) {
-	const { theme } = useContext(ListContext)
+	const {theme} = useContext(ListContext);
 
 	const styles = {
-		width: width,
-		height: height
-	}
+		width,
+		height,
+	};
 
-	const sidebar_background_color =
-		theme === "dark"
-			? "bg-[var(--sidebar-background-color-dark)]"
-			: "bg-[var(--sidebar-background-color-light)]"
-	const sidebar_on_background_color =
-		theme === "dark"
-			? "text-[var(--sidebar-on-background-color-dark)]"
-			: "text-[var(--sidebar-on-background-color-light)]"
+	const sidebarBackgroundColor
+		= theme === 'dark'
+			? 'bg-[var(--sidebar-background-color-dark)]'
+			: 'bg-[var(--sidebar-background-color-light)]';
+	const sidebarOnBackgroundColor
+		= theme === 'dark'
+			? 'text-[var(--sidebar-on-background-color-dark)]'
+			: 'text-[var(--sidebar-on-background-color-light)]';
 
 	return (
 		<div
-			className={`flex flex-col p-2 overflow-hidden rounded ${sidebar_background_color} ${sidebar_on_background_color}`}
+			className={`flex flex-col p-2 overflow-hidden rounded ${sidebarBackgroundColor} ${sidebarOnBackgroundColor}`}
 			style={styles}
 		>
 			{children}
 		</div>
-	)
+	);
 }
 
 function SidebarComponent() {
-	const listContextState = createListContext()
+	const listContextState = useListContext();
 
-	const { isCollapse, iconStyle, setIsCollapse, toggleTheme } = listContextState
+	const {isCollapse, iconStyle, setIsCollapse, toggleTheme} = listContextState;
 
 	return (
-		<ListContext.Provider value={listContextState as ListContextProp}>
-			<List width={isCollapse ? "53px" : "250px"} height={""}>
+		<ListContext.Provider value={listContextState}>
+			<List width={isCollapse ? '53px' : '250px'} height=''>
 				<ListItem>
 					<IconText
 						buttonText='Logoipsum'
@@ -259,34 +253,34 @@ function SidebarComponent() {
 					>
 						<MdOutlineWhatshot
 							{...iconStyle}
-							height={`${isCollapse ? "1.3rem" : "2rem"}`}
+							height={`${isCollapse ? '1.3rem' : '2rem'}`}
 						/>
 					</IconText>
 				</ListItem>
 				<ListItem>
 					<IconTextButton
-						onClick={setIsCollapse}
 						buttonText='Collapse Menu'
-						iconComponent={<MdMenuOpen {...iconStyle} />}
+						iconComponent={<MdMenuOpen {...iconStyle}/>}
+						onClick={setIsCollapse}
 					/>
 				</ListItem>
-				<ListDivider />
+				<ListDivider/>
 				<ListItem>
-					<ListInput />
+					<ListInput/>
 				</ListItem>
 				<ListItem>
 					<ListSection title='Home'>
 						<IconTextButton
 							buttonText='Start'
-							iconComponent={<MdHome {...iconStyle} />}
+							iconComponent={<MdHome {...iconStyle}/>}
 						/>
 						<IconTextButton
 							buttonText='Analytics'
-							iconComponent={<MdAnalytics {...iconStyle} />}
+							iconComponent={<MdAnalytics {...iconStyle}/>}
 						/>
 						<IconTextButton
 							buttonText='IconSecurity'
-							iconComponent={<MdOutlineSecurity {...iconStyle} />}
+							iconComponent={<MdOutlineSecurity {...iconStyle}/>}
 						/>
 					</ListSection>
 				</ListItem>
@@ -294,29 +288,29 @@ function SidebarComponent() {
 					<ListSection title='Reports'>
 						<IconTextButton
 							buttonText='Timed Reports'
-							iconComponent={<MdAvTimer {...iconStyle} />}
+							iconComponent={<MdAvTimer {...iconStyle}/>}
 						/>
 						<IconTextButton
 							buttonText='Support Center'
-							iconComponent={<MdSupport {...iconStyle} />}
+							iconComponent={<MdSupport {...iconStyle}/>}
 						/>
 						<IconTextButton
 							buttonText='Data Reports'
-							iconComponent={<MdInsertDriveFile {...iconStyle} />}
+							iconComponent={<MdInsertDriveFile {...iconStyle}/>}
 						/>
 					</ListSection>
 				</ListItem>
 				<ListItem>
-					<ListSpaceExpander />
+					<ListSpaceExpander/>
 				</ListItem>
 				<ListItem>
 					<IconTextButton
-						onClick={toggleTheme}
 						buttonText='Switch to light Theme'
-						iconComponent={<MdOutlineLightMode {...iconStyle} />}
+						iconComponent={<MdOutlineLightMode {...iconStyle}/>}
+						onClick={toggleTheme}
 					/>
 				</ListItem>
-				<ListDivider />
+				<ListDivider/>
 				<ListItem>
 					<div className='flex items-center h-full w-full p-2'>
 						<img
@@ -333,9 +327,9 @@ function SidebarComponent() {
 									</span>
 									<span className='text-xs'>Product Designer</span>
 								</div>
-								<button>
+								<button type='button'>
 									<i>
-										<MdMoreVert {...iconStyle} />
+										<MdMoreVert {...iconStyle}/>
 									</i>
 								</button>
 							</>
@@ -344,19 +338,22 @@ function SidebarComponent() {
 				</ListItem>
 			</List>
 		</ListContext.Provider>
-	)
+	);
 }
 
 export default function SideBar() {
-	const [toggleEditor, setEditor] = useState(false)
+	const [toggleEditor, setToggleEditor] = useState(false);
 
 	return (
 		<div>
 			<div className='flex w-full justify-center text-center mb-2'>
 				<div>
 					<button
+						type='button'
 						className='py-2 px-8 w-full bg-green-500 text-white'
-						onClick={() => setEditor(!toggleEditor)}
+						onClick={() => {
+							setToggleEditor(!toggleEditor);
+						}}
 					>
 						WYSIWYG Editor
 					</button>
@@ -364,27 +361,28 @@ export default function SideBar() {
 			</div>
 			<div className='flex'>
 				<div>
-					<SidebarComponent />
+					<SidebarComponent/>
 				</div>
 				<div className='flex-1'>
-					<Suspense fallback={<></>}>
+					<Suspense fallback={<div>Loading...</div>}>
 						{toggleEditor && (
+							// eslint-disable-next-line react/iframe-missing-sandbox
 							<iframe
 								src='https://lihkg-wysiwyg-editor.surge.sh'
 								style={{
-									width: "100%",
-									height: "100%",
+									width: '100%',
+									height: '100%',
 									border: 0,
-									borderRadius: "4px",
-									overflow: "hidden"
+									borderRadius: '4px',
+									overflow: 'hidden',
 								}}
 								title='WYSIWYG Editor'
-								sandbox='allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts'
-							></iframe>
+								sandbox='allow-scripts allow-same-origin'
+							/>
 						)}
 					</Suspense>
 				</div>
 			</div>
 		</div>
-	)
+	);
 }

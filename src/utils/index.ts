@@ -1,9 +1,10 @@
+/* eslint-disable */
 export const debounce = (fn: Function, ms: number) => {
-	let timeoutId: ReturnType<typeof setTimeout>
+	let timeoutId: ReturnType<typeof setTimeout>;
 	return function (this: any, ...args: any[]) {
-		clearTimeout(timeoutId)
-		timeoutId = setTimeout(() => fn.apply(this, args), ms)
-	}
-}
+		clearTimeout(timeoutId);
+		timeoutId = setTimeout(() => fn.apply(this, args), ms);
+	};
+};
 
-export const deepClone = (obj: unknown) => JSON.parse(JSON.stringify(obj))
+export const deepClone = (obj: unknown) => JSON.parse(JSON.stringify(obj));
