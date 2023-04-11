@@ -24,6 +24,7 @@
 		"react/prop-types": "off",
 		"capitalized-comments": "off"
 	},
+	"ignorePatterns": ["/public/**", "/dist/**", "/node_modules/**", "/assets/**"],
 	"settings": {
 		"react": {
 			"version": "detect"
