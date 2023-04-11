@@ -150,7 +150,7 @@ export default function MasonryLayout() {
 					Add 5
 				</button>
 			</div>
-			<div className='scroller w-full max-h-[50rem] relative overflow-y-scroll bg-gray-400'>
+			<div className='scroller w-full max-h-[50rem] relative overflow-y-scroll no-scrollbar bg-gray-200 bg-opacity-10 rounded-md'>
 				{isLoading && (
 					<div className='sticky top-0 w-full h-12 leading-[3rem] backdrop-blur text-center text-white font-bold text-lg z-20'>
 						Loading

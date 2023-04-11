@@ -205,7 +205,7 @@ export default function CountdownTimer() {
 	const {days, hours, minutes, seconds} = state;
 
 	return (
-		<div className='flex justify-center'>
+		<div className='flex justify-center mt-12'>
 			<div className='flex justify-center text-center sm:w-full w-[450px] scale-x-[.65] scale-y-[.65] sm:scale-100 transition-all'>
 				<div className={`${styles.clock} flex gap-4`}>
 					<div className='flex flex-col'>

@@ -2,6 +2,7 @@ import {useState, cloneElement, Suspense, useEffect} from 'react';
 import {initializeImageSliderState} from './ImageSliderState';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import {SuspenseImage} from '../share/SuspenseImage';
+import PuffLoader from '../share/PuffLoader';
 
 export default function ImageSlider() {
 	const [imageSliderState, setImageSliderState] = useState(
@@ -28,18 +29,18 @@ export default function ImageSlider() {
 		};
 	}, []);
 
-	if (imageSliderState.total_images < imageSliderState.visible_no_image) {
+	if (imageSliderState.totalImages < imageSliderState.visibleNoImage) {
 		return <div>Not enought Images</div>;
 	}
 
 	function next() {
 		const cid
-			= (imageSliderState.current_imageId + 1) % imageSliderState.total_images;
+			= (imageSliderState.currentImageId + 1) % imageSliderState.totalImages;
 		const newImages = imageSliderState.images;
-		const newBackImages = imageSliderState.back_images;
+		const newBackImages = imageSliderState.backImages;
 
 		if (
-			imageSliderState.back_images.length > 0
+			imageSliderState.backImages.length > 0
 			&& imageSliderState.images.length > 0
 		) {
 			// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
@@ -58,13 +59,13 @@ export default function ImageSlider() {
 	}
 
 	function before() {
-		const c = imageSliderState.current_imageId;
-		const t = imageSliderState.total_images;
+		const c = imageSliderState.currentImageId;
+		const t = imageSliderState.totalImages;
 		const newImages = imageSliderState.images;
-		const newBackImages = imageSliderState.back_images;
+		const newBackImages = imageSliderState.backImages;
 
 		if (
-			imageSliderState.back_images.length > 0
+			imageSliderState.backImages.length > 0
 			&& imageSliderState.images.length > 0
 		) {
 			// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
@@ -83,7 +84,7 @@ export default function ImageSlider() {
 	}
 
 	return (
-		<div className='relative w-full'>
+		<div className='w-full relative mt-16'>
 			<div className='absolute-center-xy mt-[120px] flex w-[600px] sm:w-[720px] justify-center scale-50 xs:scale-75 sm:scale-100 transition-all'>
 				<TransitionGroup
 					className='image_slider no-scrollbar overflow-hidden'
@@ -106,9 +107,11 @@ export default function ImageSlider() {
 								}}
 							>
 								<div
-									className={`image_slide_item ${type[index]} ${
-										(index === 1 || index === 3) ? 'cursor-pointer' : ''
-									}`}
+									className={`image_slide_item 
+										${type[index]} 
+										${(index === 1 || index === 3) ? 'cursor-pointer' : ''}
+										${index !== 2 ? 'brightness-50' : ''}
+									`}
 									onClick={() => {
 										if (navOnClick) {
 											navOnClick();
@@ -118,7 +121,7 @@ export default function ImageSlider() {
 									<Suspense
 										fallback={
 											<div className='w-full h-full flex justify-center items-center'>
-												Loading...
+												<PuffLoader/>
 											</div>
 										}
 									>

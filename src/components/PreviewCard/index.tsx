@@ -1,16 +1,16 @@
 import {useState, Suspense} from 'react';
-import {SuspenseImage} from '../share/SuspenseImage';
 import styles from './index.module.css';
+import PuffLoader from '../share/PuffLoader';
 
 export default function PreviewCardComponent() {
 	const [onOpen, setOnOpen] = useState(false);
 	return (
-		<div className='relative'>
-			<div className='grid grid-cols-[repeat(auto-fit,_minmax(16rem,_1fr))] gap-4 place-items-center'>
+		<div className='w-full relative'>
+			<div className='grid grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] gap-4 place-items-center'>
 				{[1, 2, 3, 4, 5, 6].map(n => (
 					<div
 						key={n}
-						className={`w-64 h-128 rounded-lg overflow-clip bg-white py-2 ${styles.card_hover_shadow} text-[var(--colar-sand-10)] cursor-pointer`}
+						className={`w-72 h-128 rounded-lg overflow-clip bg-gray-50 bg-opacity-10 text-white py-2 ${styles.card_hover_shadow} cursor-pointer`}
 						onClick={() => {
 							if (window.innerWidth < 800) {
 								return;
@@ -33,9 +33,9 @@ export default function PreviewCardComponent() {
 								</span>
 							</button>
 						</div>
-						<figure>
-							<Suspense fallback={<div className='w-full h-52 flex justify-center items-center'>Loading...</div>}>
-								<SuspenseImage src='https://picsum.photos/104/208' className='w-full h-52'/>
+						<figure className='bg-[#2f4f4f]'>
+							<Suspense fallback={<div className='w-full h-52 flex justify-center items-center'><PuffLoader/></div>}>
+								<img src='https://picsum.photos/104/208' className='w-full h-52' loading='lazy'/>
 							</Suspense>
 						</figure>
 						<div className='text-start p-2'>

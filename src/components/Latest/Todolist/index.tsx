@@ -1,10 +1,12 @@
-import React, {useState, useRef, useCallback} from 'react';
+import React, {useState, useRef, useCallback, useMemo} from 'react';
 import {z} from 'zod';
-import {nanoid} from 'nanoid';
 import {CgSearch} from 'react-icons/cg';
 import {FaTrash} from 'react-icons/fa';
 import {DndProvider, useDrag, useDrop} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
+import {nanoid} from 'nanoid';
+
+import styles from './index.module.css';
 
 type TodoListProps = {
 	id: string;
@@ -114,7 +116,7 @@ function TodoItem(props: TodoItemProps) {
 	};
 
 	return (
-		<div ref={ref}>
+		<div ref={ref} className={`${styles.todoitem}`}>
 			<div className='flex items-center hover:bg-gray-800 rounded-md'>
 				<div className='flex grow '>
 					<div className='flex items-center px-1'>
@@ -191,8 +193,21 @@ function TodoList() {
 		setInputValue('');
 	}, [inputValue]);
 
+	const todosItem = useMemo(() => (
+		<TodoContainer className='list-container max-h-[32rem]'>
+			{todos.map((item, index) => (
+				<TodoItem
+					key={item.id}
+					index={index}
+					setTodos={setTodos}
+					todo={item}
+				/>
+			))}
+		</TodoContainer>
+	), [todos]);
+
 	return (
-		<div className='max-w-lg mx-auto text-gray-800 bg-gray-900 p-2 rounded-md'>
+		<div className='max-w-2xl mx-auto text-gray-800 bg-gray-900 p-2 rounded-md'>
 			<div>
 				<h1 className='text-gray-300 text-2xl font-bold mb-2'>Todo List</h1>
 			</div>
@@ -214,16 +229,7 @@ function TodoList() {
 				</div>
 			</form>
 			<DndProvider backend={HTML5Backend}>
-				<TodoContainer className='list-container max-h-[32rem]'>
-					{todos.map((item, index) => (
-						<TodoItem
-							key={item.id}
-							index={index}
-							setTodos={setTodos}
-							todo={item}
-						/>
-					))}
-				</TodoContainer>
+				{todosItem}
 			</DndProvider>
 		</div>
 	);
