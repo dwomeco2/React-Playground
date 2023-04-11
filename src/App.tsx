@@ -44,7 +44,7 @@ function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<div className='background'>
-				<img src='/src/assets/bg-pattern.svg'/>
+				<img src='bg-pattern.svg'/>
 			</div>
 			<div className='w-full h-screen p-8 overflow-y-scroll no-scrollbar'>
 				<div>

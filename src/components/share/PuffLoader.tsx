@@ -11,7 +11,7 @@ export default function PuffLoader(props: PuffLoaderProps) {
 	return (
 		<div className='relative h-full'>
 			<div className={`absolute-center-xy flex justify-center items-center w-12 h-12 ${className ? className : ''} `} {...rest}>
-				<img src='/src/assets/puff.svg' width='100%' height='100%'/>
+				<img src='puff.svg' width='100%' height='100%'/>
 			</div>
 		</div>
 	);

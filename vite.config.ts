@@ -5,4 +5,5 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   base: '/react-playground/',
   plugins: [react()],
+  assetsInclude: ['**/*.{svg,png,jpg}'],
 })
