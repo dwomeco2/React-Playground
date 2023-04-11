@@ -1,6 +1,6 @@
 import {Direction} from './types';
 
-export const equalityCompare = <T>(a: T[], b: T[], mapFunc: (item: T) => any): boolean => {
+export const equalityCompare = <T>(a: T[], b: T[], mapFunc: (item: T) => unknown): boolean => {
 	const aSubset = a.map(mapFunc);
 	const bSubset = b.map(mapFunc);
 	return JSON.stringify(aSubset) === JSON.stringify(bSubset);
