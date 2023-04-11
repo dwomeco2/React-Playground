@@ -6,6 +6,7 @@ import {type HackerNewsItemType} from '../zod.schema';
 import {useBottomScrollListener} from 'react-bottom-scroll-listener';
 import global from '../global';
 import {type UseQueryResult} from '@tanstack/react-query';
+import PuffLoader from '../../share/PuffLoader';
 
 export default function HackerNewsList() {
 	const [page, setPage] = useState(1);
@@ -41,8 +42,8 @@ function HackerNewsListItem({item}: {item: UseQueryResult<HackerNewsItemType>}) 
 	const {status, error, data} = item;
 	if (status === 'loading') {
 		return (
-			<div className='bg-gray-900 text-gray-200 pl-2 sm:pl-8 pr-2'>
-				Item Loading...
+			<div className='h-12 bg-gray-900 text-gray-200 pl-2 sm:pl-8 pr-2'>
+				<PuffLoader/>
 			</div>
 		);
 	}

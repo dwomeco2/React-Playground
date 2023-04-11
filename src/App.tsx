@@ -10,6 +10,7 @@ import './App.css';
 
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import {nanoid} from 'nanoid';
+import PuffLoader from './components/share/PuffLoader';
 
 const PreviewCardComponent = lazy(async () => import('./components/PreviewCard'));
 const ProfileCardComponent = lazy(async () => import('./components/ProfileCard'));
@@ -42,12 +43,14 @@ function App() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<div className='background'/>
+			<div className='background'>
+				<img src='/src/assets/bg-pattern.svg'/>
+			</div>
 			<div className='w-full h-screen p-8 overflow-y-scroll no-scrollbar'>
 				<div>
-					<h1 className='font-bold text-center text-3xl mb-4'>
+					{/* <h1 className='font-bold text-center text-3xl mb-4'>
 						My react playground
-					</h1>
+					</h1> */}
 					<div className='no-scrollbar component-selector flex w-full sm:mx-auto sm:w-[524px] md:w-[720px] overflow-x-auto mb-6'>
 						{layoutComponent.map(([, layout], index) => (
 							<div
@@ -66,9 +69,13 @@ function App() {
 					</div>
 				</div>
 				<div className='mt-4'>
-					<Suspense fallback={<div>Loading</div>}>
-						{layoutComponent[activeLayout][0]}
-					</Suspense>
+					<div className='md:w-10/12 xl:w-9/12 w-full mx-auto flex justify-center'>
+						<div className='w-full relative'>
+							<Suspense fallback={<PuffLoader/>}>
+								{layoutComponent[activeLayout][0]}
+							</Suspense>
+						</div>
+					</div>
 				</div>
 			</div>
 		</QueryClientProvider>

@@ -7,6 +7,7 @@ import {type HackerNewsItemType} from '../zod.schema';
 import {useBottomScrollListener} from 'react-bottom-scroll-listener';
 import global from '../global';
 import {nanoid} from 'nanoid';
+import PuffLoader from '../../share/PuffLoader';
 
 export default function HackerNewsStoryContent() {
 	const [page, setPage] = useState(1);
@@ -34,7 +35,7 @@ export default function HackerNewsStoryContent() {
 			ref={scrollRef as RefObject<HTMLDivElement>}
 			className='bg-gray-900 text-gray-200 p-2 h-full overflow-y-scroll'
 		>
-			<div>
+			<div className='h-12'>
 				<StoryComment key={1} queryResult={originPostData} floor={1}/>
 				{kidsQueries.map((queryResult, index) => (
 					<StoryComment
@@ -58,7 +59,7 @@ function StoryComment(props: StoryCommentProps) {
 	const {queryResult, floor} = props;
 
 	if (queryResult.status === 'loading') {
-		return <div>Loading...</div>;
+		return <PuffLoader/>;
 	}
 
 	if (queryResult.status === 'error') {
@@ -97,7 +98,7 @@ function StoryComment(props: StoryCommentProps) {
 					className='text-left mb-3'/>
 				<div className='pl-4'>
 					{floor !== 1 && (
-						<Suspense fallback={<div>Loading...</div>}>
+						<Suspense fallback={<PuffLoader/>}>
 							{loadChild && <StoryCommentChildren kids={kids}/>}
 						</Suspense>
 					)}

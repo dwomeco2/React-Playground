@@ -1,4 +1,5 @@
 import React, {useState, Suspense} from 'react';
+import PuffLoader from '../share/PuffLoader';
 
 export default function IssueWithLibrary() {
 	const [issue, setIssue] = useState(0);
@@ -29,7 +30,7 @@ export default function IssueWithLibrary() {
 			</div>
 			<div className='w-full h-full'>
 				{issue === 1 && (
-					<Suspense fallback={<div>Loading...</div>}>
+					<Suspense fallback={<PuffLoader/>}>
 						{ /* eslint-disable-next-line react/iframe-missing-sandbox */ }
 						<iframe
 							src='https://codesandbox.io/embed/backgroundcolor-in-framer-motion-forked-fij3sd?fontsize=14&hidenavigation=1&theme=dark'
@@ -40,7 +41,7 @@ export default function IssueWithLibrary() {
 					</Suspense>
 				)}
 				{issue === 2 && (
-					<Suspense fallback={<div>Loading...</div>}>
+					<Suspense fallback={<PuffLoader/>}>
 						{ /* eslint-disable-next-line react/iframe-missing-sandbox */ }
 						<iframe
 							src='https://codesandbox.io/embed/dnd-kit-resortable-lots-of-render-issue-ftlh3c?fontsize=14&hidenavigation=1&theme=dark'

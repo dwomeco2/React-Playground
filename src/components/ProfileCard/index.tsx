@@ -1,15 +1,15 @@
 import {Suspense} from 'react';
 import Accordion from './Accordion';
 import ShareCard from './ShareContentCard';
-import {SuspenseImage} from '../share/SuspenseImage';
+import PuffLoader from '../share/PuffLoader';
 
 function ProfileCardComponent() {
 	return (
 		<div className='flex flex-col rounded-lg overflow-clip pd-4 w-64 h-80 bg-white shadow-md shadow-gray-400'>
 			<div>
-				<figure>
-					<Suspense fallback={<div className='w-full h-32 flex justify-center items-center'>Loading...</div>}>
-						<SuspenseImage src='https://picsum.photos/300/200' width='100%' className='h-32 object-cover'/>
+				<figure className='bg-[#2f4f4f]'>
+					<Suspense fallback={<div className='w-full h-32 flex justify-center items-center'><PuffLoader/></div>}>
+						<img src='https://picsum.photos/300/200' width='100%' className='h-32 object-cover'/>
 					</Suspense>
 				</figure>
 			</div>

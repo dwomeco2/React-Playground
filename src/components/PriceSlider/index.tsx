@@ -67,7 +67,7 @@ function Toggle({className = ''}: {className?: string}) {
 
 function Card({children}: {children?: JSX.Element | JSX.Element[]}) {
 	return (
-		<div className='min-w-[296px] w-[36rem] rounded-md bg-[var(--colar-gray-1)] p-4 sm:p-8 overflow-hidden'>
+		<div className='min-w-[296px] w-[36rem] rounded-md bg-[var(--colar-gray-2)] p-4 sm:p-8 overflow-hidden'>
 			{children}
 		</div>
 	);

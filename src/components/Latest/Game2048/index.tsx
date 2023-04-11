@@ -88,7 +88,7 @@ function Cell(props: CellProps) {
 
 	return (
 		<animated.div
-			className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] bg-slate-700 flex justify-center items-center select-none ${className as string}`}
+			className={`absolute w-[72.75px] h-[72.75px] sm:w-[110px] sm:h-[110px] flex justify-center items-center select-none border border-emerald-200 border-solid ${className as string}`}
 			style={{
 				...style as CSSProperties,
 				...(posProps),
@@ -113,20 +113,14 @@ export default function Game2048() {
 			</div>
 			<div
 				{...swipeHandlers}
-				className='relative mx-auto sm:h-[480px] sm:w-[480px] w-[311px] aspect-square p-1 sm:p-2 rounded-md bg-emerald-200 sm:gap-2 gap-1'
+				className='relative mx-auto sm:h-[480px] sm:w-[480px] w-[311px] aspect-square p-1 sm:p-2 rounded-md bg-slate-800 bg-opacity-50'
 			>
-				{cells.map(cell =>
-					// This for the background
-					<Cell key={`${cell.id}-bg`} cor={cell.cor}/>,
-				)}
 				{cells.map(cell => {
 					const val = cell.val !== 0 ? String(cell.val) : '';
 					return (
 						<Cell
 							key={cell.id}
-							className={` font-extrabold sm:text-4xl text-xl ${
-								styles['cell-animation']
-							}  ${cell.val !== 0 ? 'z-10' : 'z-0'} `}
+							className={`font-extrabold sm:text-4xl text-xl ${styles['cell-animation']} ${cell.val !== 0 ? 'z-10' : 'z-0'} `}
 							style={{
 								backgroundColor: `${
 									Number(cell.val) === 0 ? '' : colors[Math.log2(Number(cell.val))]
@@ -187,9 +181,9 @@ const useRegisterControlInterface = (
 	return swipeHandlers;
 };
 
-const onArrowKeyDown = (
-	direction: ActionType['payload']['direction'],
-	dispatch: React.Dispatch<ActionType>,
-) => () => {
-	dispatch({type: 'arrowkey', payload: {direction}});
-};
+function onArrowKeyDown(direction: ActionType['payload']['direction'],
+	dispatch: React.Dispatch<ActionType>) {
+	return () => {
+		dispatch({type: 'arrowkey', payload: {direction}});
+	};
+}

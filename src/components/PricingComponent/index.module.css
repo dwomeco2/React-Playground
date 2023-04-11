@@ -55,28 +55,9 @@
   border-radius: 9999px;
 }
 
-@media screen and (max-width: 860px) {
-  .pricing-container {
+@media screen and (max-width: 640px) {
+  .pricing-container > div {
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .pricing-container > div:first-child {
-    margin-bottom: 30px;
-  }
-
-  .pricing-container > div:nth-child(2) {
-    margin-bottom: 20px;
-  }
-}
-
-@media screen and (min-width: 860px) {
-  .pricing-container {
-    display: flex;
-    margin: 0 auto;
-    justify-content: center;
   }
 }

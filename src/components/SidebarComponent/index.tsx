@@ -13,6 +13,7 @@ import {
 	MdMoreVert,
 	MdOutlineWhatshot,
 } from 'react-icons/md';
+import PuffLoader from '../share/PuffLoader';
 
 type ThemeType = 'light' | 'dark';
 type ListContextProp = {
@@ -359,12 +360,12 @@ export default function SideBar() {
 					</button>
 				</div>
 			</div>
-			<div className='flex'>
+			<div className='flex w-full'>
 				<div>
 					<SidebarComponent/>
 				</div>
 				<div className='flex-1'>
-					<Suspense fallback={<div>Loading...</div>}>
+					<Suspense fallback={<PuffLoader/>}>
 						{toggleEditor && (
 							// eslint-disable-next-line react/iframe-missing-sandbox
 							<iframe
