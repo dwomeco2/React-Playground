@@ -18,7 +18,7 @@ export default function Latest() {
 					<div key={name}>
 						<button
 							type='button'
-							className='py-2 px-8 w-full bg-green-500 text-white'
+							className='cbtn cbtn-primary'
 							onClick={() => {
 								setShow(index);
 							}}

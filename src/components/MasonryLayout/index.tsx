@@ -139,7 +139,7 @@ export default function MasonryLayout() {
 			<div className='flex gap-x-4 justify-center my-6'>
 				<button
 					type='button'
-					className='bg-slate-700 rounded-full py-2 px-8 text-white'
+					className='cbtn cbtn-secondary'
 					onClick={() => {
 						setImages(randomize(images));
 					}}
@@ -148,7 +148,7 @@ export default function MasonryLayout() {
 				</button>
 				<button
 					type='button'
-					className='bg-red-500 rounded-full py-2 px-8 text-white'
+					className='cbtn cbtn-primary'
 					onClick={addFiveImage}
 				>
 					Add 5

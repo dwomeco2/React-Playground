@@ -100,7 +100,7 @@ export default function PriceSlider() {
 					<div>
 						<button
 							type='button'
-							className='py-2 px-2 sm:px-10 text-[0.6rem] sm:text-sm bg-[var(--secondary-color)] text-gray-50 rounded-full'
+							className='cbtn sm:px-10 text-[0.6rem] sm:text-sm bg-[var(--secondary-color)] hover:bg-slate-900 text-gray-50 rounded-full'
 						>
 							Start my trial
 						</button>

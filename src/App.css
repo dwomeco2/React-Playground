@@ -32,6 +32,10 @@ html {
 	height: 100%;
 }
 
+.menu-text:hover {
+	filter: brightness(120%);
+}
+
 .menu-text {
 	background: linear-gradient(90deg, #e6fd81, #f87697);
 	background-attachment: fixed;
