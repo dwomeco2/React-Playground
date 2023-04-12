@@ -52,11 +52,12 @@ function App() {
 						{layoutComponent.map(([, layout], index) => (
 							<div
 								key={layout}
-								className={`
-                  menu-text inline select-none p-2 px-4 cursor-pointer 
+								className={`menu-text inline select-none p-2 px-4 cursor-pointer 
                   ${activeLayout === index ? 'border-b-red-500 border-b-2 border-solid' : ''}
                 `}
-								onClick={() => {
+								onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+									const selfEl = e.target as HTMLDivElement;
+									selfEl.scrollIntoView({behavior: 'smooth', inline: 'center'});
 									setActiveLayout(index);
 								}}
 							>
