@@ -7,4 +7,4 @@ export const debounce = (fn: Function, ms: number) => {
 	};
 };
 
-export const deepClone = (obj: unknown) => JSON.parse(JSON.stringify(obj));
+export const deepClone = <T>(obj: T):T => JSON.parse(JSON.stringify(obj)) as T;
