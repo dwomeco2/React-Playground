@@ -1,3 +1,5 @@
+import {imageSources} from '../share/ImageData';
+
 export type ImageProps = {
 	id: number;
 	src: string;
@@ -13,7 +15,7 @@ export type ImageSliderStateType = {
 };
 
 export const initializeImageSliderState = () => {
-	const totalImages = 10;
+	const totalImages = 6;
 	const visibleNoImage = 5;
 
 	const cid = getRandomArbitrary(1, totalImages + 1);
@@ -26,7 +28,7 @@ export const initializeImageSliderState = () => {
 	const backImgTmp = [];
 	for (let i = startOfBackImage; i < startOfBackImage + totalImages; i++) {
 		const id = i % totalImages === 0 ? totalImages : i % totalImages;
-		const url = new URL(`/public/imageslider/${id}.jpg`, import.meta.url).href;
+		const url = new URL(imageSources[id - 1], import.meta.url).href;
 
 		if (backImgTmp.length !== backImageSize) {
 			backImgTmp.unshift({id, src: url});

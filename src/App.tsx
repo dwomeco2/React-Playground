@@ -48,10 +48,7 @@ function App() {
 			</div>
 			<div className='w-full h-screen p-8 overflow-y-scroll no-scrollbar'>
 				<div>
-					{/* <h1 className='font-bold text-center text-3xl mb-4'>
-						My react playground
-					</h1> */}
-					<div className='no-scrollbar component-selector flex w-full sm:mx-auto sm:w-[524px] md:w-[720px] overflow-x-auto mb-6'>
+					<div className='masked-overflow no-scrollbar component-selector flex w-full sm:mx-auto sm:w-[524px] md:w-[720px] overflow-x-auto mb-6'>
 						{layoutComponent.map(([, layout], index) => (
 							<div
 								key={layout}

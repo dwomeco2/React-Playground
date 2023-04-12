@@ -8,6 +8,7 @@ specifiers:
   '@types/react': ^18.0.28
   '@types/react-beautiful-dnd': ^13.1.4
   '@types/react-dom': ^18.0.11
+  '@types/react-lazy-load-image-component': ^1.5.2
   '@types/react-transition-group': ^4.4.5
   '@typescript-eslint/eslint-plugin': ^5.57.0
   '@typescript-eslint/parser': ^5.57.0
@@ -38,6 +39,7 @@ specifiers:
   react-dom: ^18.2.0
   react-error-boundary: ^4.0.3
   react-icons: ^4.8.0
+  react-image: ^4.1.0
   react-router-dom: ^6.9.0
   react-swipeable: ^7.0.0
   react-transition-group: ^4.4.5
@@ -63,6 +65,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-error-boundary: 4.0.3_react@18.2.0
   react-icons: 4.8.0_react@18.2.0
+  react-image: 4.1.0_kv6kfe5rukjmpsrokr5t7up7oi
   react-router-dom: 6.9.0_biqbaboplfbrettd7655fr4n2y
   react-swipeable: 7.0.0_react@18.2.0
   react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
@@ -74,6 +77,7 @@ devDependencies:
   '@types/react': 18.0.28
   '@types/react-beautiful-dnd': 13.1.4
   '@types/react-dom': 18.0.11
+  '@types/react-lazy-load-image-component': 1.5.2
   '@types/react-transition-group': 4.4.5
   '@typescript-eslint/eslint-plugin': 5.57.0_x4rubgibnu7ujqspfqdeho4yiu
   '@typescript-eslint/parser': 5.57.0_ip5up2nocltd47wbnuyybe5dxu
@@ -951,6 +955,13 @@ packages:
     resolution: {integrity: sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==}
     dependencies:
       '@types/react': 18.0.28
+    dev: true
+
+  /@types/react-lazy-load-image-component/1.5.2:
+    resolution: {integrity: sha512-4NLJsMJVrMv18FuMIkUUBVj/PH9A+BvLKrZC75EWiEFn1IsMrZHgL1tVKw5QBfoa0Qjz6SkWIzEvwcyZ8PgnIg==}
+    dependencies:
+      '@types/react': 18.0.28
+      csstype: 3.1.1
     dev: true
 
   /@types/react-transition-group/4.4.5:
@@ -3183,6 +3194,18 @@ packages:
       react: '*'
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /react-image/4.1.0_kv6kfe5rukjmpsrokr5t7up7oi:
+    resolution: {integrity: sha512-qwPNlelQe9Zy14K2pGWSwoL+vHsAwmJKS6gkotekDgRpcnRuzXNap00GfibD3eEPYu3WCPlyIUUNzcyHOrLHjw==}
+    peerDependencies:
+      '@babel/runtime': '>=7'
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@babel/runtime': 7.21.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-is/16.13.1:
