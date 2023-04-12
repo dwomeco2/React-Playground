@@ -3,9 +3,9 @@ import {array as A, function as F} from 'fp-ts';
 import {atom, useAtom} from 'jotai';
 import {useReducerAtom} from 'jotai/utils';
 import {nanoid} from 'nanoid';
-import {deepClone} from '../../../../utils';
+import {deepClone} from '../../../utils';
 import {directionToSequence, equalityCompare, indexToRowCol} from './utils';
-import {atomWithToggle} from '../../../../hooks';
+import {atomWithToggle} from '../../../hooks';
 import {type CellsType, cellsZod, Direction} from './types';
 
 const isEndAtom = atomWithToggle(false);
@@ -92,7 +92,7 @@ function reducer(state: CellsType, action: ActionType) {
 
 		const result = filterNoChange(lines as CellsType[])
 			.map(l => {
-				const line = l.map(deepClone) as CellsType;
+				const line = l.map(deepClone);
 				line.forEach(cell => {
 					if (cell.prevCor) {
 						cell.prevCor = undefined;

@@ -164,7 +164,7 @@ export default function ImageSlider() {
 			<div className='absolute-center-xy mt-[240px] sm:mt-[300px] flex justify-center gap-x-8'>
 				<button
 					type='button'
-					className='text-center py-2 px-4 sm:px-6 rounded-full bg-emerald-600 text-white'
+					className='cbtn cbtn-secondary'
 					onClick={() => {
 						before();
 					}}
@@ -173,7 +173,7 @@ export default function ImageSlider() {
 				</button>
 				<button
 					type='button'
-					className='text-center py-2 px-4 sm:px-6 rounded-full bg-emerald-600 text-white'
+					className='cbtn cbtn-primary'
 					onClick={() => {
 						next();
 					}}

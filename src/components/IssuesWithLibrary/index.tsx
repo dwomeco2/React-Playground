@@ -10,7 +10,7 @@ export default function IssueWithLibrary() {
 				<div>
 					<button
 						type='button'
-						className='py-2 px-8 w-full bg-red-500 text-white' onClick={() => {
+						className='cbtn cbtn-secondary' onClick={() => {
 							setIssue(1);
 						}}
 					>
@@ -20,7 +20,7 @@ export default function IssueWithLibrary() {
 				<div>
 					<button
 						type='button'
-						className='py-2 px-8 w-full bg-red-500 text-white' onClick={() => {
+						className='cbtn cbtn-secondary' onClick={() => {
 							setIssue(2);
 						}}
 					>
