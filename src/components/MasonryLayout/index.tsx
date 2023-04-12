@@ -5,8 +5,12 @@ import {
 	type Dispatch,
 	type SetStateAction,
 	useCallback,
+	Suspense,
 } from 'react';
 import imagesjson from './images.json';
+import {LazyImage} from '../share/LazyImage';
+import PuffLoader from '../share/PuffLoader';
+import {imageSources} from '../share/ImageData';
 
 type ImageType = {
 	id: number;
@@ -157,28 +161,32 @@ export default function MasonryLayout() {
 					</div>
 				)}
 				<div
-					className={`scroller-item columns-3 sm:columns-7 gap-2 w-full rounded-md p-6 ${
-						isLoading ? 'mt-[-3rem]' : ''
-					}`}
+					className={`scroller-item columns-3 sm:columns-4 gap-2 w-full rounded-md p-6 ${isLoading ? 'mt-[-3rem]' : ''}`}
 				>
-					{images.map(item => (
-						<div
-							key={item.id}
-							ref={item.ref}
-							className='flex justify-center items-center relative mb-2 hover:scale-110 hover:z-10 cursor-pointer'
-						>
-							<div className='absolute text-5xl font-bold text-white'>
-								{item.id}
+					{images.map(item => {
+						const src = `${imageSources[item.id % imageSources.length]}?sig=masonry-${item.id}`;
+						return (
+							<div
+								key={item.id}
+								ref={item.ref}
+								className='flex justify-center items-center relative mb-2 hover:scale-110 hover:z-10 cursor-pointer'
+								style={{height: `${item.h}`}}
+							>
+								<Suspense fallback={
+									<div className='w-full h-full flex justify-center items-center' style={{background: `${item.bg}`}}>
+										<PuffLoader/>
+									</div>
+								}
+								>
+									<LazyImage
+										className='w-full h-full object-cover'
+										src={src}
+										height='100%'
+										width='100%'/>
+								</Suspense>
 							</div>
-							<img
-								className='w-full aspect-video'
-								style={{
-									height: `${item.h}`,
-									backgroundColor: `${item.bg}`,
-								}}
-							/>
-						</div>
-					))}
+						);
+					})}
 				</div>
 				{/* We must do this because of animation of scroller-item may trigger intersection, h-0 would not trigger */}
 				<div className='w-full h-[1px]'/>

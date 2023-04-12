@@ -53,8 +53,6 @@ otherwise content at the bottom is always faded out */
 	padding-left: var(--mask-height);
 	padding-right: var(--mask-height);
 
-	/* The CSS mask */
-
 	/* The content mask is a linear gradient from top to bottom */
 	--mask-image-content: linear-gradient(
 			to left,

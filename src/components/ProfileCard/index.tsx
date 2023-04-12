@@ -2,14 +2,26 @@ import {Suspense} from 'react';
 import Accordion from './Accordion';
 import ShareCard from './ShareContentCard';
 import PuffLoader from '../share/PuffLoader';
+import {LazyImage} from '../share/LazyImage';
+import {imageSources} from '../share/ImageData';
 
 function ProfileCardComponent() {
+	const imageSrc = `${imageSources[0]}?sig=profile`;
 	return (
 		<div className='flex flex-col rounded-lg overflow-clip pd-4 w-64 h-80 bg-white shadow-md shadow-gray-400'>
 			<div>
 				<figure className='bg-[#2f4f4f]'>
-					<Suspense fallback={<div className='w-full h-32 flex justify-center items-center'><PuffLoader/></div>}>
-						<img src='https://picsum.photos/300/200' width='100%' className='h-32 object-cover'/>
+					<Suspense fallback={
+						<div className='w-full h-32 flex justify-center items-center'>
+							<PuffLoader/>
+						</div>
+					}
+					>
+						<LazyImage
+							className='h-32 object-cover'
+							src={imageSrc}
+							height='100%'
+							width='100%'/>
 					</Suspense>
 				</figure>
 			</div>

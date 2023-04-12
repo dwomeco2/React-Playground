@@ -1,7 +1,7 @@
-import {useState, cloneElement, Suspense, useEffect} from 'react';
+import {useState, cloneElement, useEffect, Suspense} from 'react';
 import {initializeImageSliderState} from './ImageSliderState';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
-import {SuspenseImage} from '../share/SuspenseImage';
+import {LazyImage} from '../share/LazyImage';
 import PuffLoader from '../share/PuffLoader';
 
 export default function ImageSlider() {
@@ -29,58 +29,84 @@ export default function ImageSlider() {
 		};
 	}, []);
 
-	if (imageSliderState.totalImages < imageSliderState.visibleNoImage) {
+	if (!imageSliderState) {
+		return <div>Loading...</div>;
+	}
+
+	if (imageSliderState?.totalImages < imageSliderState?.visibleNoImage) {
 		return <div>Not enought Images</div>;
 	}
 
 	function next() {
-		const cid
-			= (imageSliderState.currentImageId + 1) % imageSliderState.totalImages;
-		const newImages = imageSliderState.images;
-		const newBackImages = imageSliderState.backImages;
-
-		if (
-			imageSliderState.backImages.length > 0
-			&& imageSliderState.images.length > 0
-		) {
-			// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
-			newImages.push(newBackImages.pop()!);
-			// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
-			newBackImages.unshift(newImages.shift()!);
+		if (!imageSliderState) {
+			return;
 		}
 
-		setImageSliderState(prev => ({
-			...prev,
-			direction: 'rtl',
-			currentImageId: cid,
-			images: newImages,
-			backImages: newBackImages,
-		}));
+		setImageSliderState(prev => {
+			if (prev) {
+				const imageSliderState = prev;
+				const cid
+					= (imageSliderState.currentImageId + 1) % imageSliderState.totalImages;
+				const newImages = imageSliderState.images;
+				const newBackImages = imageSliderState.backImages;
+
+				if (
+					imageSliderState.backImages.length > 0
+					&& imageSliderState.images.length > 0
+				) {
+					// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
+					newImages.push(newBackImages.pop()!);
+					// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
+					newBackImages.unshift(newImages.shift()!);
+				}
+
+				return {
+					...prev,
+					direction: 'rtl',
+					currentImageId: cid,
+					images: newImages,
+					backImages: newBackImages,
+				};
+			}
+
+			return prev;
+		});
 	}
 
 	function before() {
-		const c = imageSliderState.currentImageId;
-		const t = imageSliderState.totalImages;
-		const newImages = imageSliderState.images;
-		const newBackImages = imageSliderState.backImages;
-
-		if (
-			imageSliderState.backImages.length > 0
-			&& imageSliderState.images.length > 0
-		) {
-			// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
-			newBackImages.push(newImages.pop()!);
-			// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
-			newImages.unshift(newBackImages.shift()!);
+		if (!imageSliderState) {
+			return;
 		}
 
-		setImageSliderState(prev => ({
-			...prev,
-			direction: 'ltr',
-			currentImageId: c === 1 ? t : c - 1,
-			images: newImages,
-			backImages: newBackImages,
-		}));
+		setImageSliderState(prev => {
+			if (prev) {
+				const imageSliderState = prev;
+				const c = imageSliderState.currentImageId;
+				const t = imageSliderState.totalImages;
+				const newImages = imageSliderState.images;
+				const newBackImages = imageSliderState.backImages;
+
+				if (
+					imageSliderState.backImages.length > 0
+					&& imageSliderState.images.length > 0
+				) {
+					// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
+					newBackImages.push(newImages.pop()!);
+					// eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
+					newImages.unshift(newBackImages.shift()!);
+				}
+
+				return {
+					...prev,
+					direction: 'rtl',
+					currentImageId: c === t ? 1 : c + 1,
+					images: newImages,
+					backImages: newBackImages,
+				};
+			}
+
+			return prev;
+		});
 	}
 
 	return (
@@ -96,7 +122,6 @@ export default function ImageSlider() {
 					{imageSliderState.images.map((image, index) => {
 						const {type, imageSize} = mapImageSliderStateStyle();
 						const navOnClick = index === 1 ? before : index === 3 ? next : null;
-
 						return (
 							<CSSTransition
 								key={image.id}
@@ -107,10 +132,9 @@ export default function ImageSlider() {
 								}}
 							>
 								<div
-									className={`image_slide_item 
-										${type[index]} 
+									className={`image_slide_item ${type[index]} 
 										${(index === 1 || index === 3) ? 'cursor-pointer' : ''}
-										${index !== 2 ? 'brightness-50' : ''}
+										${index !== 2 ? 'brightness-50 hover:brightness-100' : ''}
 									`}
 									onClick={() => {
 										if (navOnClick) {
@@ -118,24 +142,17 @@ export default function ImageSlider() {
 										}
 									}}
 								>
-									<Suspense
-										fallback={
-											<div className='w-full h-full flex justify-center items-center'>
-												<PuffLoader/>
-											</div>
-										}
+									<Suspense fallback={
+										<div className='w-full h-full flex justify-center items-center'>
+											<PuffLoader/>
+										</div>
+									}
 									>
-										<SuspenseImage
-											src={image.src}
-											width={imageSize[index]}
+										<LazyImage
+											src={`${image.src}?sig=slider-${image.id}`}
 											height={imageSize[index]}
-										/>
+											width={imageSize[index]}/>
 									</Suspense>
-									<img
-										src={image.src}
-										width={imageSize[index]}
-										height={imageSize[index]}
-									/>
 									{/* Hidden class for tailwindcss to not remove it from bundle */}
 									<div className='hidden ltr-enter ltr-enter-active rtl-enter rtl-enter-active ltr-exit ltr-exit-active rtl-exit rtl-exit-active'/>
 								</div>
