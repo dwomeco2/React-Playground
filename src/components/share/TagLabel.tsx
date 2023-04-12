@@ -18,7 +18,7 @@ const labelColors = [
 export default function TagLabel(props: TagLabelProps) {
 	const {labels} = props;
 	return (
-		<div className='flex justify-center gap-2 mb-2'>
+		<div className='flex justify-center items-center flex-wrap gap-2 mb-2'>
 			{labels.map((label, index) => {
 				const colorClass = labelColors[index % labelColors.length];
 				return (

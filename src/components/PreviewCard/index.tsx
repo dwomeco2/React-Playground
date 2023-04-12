@@ -7,14 +7,14 @@ import {imageSources} from '../share/ImageData';
 export default function PreviewCardComponent() {
 	const [onOpen, setOnOpen] = useState(false);
 	return (
-		<div className='w-full relative'>
+		<div className='w-full relative mb-8'>
 			<div className='grid grid-cols-[repeat(auto-fit,_minmax(18rem,_1fr))] gap-4 place-items-center'>
 				{[1, 2, 3, 4, 5, 6].map(n => {
 					const src = `${imageSources[n % imageSources.length]}?sig=preview-${n}`;
 					return (
 						<div
 							key={n}
-							className={`w-72 h-128 rounded-lg overflow-clip bg-gray-50 bg-opacity-10 text-white py-2 ${styles.card_hover_shadow} cursor-pointer`}
+							className={`w-72 h-128 rounded-lg overflow-clip bg-gray-800 bg-opacity-90 text-white py-2 ${styles.card_hover_shadow} cursor-pointer`}
 							onClick={() => {
 								if (window.innerWidth < 800) {
 									return;

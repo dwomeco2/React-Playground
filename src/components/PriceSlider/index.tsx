@@ -75,7 +75,7 @@ function Card({children}: {children?: JSX.Element | JSX.Element[]}) {
 
 export default function PriceSlider() {
 	return (
-		<div className='flex justify-center items-center transition-all'>
+		<div className='flex justify-center items-center transition-all mb-8'>
 			<Card>
 				<div className='flex items-center justify-between w-full'>
 					<div className='font-bold text-gray-400'>100K PAGEVIEWS</div>

@@ -111,7 +111,7 @@ export default function Accordion() {
 						Answers to common questions about our frontend challenge website.
 					</p>
 				</div>
-				<div className='text-[var(--colar-sand-11)]'>
+				<div className='text-[var(--colar-sand-11)] mb-8'>
 					{accordionItems.map((props, index) => (
 						<AccordionItem
 							key={props.title}

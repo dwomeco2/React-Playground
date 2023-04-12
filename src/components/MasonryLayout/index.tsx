@@ -144,7 +144,7 @@ export default function MasonryLayout() {
 						setImages(randomize(images));
 					}}
 				>
-					Randomize
+					Shuffle
 				</button>
 				<button
 					type='button'
