@@ -59,9 +59,9 @@ function PricingComponent() {
 								<span className='text-4xl font-extrabold'>39.99</span>
 							</div>
 							<div className='mb-6'>
-								<div className='py-2  border-y-2'>2 TB Storage</div>
-								<div className='py-2  border-b-2'>10 Users Allowed</div>
-								<div className='py-2  border-b-2'>Send up to 20 GB</div>
+								<div className='py-2 border-y-2'>2 TB Storage</div>
+								<div className='py-2 border-b-2'>10 Users Allowed</div>
+								<div className='py-2 border-b-2'>Send up to 20 GB</div>
 							</div>
 							<button type='button' className={`w-full font-bold py-2 text-xs ${styles.btn_learn_more} rounded-md`}>LEARN MORE</button>
 						</div>

@@ -3,7 +3,7 @@ import {
 	useMediaQuery,
 	useDelayedState,
 	useGlobalKeyDownEffect,
-} from '../../../hooks';
+} from '../../hooks';
 
 import {useSpring, animated} from '@react-spring/web';
 import {useSwipeable} from 'react-swipeable';

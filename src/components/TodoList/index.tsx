@@ -186,11 +186,13 @@ function TodoList() {
 
 	const handleFormSubmit = useCallback((event: {preventDefault: () => void}) => {
 		event.preventDefault();
-		setTodos(prev => [
-			...prev,
-			{id: nanoid(), text: inputValue, isChecked: false},
-		]);
-		setInputValue('');
+		if (inputValue.length !== 0) {
+			setTodos(prev => [
+				...prev,
+				{id: nanoid(), text: inputValue, isChecked: false},
+			]);
+			setInputValue('');
+		}
 	}, [inputValue]);
 
 	const todosItem = useMemo(() => (
